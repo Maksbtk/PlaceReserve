@@ -45,6 +45,7 @@
                 android:background="@color/colorNIGHTgrey"
                 app:menu="@menu/navigation"
                 app:labelVisibilityMode="unlabeled"
+
                 app:itemIconTint="@color/TeztColorInPLaces"
                 app:itemTextColor="@color/TeztColorInPLaces"/>
 

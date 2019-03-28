@@ -45,6 +45,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+
+
         //слушаетль на изменение поля ввода серчвью
         SearchId.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 

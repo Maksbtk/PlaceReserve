@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String): Boolean {
             //    Toast.makeText(this@MainActivity, "слушаетль работает", Toast.LENGTH_SHORT).show()
                 adapter.filter(newText)
-                
+
                // adapter.refreshPlaces()
                 return false
             }

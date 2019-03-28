@@ -6,6 +6,7 @@
             android:id="@+id/navigation_places"
             android:icon="@drawable/table"
             android:title=""
+            android:state_checked="false"
 
     />
 
@@ -13,6 +14,7 @@
             android:id="@+id/navigation_user"
             android:icon="@drawable/user"
             android:title=""
-            app:itemTextColor="@android:color/transparent"
-    />
+            android:state_checked="false"
+
+            />
 </menu>

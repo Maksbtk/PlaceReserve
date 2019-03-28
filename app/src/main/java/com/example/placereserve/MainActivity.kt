@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-       // BottomNavigationViewHelper.removeShiftMode(bottomNavigationView);
+        // BottomNavigationViewHelper.removeShiftMode(bottomNavigationView);
         //инициализируем адаптер и присваиваем его списку
         val adapter = PlacesAdapter()
 
@@ -51,10 +51,10 @@ class MainActivity : AppCompatActivity() {
         SearchId.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
-            //    Toast.makeText(this@MainActivity, "слушаетль работает", Toast.LENGTH_SHORT).show()
+                //    Toast.makeText(this@MainActivity, "слушаетль работает", Toast.LENGTH_SHORT).show()
                 adapter.filter(newText)
 
-               // adapter.refreshPlaces()
+                // adapter.refreshPlaces()
                 return false
             }
 

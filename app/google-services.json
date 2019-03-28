@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "586083118778",
+    "firebase_url": "https://placereserve-10ab8.firebaseio.com",
+    "project_id": "placereserve-10ab8",
+    "storage_bucket": "placereserve-10ab8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586083118778:android:1224e16ddb7ff072",
+        "android_client_info": {
+          "package_name": "com.example.placereserve"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586083118778-ad8etiuj3k6n1imd84ani92n7nfo1bbe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.placereserve",
+            "certificate_hash": "d7751e00f17244d0e5085c89f3b82cf4a5f5428a"
+          }
+        },
+        {
+          "client_id": "586083118778-sc5vht1qctihikq52bcal2ffah2d9svk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDjO6iAhCJvCVnBPWx0dsOLtmELD7sYhw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586083118778-sc5vht1qctihikq52bcal2ffah2d9svk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

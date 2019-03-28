@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#515151</color>
+    <color name="colorPrimary1">#565656</color>
+    <color name="colorPrimaryDark">#343434</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="TeztColorInPLaces">#EAEAEA</color>
+    <color name="TextColorAdres">#C6C6C6</color>
+</resources>

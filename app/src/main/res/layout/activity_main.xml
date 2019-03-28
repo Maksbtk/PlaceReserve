@@ -5,33 +5,49 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/TeztColorInPLaces"
         tools:context=".MainActivity">
 
 
-    <android.support.design.widget.BottomNavigationView
-            android:id="@+id/Navigation"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            android:layout_gravity="bottom"
-            android:background="@color/colorPrimary1"
-            app:menu="@menu/navigation"/>
 
-    <SearchView
-            android:id="@+id/SearchId"
+    <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/colorPrimary"
+            android:layout_height="match_parent">
 
-            android:animateLayoutChanges="true"/>
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/placesList"
-            android:layout_height="match_parent"
+    </android.support.constraint.ConstraintLayout>
+    <FrameLayout
             android:layout_width="match_parent"
-            tools:listitem="@layout/places_item"
-            tools:itemCount="12"
+            android:layout_height="match_parent">
 
-            android:background="@color/colorPrimaryDark"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="50dp"/>
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/placesList"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                tools:listitem="@layout/places_item"
+                tools:itemCount="12"
+
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="50dp"/>
+        <SearchView
+
+                android:id="@+id/SearchId"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorPrimary"
+
+                android:animateLayoutChanges="true"/>
+        <android.support.design.widget.BottomNavigationView
+                android:id="@+id/Navigation"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:background="@color/colorNIGHTgrey"
+                app:menu="@menu/navigation"
+                app:labelVisibilityMode="unlabeled"
+                app:itemIconTint="@color/TeztColorInPLaces"
+                app:itemTextColor="@color/TeztColorInPLaces"/>
+
+    </FrameLayout>
 
 </FrameLayout>

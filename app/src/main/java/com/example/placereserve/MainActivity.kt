@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+       // BottomNavigationViewHelper.removeShiftMode(bottomNavigationView);
         //инициализируем адаптер и присваиваем его списку
         val adapter = PlacesAdapter()
 
@@ -61,8 +61,10 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
 
-
+    fun user_click_listener()
+    {
 
     }
 }

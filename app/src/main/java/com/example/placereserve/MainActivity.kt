@@ -4,7 +4,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.annotation.NonNull
+import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
 
 import android.view.View
 import android.widget.SearchView
@@ -64,10 +67,27 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+        val btnnvg :  BottomNavigationView = findViewById(R.id.Navigationb)
+        btnnvg.setOnNavigationItemSelectedListener ( object : BottomNavigationView.OnNavigationItemSelectedListener {
+           override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
+               when (item.itemId) {
+                   R.id.navigation_user -> {
+                       layout_user.setVisibility(View.VISIBLE)
+                       layout_places.setVisibility(View.INVISIBLE)
+
+                   }
+                   R.id.navigation_places -> {
+                       layout_user.setVisibility(View.INVISIBLE)
+                       layout_places.setVisibility(View.VISIBLE)
+
+
+                   }
+               }
+            return false
+            }
+        })
     }
 
-    fun user_click_listener()
-    {
 
-    }
 }

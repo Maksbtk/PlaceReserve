@@ -2,5 +2,6 @@
     <string name="app_name">PlaceReserve</string>
     <string name="user_list">placesList</string>
     <string name="refresh">ref</string>
+    <string name="search_hint">Поиск</string>
 
 </resources>

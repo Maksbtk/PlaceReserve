@@ -2,6 +2,7 @@ package com.example.placereserve
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.NonNull
@@ -15,6 +16,10 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 import java.util.Locale.filter
+import android.view.inputmethod.InputMethodManager.HIDE_IMPLICIT_ONLY
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.support.v4.content.ContextCompat.getSystemService
+import android.view.inputmethod.InputMethodManager
 
 
 class MainActivity : AppCompatActivity() {
@@ -67,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-
+        //слушатель меню итемов юзер\плейсес
         val btnnvg :  BottomNavigationView = findViewById(R.id.Navigationb)
         btnnvg.setOnNavigationItemSelectedListener ( object : BottomNavigationView.OnNavigationItemSelectedListener {
            override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
@@ -75,11 +80,15 @@ class MainActivity : AppCompatActivity() {
                    R.id.navigation_user -> {
                        layout_user.setVisibility(View.VISIBLE)
                        layout_places.setVisibility(View.INVISIBLE)
+                       item.setEnabled(false)
+                      btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
 
                    }
                    R.id.navigation_places -> {
                        layout_user.setVisibility(View.INVISIBLE)
                        layout_places.setVisibility(View.VISIBLE)
+                       item.setEnabled(false)
+                       btnnvg.menu.findItem(R.id.navigation_user).setEnabled(true)
 
 
                    }
@@ -87,7 +96,28 @@ class MainActivity : AppCompatActivity() {
             return false
             }
         })
+
+        save_userdata.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                layout_user.setVisibility(View.VISIBLE)
+              //  layout_places.setVisibility(View.INVISIBLE)
+                Navigationb.setVisibility(View.VISIBLE)
+                layout_change.setVisibility(View.INVISIBLE)
+            }
+        })
+
+        change_data.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                layout_user.setVisibility(View.INVISIBLE)
+                layout_places.setVisibility(View.INVISIBLE)
+                Navigationb.setVisibility(View.INVISIBLE)
+                layout_change.setVisibility(View.VISIBLE)
+            }
+        })
+
     }
 
 
 }
+
+

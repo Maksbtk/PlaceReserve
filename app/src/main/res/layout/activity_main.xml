@@ -5,8 +5,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/TeztColorInPLaces"
-        tools:context=".MainActivity">
+        android:background="@color/colorPrimaryDark"
+        tools:context=".MainActivity" android:id="@+id/main_framelayout">
 
 
     <android.support.design.widget.BottomNavigationView
@@ -18,38 +18,8 @@
             app:menu="@menu/navigation"
             app:labelVisibilityMode="unlabeled"
             app:itemIconTint="@color/TeztColorInPLaces"
-            app:itemTextColor="@color/TeztColorInPLaces"/>
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" android:visibility="invisible" android:id="@+id/layout_user">
-
-        <Button
-                android:text="Выход"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/log_out"
-                android:layout_marginBottom="20dp"
-                android:layout_gravity="bottom|center"
-
-        />
-        <Button
-                android:text="Изменить"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/button"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="50dp"
-                android:layout_gravity="right"
-        />
-        <ImageView
-                android:layout_gravity="center|top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView"
-                android:layout_marginTop="50dp"
-
-        />
-    </FrameLayout>
+            app:itemTextColor="@color/TeztColorInPLaces">
+    </android.support.design.widget.BottomNavigationView>
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/layout_places" android:visibility="visible">
@@ -74,6 +44,118 @@
 
                 android:animateLayoutChanges="true"/>
 
+    </FrameLayout>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:visibility="invisible"
+            android:id="@+id/layout_user"
+
+
+    >
+
+        <Button
+                android:text="Выход"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/log_out"
+                android:layout_marginBottom="100dp"
+                android:layout_gravity="bottom|center"
+
+        />
+        <Button
+                android:text="Изменить"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/change_data"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="right"
+        />
+    </FrameLayout>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/layout_change" android:visibility="invisible">
+
+
+        <EditText
+                android:layout_gravity="top|center"
+                android:layout_marginTop="230dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="10dp"
+                android:text="+7"
+                android:ems="10"
+                android:textSize="20sp"
+                android:textColor="@color/TeztColorInPLaces"
+                android:id="@+id/edit_number_user"/>
+        <EditText
+
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="top|center"
+
+                android:gravity="left"
+                android:layout_marginTop="140dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+
+                android:textColor="@color/TeztColorInPLaces"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/edit_name_user"/>
+        <TextView
+                android:text="Редактировать"
+                android:layout_marginEnd="10dp"
+                android:textSize="35sp"
+                android:gravity="left"
+                android:layout_gravity="top|center"
+
+                android:layout_width="match_parent"
+                android:textColor="@color/TeztColorInPLaces"
+                android:layout_marginTop="13dp"
+
+                android:layout_height="42dp"
+                android:layout_marginStart="16dp"
+                android:lineHeight="49sp"
+                android:id="@+id/profil"
+        />
+        <TextView
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="110dp"
+                android:layout_marginStart="16dp"
+                android:text="Введите имя"
+                android:textSize="15sp"
+                android:gravity="left"
+                android:layout_gravity="top|center"
+                android:textColor="@color/TeztColorInPLaces"
+                android:layout_width="match_parent"
+                android:layout_height="25dp" android:id="@+id/text_enter_name"/>
+        <TextView
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="200dp"
+                android:layout_marginStart="16dp"
+                android:text="Введите номер телефона"
+                android:textSize="15sp"
+                android:gravity="left"
+                android:layout_gravity="top|center"
+                android:textColor="@color/TeztColorInPLaces"
+                android:layout_width="match_parent"
+                android:layout_height="25dp" android:id="@+id/text_enter_number"/>
+        <ImageButton
+                app:srcCompat="@drawable/ico_ok"
+                android:id="@+id/save_userdata"
+                android:layout_gravity="top|right"
+                android:layout_marginTop="20dp"
+
+                android:background="@color/colorPrimaryDark"
+                android:layout_width="42dp"
+                android:layout_marginEnd="10dp"
+                android:layout_height="42dp"
+                android:tint="@color/TeztColorInPLaces"
+        />
     </FrameLayout>
 
 </FrameLayout>

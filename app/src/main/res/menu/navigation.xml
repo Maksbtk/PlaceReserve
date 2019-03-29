@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu  xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+<menu   xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
 
             android:id="@+id/navigation_places"
             android:icon="@drawable/table"
             android:title=""
-            android:state_checked="false"
 
-    />
+            android:enabled="false"/>
 
     <item
             android:id="@+id/navigation_user"
             android:icon="@drawable/user"
             android:title=""
-            android:state_checked="false"
 
-            />
+
+            android:enabled="true"/>
 </menu>

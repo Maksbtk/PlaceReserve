@@ -18,11 +18,13 @@
             app:menu="@menu/navigation"
             app:labelVisibilityMode="unlabeled"
             app:itemIconTint="@color/TeztColorInPLaces"
-            app:itemTextColor="@color/TeztColorInPLaces">
+            app:itemTextColor="@color/TeztColorInPLaces" android:visibility="visible">
     </android.support.design.widget.BottomNavigationView>
     <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/layout_places" android:visibility="visible">
+            android:layout_height="match_parent"
+            android:id="@+id/layout_places"
+    >
 
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/placesList"
@@ -41,17 +43,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorPrimary"
+                android:imeOptions="actionDone"
+                android:animateLayoutChanges="true"
 
-                android:animateLayoutChanges="true"/>
+        />
 
     </FrameLayout>
     <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:visibility="invisible"
+            android:layout_height="match_parent"
             android:id="@+id/layout_user"
 
 
     >
+
+        <ImageButton
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:id="@+id/change_data"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="right"
+                android:tint="@color/TeztColorInPLaces"
+                android:background="@color/colorPrimaryDark"
+                app:srcCompat="@drawable/edit_ico"
+
+        />
 
         <Button
                 android:text="Выход"
@@ -62,52 +79,8 @@
                 android:layout_gravity="bottom|center"
 
         />
-        <Button
-                android:text="Изменить"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/change_data"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="50dp"
-                android:layout_gravity="right"
-        />
-    </FrameLayout>
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/layout_change" android:visibility="invisible">
-
-
-        <EditText
-                android:layout_gravity="top|center"
-                android:layout_marginTop="230dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="10dp"
-                android:text="+7"
-                android:ems="10"
-                android:textSize="20sp"
-                android:textColor="@color/TeztColorInPLaces"
-                android:id="@+id/edit_number_user"/>
-        <EditText
-
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="10dp"
-                android:layout_gravity="top|center"
-
-                android:gravity="left"
-                android:layout_marginTop="140dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-
-                android:textColor="@color/TeztColorInPLaces"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/edit_name_user"/>
         <TextView
-                android:text="Редактировать"
+                android:text="Личный кабинет"
                 android:layout_marginEnd="10dp"
                 android:textSize="35sp"
                 android:gravity="left"
@@ -120,42 +93,10 @@
                 android:layout_height="42dp"
                 android:layout_marginStart="16dp"
                 android:lineHeight="49sp"
-                android:id="@+id/profil"
+                android:id="@+id/user_profil"
         />
-        <TextView
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="110dp"
-                android:layout_marginStart="16dp"
-                android:text="Введите имя"
-                android:textSize="15sp"
-                android:gravity="left"
-                android:layout_gravity="top|center"
-                android:textColor="@color/TeztColorInPLaces"
-                android:layout_width="match_parent"
-                android:layout_height="25dp" android:id="@+id/text_enter_name"/>
-        <TextView
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="200dp"
-                android:layout_marginStart="16dp"
-                android:text="Введите номер телефона"
-                android:textSize="15sp"
-                android:gravity="left"
-                android:layout_gravity="top|center"
-                android:textColor="@color/TeztColorInPLaces"
-                android:layout_width="match_parent"
-                android:layout_height="25dp" android:id="@+id/text_enter_number"/>
-        <ImageButton
-                app:srcCompat="@drawable/ico_ok"
-                android:id="@+id/save_userdata"
-                android:layout_gravity="top|right"
-                android:layout_marginTop="20dp"
 
-                android:background="@color/colorPrimaryDark"
-                android:layout_width="42dp"
-                android:layout_marginEnd="10dp"
-                android:layout_height="42dp"
-                android:tint="@color/TeztColorInPLaces"
-        />
     </FrameLayout>
+
 
 </FrameLayout>

@@ -2,6 +2,10 @@ package com.example.placereserve
 
 object PlacesData{
 
+
+    //
+    //Русик,здеся надо закачивать заведения из бд
+    //
      fun getPlaces()= listOf(
          Places("Йохан Пивохан","Проспект Кирова, 58",R.drawable.r1),
          Places("Карл у клары","Проспект Кирова, 51Б",R.drawable.r2),

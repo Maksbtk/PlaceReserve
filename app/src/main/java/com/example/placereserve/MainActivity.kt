@@ -1,5 +1,6 @@
 package com.example.placereserve
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -24,18 +25,41 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.support.v4.content.ContextCompat.getSystemService
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.TextView
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
+    private val MY_REQUEST_CODE: Int = 7117
 
 
     //инициализируем ViewModel ленивым способом
     private val userViewModel by lazy { ViewModelProviders.of(this).get(PlacesViewModel::class.java) }
+
     companion object {
 
         const val TOTAL_COUNT = "total_count"
 
     }
+
+    private lateinit var firebaseAuth: FirebaseAuth
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var gso: GoogleSignInOptions
+    val RC_SIGN_IN: Int = 1
+    lateinit var signOut: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -43,11 +67,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val animAlpha : Animation=AnimationUtils.loadAnimation(this, R.anim.alpha)
-        val btnnvg :  BottomNavigationView = findViewById(R.id.Navigationb)
+        val signIn = findViewById<View>(R.id.signInBtn) as SignInButton
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("1014005822352-fpebtqgcjo9o6h2phr6oq0jf3d79eube.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
 
 
-        val flag  = intent.getIntExtra(TOTAL_COUNT,1)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        signOut = findViewById<View>(R.id.btn_sign_out) as Button
+        signOut.visibility = View.INVISIBLE
+        signIn.setOnClickListener { view: View? ->
+            signInGoogle()
+        }
+
+
+        val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
+        val btnnvg: BottomNavigationView = findViewById(R.id.Navigationb)
+
+
+        val flag = intent.getIntExtra(TOTAL_COUNT, 1)
         when (flag) {
             1 -> {
                 layout_user.setVisibility(View.INVISIBLE)
@@ -92,11 +133,10 @@ class MainActivity : AppCompatActivity() {
         SearchId.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 SearchId.setIconified(false)
-               // Navigationb.setVisibility(View.INVISIBLE)
+                // Navigationb.setVisibility(View.INVISIBLE)
 
             }
         })
-
 
 
         //слушаетль на изменение поля ввода серчвью
@@ -118,28 +158,28 @@ class MainActivity : AppCompatActivity() {
         })
         //слушатель меню итемов юзер\плейсес
 
-        btnnvg.setOnNavigationItemSelectedListener ( object : BottomNavigationView.OnNavigationItemSelectedListener {
-           override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
-               when (item.itemId) {
-                   R.id.navigation_user -> {
+        btnnvg.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
+            override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
+                when (item.itemId) {
+                    R.id.navigation_user -> {
 
-                       layout_user.setVisibility(View.VISIBLE)
-                       layout_places.setVisibility(View.INVISIBLE)
-                       item.setEnabled(false)
-                      btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
+                        layout_user.setVisibility(View.VISIBLE)
+                        layout_places.setVisibility(View.INVISIBLE)
+                        item.setEnabled(false)
+                        btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
 
-                   }
-                   R.id.navigation_places -> {
-                       layout_user.setVisibility(View.INVISIBLE)
-                       layout_places.setVisibility(View.VISIBLE)
-                       item.setEnabled(false)
+                    }
+                    R.id.navigation_places -> {
+                        layout_user.setVisibility(View.INVISIBLE)
+                        layout_places.setVisibility(View.VISIBLE)
+                        item.setEnabled(false)
 
-                       btnnvg.menu.findItem(R.id.navigation_user).setEnabled(true)
+                        btnnvg.menu.findItem(R.id.navigation_user).setEnabled(true)
 
 
-                   }
-               }
-            return false
+                    }
+                }
+                return false
             }
         })
 
@@ -157,6 +197,44 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    private fun signInGoogle() {
+        val signInIntent: Intent = mGoogleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleResult(task)
+        }
+    }
+
+    private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
+        val account = completedTask.getResult(ApiException::class.java)
+            updateUI(account!!)
+//        try {
+//            val account : GoogleSignInAccount = completedTask.getResult(ApiException::class.java)!!
+//            updateUI(account)
+//        } catch (e: ApiException) {
+//            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+//        }
+    }
+
+    private fun updateUI(account: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
+            val dispTxt = findViewById<View>(R.id.dispTxt) as TextView
+            dispTxt.text = account.displayName
+            signOut.visibility = View.VISIBLE
+            signOut.setOnClickListener { view: View? ->
+                mGoogleSignInClient.signOut().addOnCompleteListener { task: Task<Void> ->
+                    dispTxt.text = " "
+                    signOut.visibility - View.INVISIBLE
+                }
+            }
+        }
+
+
+    }
 }
-
-

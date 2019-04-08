@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layout_places"
-    >
+            android:visibility="invisible">
 
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/placesList"
@@ -69,12 +69,28 @@
                 app:srcCompat="@drawable/edit_ico"
 
         />
+        <com.google.android.gms.common.SignInButton
+                android:layout_width="204dp"
+                android:layout_height="55dp"
+                android:id="@+id/signInBtn"
+                android:layout_gravity="center"
+              >
+        </com.google.android.gms.common.SignInButton>
 
+        <TextView
+                android:layout_width="377dp"
+                android:layout_height="46dp"
+                android:id="@+id/dispTxt"
+                android:layout_marginTop="200dp"
+                android:textColor="@color/TeztColorInPLaces"
+                android:layout_gravity="top|center"
+                />
         <Button
                 android:text="Выход"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/log_out"
+                android:id="@+id/btn_sign_out"
                 android:layout_marginBottom="100dp"
                 android:layout_gravity="bottom|center"
 

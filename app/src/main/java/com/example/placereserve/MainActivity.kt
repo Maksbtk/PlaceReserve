@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.shobhitpuri.custombuttons.GoogleSignInButton
 import java.util.*
 
 
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val signIn = findViewById<View>(R.id.signInBtn) as SignInButton
+        val signIn = findViewById<View>(R.id.signInBtn) as GoogleSignInButton
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("1014005822352-fpebtqgcjo9o6h2phr6oq0jf3d79eube.apps.googleusercontent.com")
             .requestEmail()
@@ -166,8 +167,16 @@ class MainActivity : AppCompatActivity() {
             override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
                 when (item.itemId) {
                     R.id.navigation_user -> {
+                        var user = firebaseAuth.currentUser
 
-                        layout_user.setVisibility(View.VISIBLE)
+                        if (user!=null) {
+                            layout_user.setVisibility(View.VISIBLE)
+                            // User is signed in.
+                        } else {
+                            // No user is signed in.
+                            layout_auth.setVisibility(View.VISIBLE)
+                        }
+
                         layout_places.setVisibility(View.INVISIBLE)
                         item.setEnabled(false)
                         btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
@@ -288,19 +297,19 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
        // hideProgressDialog()
 
         if (user != null) {
-            nameUser.visibility - View.VISIBLE
+
+            layout_user.setVisibility(View.VISIBLE)
+            layout_auth.setVisibility(View.INVISIBLE)
+            //imageView.setImageURI(user.photoUrl)
             nameUser.text= user.displayName
-            btn_sign_out.visibility - View.VISIBLE
+
 
             //signInBtn.visibility = View.INVISIBLE
 
 
-        } else if(user == null) {
-            nameUser.visibility - View.INVISIBLE
-            nameUser.text=""
-            signInBtn.visibility - View.VISIBLE
-            btn_sign_out.visibility - View.INVISIBLE
-           // signInBtn.visibility = View.INVISIBLE
+        } else {
+            layout_user.setVisibility(View.INVISIBLE)
+            layout_auth.setVisibility(View.VISIBLE)
 
         }
 

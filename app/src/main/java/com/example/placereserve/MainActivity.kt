@@ -85,26 +85,7 @@ class MainActivity : AppCompatActivity() {
         val btnnvg: BottomNavigationView = this.findViewById(R.id.Navigationb)
 
 
-        val flag = intent.getIntExtra(TOTAL_COUNT, 1)
-        when (flag) {
-            1 -> {
-                btnnvg.visibility - View.VISIBLE
-                layout_user.setVisibility(View.INVISIBLE)
-                layout_places.setVisibility(View.VISIBLE)
-                btnnvg.menu.findItem(R.id.navigation_places).setEnabled(false)
-                btnnvg.menu.findItem(R.id.navigation_user).setEnabled(true)
 
-
-            }
-            2 -> {
-                btnnvg.visibility - View.VISIBLE
-                layout_user.setVisibility(View.VISIBLE)
-                layout_places.setVisibility(View.INVISIBLE)
-                btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
-                btnnvg.menu.findItem(R.id.navigation_user).setEnabled(false)
-
-            }
-        }
 
 
 
@@ -167,15 +148,16 @@ class MainActivity : AppCompatActivity() {
             override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
                 when (item.itemId) {
                     R.id.navigation_user -> {
-                        var user = firebaseAuth.currentUser
-
-                        if (user!=null) {
-                            layout_user.setVisibility(View.VISIBLE)
-                            // User is signed in.
-                        } else {
-                            // No user is signed in.
-                            layout_auth.setVisibility(View.VISIBLE)
-                        }
+//                        var user = firebaseAuth.currentUser
+//
+//                        if (user!=null) {
+//                            layout_user.setVisibility(View.VISIBLE)
+//                            // User is signed in.
+//                        } else {
+//                            // No user is signed in.
+//                            layout_auth.setVisibility(View.VISIBLE)
+//                        }
+                        layout_user.setVisibility(View.VISIBLE)
 
                         layout_places.setVisibility(View.INVISIBLE)
                         item.setEnabled(false)
@@ -295,23 +277,78 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
 
     private fun updateUI(user: FirebaseUser?) {
        // hideProgressDialog()
+        val btnnvg: BottomNavigationView = this.findViewById(R.id.Navigationb)
 
-        if (user != null) {
-
-            layout_user.setVisibility(View.VISIBLE)
-            layout_auth.setVisibility(View.INVISIBLE)
-            //imageView.setImageURI(user.photoUrl)
-            nameUser.text= user.displayName
-
-
-            //signInBtn.visibility = View.INVISIBLE
+        val flag = intent.getIntExtra(TOTAL_COUNT, 1)
+        var user = firebaseAuth.currentUser
+        when (flag) {
+            1 -> {
 
 
-        } else {
-            layout_user.setVisibility(View.INVISIBLE)
-            layout_auth.setVisibility(View.VISIBLE)
+                if (user!=null) {
+                    nameUser.text= user.displayName
+                    layout_auth.setVisibility(View.INVISIBLE)
+                    btnnvg.setVisibility(View.VISIBLE)
+                    layout_user.setVisibility(View.INVISIBLE)
+                    layout_places.setVisibility(View.VISIBLE)
+                } else {
+                    btnnvg.setVisibility(View.INVISIBLE)
+                    layout_user.setVisibility(View.INVISIBLE)
+                    layout_places.setVisibility(View.INVISIBLE)
+                    layout_auth.setVisibility(View.VISIBLE)
+                }
 
+            }
+            2 -> {
+                if (user!=null) {
+                    nameUser.text= user.displayName
+                    layout_auth.setVisibility(View.INVISIBLE)
+                    btnnvg.setVisibility(View.VISIBLE)
+                    layout_user.setVisibility(View.VISIBLE)
+                    layout_places.setVisibility(View.INVISIBLE)
+                    btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
+                    btnnvg.menu.findItem(R.id.navigation_user).setEnabled(false)
+                } else {
+                    btnnvg.setVisibility(View.INVISIBLE)
+                    layout_user.setVisibility(View.INVISIBLE)
+                    layout_places.setVisibility(View.INVISIBLE)
+                    layout_auth.setVisibility(View.VISIBLE)
+                }
+
+
+//
+//                btnnvg.setVisibility(View.VISIBLE)
+//                layout_user.setVisibility(View.VISIBLE)
+//                layout_places.setVisibility(View.INVISIBLE)
+//                btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
+//                btnnvg.menu.findItem(R.id.navigation_user).setEnabled(false)
+//
+//
+//                layout_auth.setVisibility(View.INVISIBLE)
+
+            }
         }
+
+//        if (user != null) {
+//
+//            layout_places.setVisibility(View.VISIBLE)
+//            layout_user.setVisibility(View.INVISIBLE)
+//            layout_auth.setVisibility(View.INVISIBLE)
+//            btnnvg.setVisibility(View.VISIBLE)
+//            //imageView.setImageURI(user.photoUrl)
+//            nameUser.text= user.displayName
+//
+//
+//            //signInBtn.visibility = View.INVISIBLE
+//
+//
+//        } else {
+//            layout_user.setVisibility(View.INVISIBLE)
+//            layout_auth.setVisibility(View.INVISIBLE)
+//            layout_auth.setVisibility(View.VISIBLE)
+//            btnnvg.setVisibility(View.INVISIBLE)
+//
+//        }
 
     }
 

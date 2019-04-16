@@ -7,7 +7,7 @@
             android:icon="@drawable/table"
             android:title=""
 
-            android:enabled="false"/>
+           />
 
     <item
             android:id="@+id/navigation_user"
@@ -15,5 +15,5 @@
             android:title=""
 
 
-            android:enabled="true"/>
+           />
 </menu>

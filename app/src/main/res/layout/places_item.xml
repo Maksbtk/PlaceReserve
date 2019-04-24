@@ -28,8 +28,8 @@
                 tools:layout_editor_absoluteY="50dp"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_conversion_absoluteWidth="395dp"
-                android:text="ewfwef" android:textColor="@color/TextColorAdres"
-                android:textColorLink="@color/TextColorAdres" android:textSize="22sp"
+                android:text="ewfwef" android:textColor="@color/TeztColorInPLaces"
+                android:textColorLink="@color/TeztColorInPLaces" android:textSize="22sp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="210dp"/>
         <TextView

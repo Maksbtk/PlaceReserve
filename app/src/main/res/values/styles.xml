@@ -6,8 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:editTextColor">@android:color/white</item>
-        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:editTextColor">@color/TeztColorInPLaces</item>
+        <item name="colorSwitchThumbNormal">@color/colorNIGHTgrey</item>
+
+
+
+
+
     </style>
 
 

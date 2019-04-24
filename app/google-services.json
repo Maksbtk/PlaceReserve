@@ -8,6 +8,51 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1014005822352:android:3808903a83b21361",
+        "android_client_info": {
+          "package_name": "com.example.back_end"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1014005822352-q3hntk35k59hhnvndtibl5lo3n85cmle.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.back_end",
+            "certificate_hash": "9dd528bf1e4e73fd846cf28252c534bfb585d8b8"
+          }
+        },
+        {
+          "client_id": "1014005822352-8nh3nrafll2ilcvctv07sqpf8k62dep7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.back_end",
+            "certificate_hash": "e3df6b91dedb460ea46943743a9ae696a94417ec"
+          }
+        },
+        {
+          "client_id": "1014005822352-fpebtqgcjo9o6h2phr6oq0jf3d79eube.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDosNcs5rJthRhl40aFitNMl7Xbg8Klm-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1014005822352-fpebtqgcjo9o6h2phr6oq0jf3d79eube.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1014005822352:android:1224e16ddb7ff072",
         "android_client_info": {
           "package_name": "com.example.placereserve"
@@ -21,6 +66,10 @@
             "package_name": "com.example.placereserve",
             "certificate_hash": "d7751e00f17244d0e5085c89f3b82cf4a5f5428a"
           }
+        },
+        {
+          "client_id": "1014005822352-fpebtqgcjo9o6h2phr6oq0jf3d79eube.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

@@ -20,123 +20,11 @@
             app:menu="@menu/navigation"
             android:theme="@style/AppTheme"
             app:labelVisibilityMode="unlabeled"
-    >
+            android:visibility="visible">
 
 
     </android.support.design.widget.BottomNavigationView>
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/layout_auth" android:visibility="visible"
-            android:background="@drawable/auth_beck">
 
-        <com.shobhitpuri.custombuttons.GoogleSignInButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/signInBtn"
-                app:isDarkTheme="true"
-                android:layout_gravity="center"
-                android:visibility="invisible"/>
-
-        <TextView
-                android:text="Введите полученный код:"
-                android:layout_marginStart="16dp"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:textColor="@color/TeztColorInPLaces"
-                android:layout_gravity="top|center"
-                android:fontFamily="PingFang SC"
-                android:layout_marginTop="250dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp" android:id="@+id/text_suc"/>
-
-        <TextView
-                android:text="Не пришло СМС с кодом?
-Попробуйте еще раз через минуту"
-                android:layout_marginStart="16dp"
-                android:textSize="11sp"
-                android:gravity="center"
-                android:textColor="@color/TeztColorInPLaces"
-                android:layout_gravity="top|center"
-                android:fontFamily="PingFang SC"
-                android:layout_marginTop="213dp"
-                android:layout_width="match_parent"
-                android:layout_height="34dp" android:id="@+id/text_resend"/>
-        <TextView
-                android:text="Введите номер телефона:"
-                android:layout_marginStart="16dp"
-                android:textSize="20sp"
-
-                android:gravity="left"
-                android:layout_gravity="top|center"
-                android:fontFamily="PingFang SC"
-                android:layout_marginTop="76dp"
-                android:textColor="@color/TeztColorInPLaces"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/textView"/>
-
-        <TextView
-                android:text="Вход"
-                android:layout_marginStart="16dp"
-                android:textSize="33sp"
-                android:gravity="left"
-                android:textColor="@color/TeztColorInPLaces"
-                android:layout_gravity="top|center"
-                android:fontFamily="PingFang SC"
-                android:layout_marginTop="33dp"
-
-                android:layout_width="match_parent"
-                android:layout_height="42dp" android:id="@+id/vhod"/>
-        <ImageButton
-                android:layout_gravity="top|center"
-                android:background="@drawable/suc_ico"
-                android:layout_marginTop="342dp"
-                android:layout_width="292dp"
-                android:layout_height="39dp" android:id="@+id/buttonVerifyPhone"/>
-        <Button
-                android:layout_gravity="top|center"
-                android:text="снова"
-                android:layout_marginStart="150dp"
-                android:layout_marginTop="171dp"
-                android:layout_width="wrap_content"
-                android:layout_height="39dp" android:id="@+id/buttonResend"/>
-
-        <ImageButton
-                android:layout_gravity="top|center"
-                android:background="@drawable/sendcode_ico"
-
-                android:layout_marginTop="171dp"
-                android:layout_width="154dp"
-                android:layout_height="39dp" android:id="@+id/buttonStartVerification"/>
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_gravity="top|center"
-                android:layout_height="44dp"
-
-                android:gravity="center"
-                android:background="@drawable/back"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="110dp"
-                android:ems="10"
-                android:digits="0123456789+"
-                android:inputType="phone"
-                android:id="@+id/fieldPhoneNumber"/>
-        <EditText
-                android:layout_gravity="top|center"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_marginTop="287dp"
-                android:layout_marginStart="119dp"
-                android:layout_marginEnd="119dp"
-                android:background="@drawable/back"
-                android:layout_height="36dp"
-                android:digits="0123456789"
-                android:inputType="phone"
-                android:ems="10"
-                android:id="@+id/fieldVerificationCode"/>
-
-    </FrameLayout>
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -230,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layout_places"
-            android:visibility="invisible">
+            android:visibility="visible">
 
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/placesList"

@@ -14,7 +14,7 @@
             xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/layout_auth"
 
-            android:visibility="visible" android:background="@drawable/auth_beck">
+            android:visibility="visible" >
 
 
         <TextView
@@ -87,30 +87,31 @@
                 android:background="@drawable/suc_ico"
                 android:layout_marginTop="171dp"
                 android:visibility="visible"
-                android:layout_width="292dp"
-                android:layout_height="39dp" android:id="@+id/buttonSaveNameUser"/>
+                android:layout_width="310dp"
+                android:layout_height="44dp" android:id="@+id/buttonSaveNameUser"/>
         <ImageButton
                 android:layout_gravity="top|center"
-                android:background="@drawable/suc_ico"
+                android:background="@drawable/sign_in_ico"
                 android:layout_marginTop="171dp"
                 android:visibility="invisible"
-                android:layout_width="292dp"
-                android:layout_height="39dp" android:id="@+id/buttonVerifyPhone"/>
-        <Button
+                android:layout_width="293dp"
+                android:layout_height="44dp" android:id="@+id/buttonVerifyPhone"/>
+        <ImageButton
                 android:layout_gravity="top|center"
                 android:text="снова"
                 android:visibility="invisible"
                 android:layout_marginTop="260dp"
-                android:layout_width="wrap_content"
-                android:layout_height="39dp" android:id="@+id/buttonResend"/>
+                android:background="@drawable/resend_ico"
+                android:layout_width="255dp"
+                android:layout_height="44dp" android:id="@+id/buttonResend"/>
 
         <ImageButton
                 android:layout_gravity="top|center"
                 android:background="@drawable/sendcode_ico"
                 android:visibility="invisible"
                 android:layout_marginTop="171dp"
-                android:layout_width="154dp"
-                android:layout_height="39dp" android:id="@+id/buttonStartVerification"/>
+                android:layout_width="174dp"
+                android:layout_height="44dp" android:id="@+id/buttonStartVerification"/>
 
 
         <EditText

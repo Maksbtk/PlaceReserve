@@ -28,7 +28,7 @@
                 tools:layout_editor_absoluteY="50dp"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_conversion_absoluteWidth="395dp"
-                android:text="ewfwef" android:textColor="@color/TeztColorInPLaces"
+                android:text="ewfwef" android:textColor="@color/colorPrimary"
                 android:textColorLink="@color/TeztColorInPLaces" android:textSize="22sp"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="210dp"/>
@@ -46,7 +46,7 @@
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_conversion_absoluteWidth="403dp"
                 android:text="wegweg"
-                android:textColorLink="@color/TeztColorInPLaces" android:textColor="@color/TeztColorInPLaces"
+                android:textColorLink="@color/TeztColorInPLaces" android:textColor="@color/colorPrimary"
                 android:textSize="26sp" android:layout_marginLeft="17dp" android:layout_marginTop="180dp"/>
     </android.support.v7.widget.CardView>
 

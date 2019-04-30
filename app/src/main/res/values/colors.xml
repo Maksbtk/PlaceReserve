@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#515151</color>
-    <color name="colorNIGHTgrey">#565656</color>
-    <color name="colorPrimaryDark">#343434</color>
+    <color name="colorPrimary">#EFEFF4</color>
+    <color name="colorNIGHTgrey">#EFEFF4</color>
+    <color name="colorPrimaryDark">#E4E4E4</color>
     <color name="colorAccent">#FFFFFF</color>
-    <color name="TeztColorInPLaces">#EAEAEA</color>
+    <color name="TeztColorInPLaces">#1F2041</color>
 
 
 </resources>

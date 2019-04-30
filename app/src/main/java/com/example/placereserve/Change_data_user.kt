@@ -22,11 +22,11 @@ class Change_data_user : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_changedata)
         val animAlpha : Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
-
+        firebaseAuth = FirebaseAuth.getInstance()
 
         save_userdata.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                firebaseAuth = FirebaseAuth.getInstance()
+
                 v.startAnimation(animAlpha)
                 //
                 // Русик, здесть надо занести новое имя и телефон в бд
@@ -36,7 +36,7 @@ class Change_data_user : AppCompatActivity()  {
                 val myRef = database.getReference("Пользователи").child(user?.phoneNumber!!)
                 myRef.child("ИмяПользователя").setValue(UserName)
                 val sud = Intent(this@Change_data_user, MainActivity::class.java)
-                sud.putExtra(MainActivity.TOTAL_COUNT,2 )
+                sud.putExtra(TOTAL_COUNT,2 )
                 startActivity(sud)
 
 
@@ -46,7 +46,7 @@ class Change_data_user : AppCompatActivity()  {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
                 val biu = Intent(this@Change_data_user, MainActivity::class.java)
-                biu.putExtra(MainActivity.TOTAL_COUNT,2 )
+                biu.putExtra(TOTAL_COUNT,2 )
                 startActivity(biu)
             }
         })

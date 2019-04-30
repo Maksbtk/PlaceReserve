@@ -40,10 +40,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.shobhitpuri.custombuttons.GoogleSignInButton
 import kotlinx.android.synthetic.main.activity_changedata.*
 import java.util.*
@@ -166,26 +163,16 @@ class MainActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-
-
-        startAuth()
-
+        upDateInterface()
     }
 
-
-    private fun startAuth() {
+    private fun upDateInterface() {
         val user=  firebaseAuth.currentUser
-        if (user == null) {
             updateUI(user)
-        }
-
-
-
-
     }
     private fun signOutt() {
         firebaseAuth.signOut()
-        startAuth()
+        upDateInterface()
 
     }
 
@@ -267,54 +254,78 @@ class MainActivity : AppCompatActivity() {
        // hideProgressDialog()
         val btnnvg: BottomNavigationView = this.findViewById(R.id.Navigationb)
        // intent.removeExtra(TOTAL_COUNT)
-      var user = firebaseAuth.currentUser
+    //  var user = firebaseAuth.currentUser
         var flag = intent.getIntExtra(TOTAL_COUNT, 1)
 
-                if (flag==1) {
-                    if (user != null) {
-                        // val myRef = database.getReference("Пользователи").child(user.displayName!!)
+        when (flag) {
+            1-> {
+                if (user != null) {
 
-                        // myRef.child("email").setValue(user.email)
-                        //   myRef.child("статус").setValue("1")
-                        //      nameUser.text= user.displayName
+                    // val myRef = database.getReference("Пользователи").child(user.displayName!!)
 
-
-                        btnnvg.setVisibility(View.VISIBLE)
-                        layout_user.setVisibility(View.INVISIBLE)
-                        layout_places.setVisibility(View.VISIBLE)
-                        btnnvg.menu.findItem(R.id.navigation_places).setEnabled(false)
-                        btnnvg.menu.findItem(R.id.navigation_user).setEnabled(true)
-                    } else {
-                        val auth = Intent(this@MainActivity, AuthActivity::class.java)
-                        startActivity(auth)
-                    }
-                } else if (flag == 2){
-                    if (user != null) {
-                        // val myRef = database.getReference("Пользователи").child(user.displayName!!)
-
-                        // myRef.child("email").setValue(user.email)
-                        //   myRef.child("статус").setValue("1")
-                        //      nameUser.text= user.displayName
+                    // myRef.child("email").setValue(user.email)
+                    //   myRef.child("статус").setValue("1")
+                    //      nameUser.text= user.displayName
 
 
-                        btnnvg.setVisibility(View.VISIBLE)
-                        layout_user.setVisibility(View.VISIBLE)
-                        layout_places.setVisibility(View.INVISIBLE)
-                        btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
-                        btnnvg.menu.findItem(R.id.navigation_user).setEnabled(false)
-                    } else {
-                        val auth = Intent(this@MainActivity, AuthActivity::class.java)
-                        startActivity(auth)
-                    }
-                    intent.removeExtra(TOTAL_COUNT)
+
+
+
+                    database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                           nameUser.text = dataSnapshot.getValue().toString()
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            // Failed to read value
+                        }
+                    })
+
+
+                    btnnvg.setVisibility(View.VISIBLE)
+                    layout_user.setVisibility(View.INVISIBLE)
+                    layout_places.setVisibility(View.VISIBLE)
+                    btnnvg.menu.findItem(R.id.navigation_places).setEnabled(false)
+                    btnnvg.menu.findItem(R.id.navigation_user).setEnabled(true)
+                } else {
+                    val auth = Intent(this@MainActivity, AuthActivity::class.java)
+                    startActivity(auth)
                 }
+
+            }
+
+            2-> {
+                if (user != null) {
+                    database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val str= dataSnapshot.getValue()
+                            nameUser.text = str.toString()
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            // Failed to read value
+                        }
+                    })
+                    // val myRef = database.getReference("Пользователи").child(user.displayName!!)
+                    // myRef.child("email").setValue(user.email)
+                    //   myRef.child("статус").setValue("1")
+                    //      nameUser.text= user.displayName
+                    btnnvg.setVisibility(View.VISIBLE)
+                    layout_user.setVisibility(View.VISIBLE)
+                    layout_places.setVisibility(View.INVISIBLE)
+                    btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
+                    btnnvg.menu.findItem(R.id.navigation_user).setEnabled(false)
+                } else {
+                    val auth = Intent(this@MainActivity, AuthActivity::class.java)
+                    startActivity(auth)
+                }
+                intent.removeExtra(TOTAL_COUNT)
+            }
+        }
     }
 
 
     companion object {
-        val TEXT_REQUEST = 1
         const val TOTAL_COUNT = "total_count"
-
-
     }
 }

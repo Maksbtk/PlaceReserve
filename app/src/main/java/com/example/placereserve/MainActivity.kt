@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         signOut.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
-                signOutt()
+                signOut()
             }
         })
 
@@ -130,20 +130,12 @@ class MainActivity : AppCompatActivity() {
             override fun onNavigationItemSelected(@NonNull item: MenuItem): Boolean {
                 when (item.itemId) {
                     R.id.navigation_user -> {
-                        layout_user.setVisibility(View.VISIBLE)
-                        layout_places.setVisibility(View.INVISIBLE)
-                        item.setEnabled(false)
-                        btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
-
+                        intent.putExtra(MAIN_MENU_PAGE_TAG, USER_PAGE)
+                        updateInterface()
                     }
                     R.id.navigation_places -> {
-                        layout_user.setVisibility(View.INVISIBLE)
-                        layout_places.setVisibility(View.VISIBLE)
-                        item.setEnabled(false)
-
-                        btnnvg.menu.findItem(R.id.navigation_user).setEnabled(true)
-
-
+                        intent.putExtra(MAIN_MENU_PAGE_TAG, PLACES_PAGE)
+                        updateInterface()
                     }
                 }
                 return false
@@ -159,21 +151,34 @@ class MainActivity : AppCompatActivity() {
                 startActivity(cda)
             }
         })
+
+        val user = firebaseAuth.currentUser
+        if(user != null) {
+            database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        nameUser.text = dataSnapshot.value.toString()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Failed to read value
+                    }
+                })
+        }
     }
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        upDateInterface()
+        updateInterface()
     }
 
-    private fun upDateInterface() {
-        val user=  firebaseAuth.currentUser
-            updateUI(user)
+    private fun updateInterface() {
+        val user = firebaseAuth.currentUser
+        updateUI(user)
     }
-    private fun signOutt() {
+    private fun signOut() {
         firebaseAuth.signOut()
-        upDateInterface()
-
+        updateInterface()
     }
 
 //    private fun signInGoogle() {
@@ -251,83 +256,39 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun updateUI(user: FirebaseUser?) {
-       // hideProgressDialog()
+        if(user == null) {
+            if(intent.hasExtra(MAIN_MENU_PAGE_TAG)) {
+                intent.removeExtra(MAIN_MENU_PAGE_TAG)
+            }
+            val auth = Intent(this, AuthActivity::class.java)
+            startActivity(auth)
+            finish()
+            return
+        }
         val btnnvg: BottomNavigationView = this.findViewById(R.id.Navigationb)
-       // intent.removeExtra(TOTAL_COUNT)
-    //  var user = firebaseAuth.currentUser
-        var flag = intent.getIntExtra(TOTAL_COUNT, 1)
+        var flag = intent.getIntExtra(MAIN_MENU_PAGE_TAG, PLACES_PAGE)
 
         when (flag) {
-            1-> {
-                if (user != null) {
-
-                    // val myRef = database.getReference("Пользователи").child(user.displayName!!)
-
-                    // myRef.child("email").setValue(user.email)
-                    //   myRef.child("статус").setValue("1")
-                    //      nameUser.text= user.displayName
-
-
-
-
-
-                    database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя").addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                           nameUser.text = dataSnapshot.getValue().toString()
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            // Failed to read value
-                        }
-                    })
-
-
-                    btnnvg.setVisibility(View.VISIBLE)
-                    layout_user.setVisibility(View.INVISIBLE)
-                    layout_places.setVisibility(View.VISIBLE)
-                    btnnvg.menu.findItem(R.id.navigation_places).setEnabled(false)
-                    btnnvg.menu.findItem(R.id.navigation_user).setEnabled(true)
-                } else {
-                    val auth = Intent(this@MainActivity, AuthActivity::class.java)
-                    startActivity(auth)
-                    finish()
-                }
-
+            PLACES_PAGE-> {
+                btnnvg.visibility = View.VISIBLE
+                layout_user.visibility = View.INVISIBLE
+                layout_places.visibility = View.VISIBLE
+                btnnvg.menu.findItem(R.id.navigation_places).isEnabled = false
+                btnnvg.menu.findItem(R.id.navigation_user).isEnabled = true
             }
-
-            2-> {
-                if (user != null) {
-                    database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя").addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val str= dataSnapshot.getValue()
-                            nameUser.text = str.toString()
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            // Failed to read value
-                        }
-                    })
-                    // val myRef = database.getReference("Пользователи").child(user.displayName!!)
-                    // myRef.child("email").setValue(user.email)
-                    //   myRef.child("статус").setValue("1")
-                    //      nameUser.text= user.displayName
-                    btnnvg.setVisibility(View.VISIBLE)
-                    layout_user.setVisibility(View.VISIBLE)
-                    layout_places.setVisibility(View.INVISIBLE)
-                    btnnvg.menu.findItem(R.id.navigation_places).setEnabled(true)
-                    btnnvg.menu.findItem(R.id.navigation_user).setEnabled(false)
-                } else {
-                    val auth = Intent(this@MainActivity, AuthActivity::class.java)
-                    startActivity(auth)
-                    finish()
-                }
-                intent.removeExtra(TOTAL_COUNT)
+            USER_PAGE-> {
+                btnnvg.visibility = View.VISIBLE
+                layout_user.visibility = View.VISIBLE
+                layout_places.visibility = View.INVISIBLE
+                btnnvg.menu.findItem(R.id.navigation_places).isEnabled = true
+                btnnvg.menu.findItem(R.id.navigation_user).isEnabled = false
             }
         }
     }
 
-
     companion object {
-        const val TOTAL_COUNT = "total_count"
+        const val MAIN_MENU_PAGE_TAG = "main_menu_page"
+        const val PLACES_PAGE = 1
+        const val USER_PAGE = 2
     }
 }

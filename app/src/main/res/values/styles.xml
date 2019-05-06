@@ -8,12 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:editTextColor">@color/TeztColorInPLaces</item>
         <item name="colorSwitchThumbNormal">@color/colorNIGHTgrey</item>
-
-
-
-
-
     </style>
 
+    <style name="SplashTheme" parent="@style/AppTheme">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
 
 </resources>

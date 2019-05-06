@@ -410,7 +410,7 @@ class AuthActivity : AppCompatActivity() {
 
                     val inte = Intent(this, MainActivity::class.java)
                     startActivity(inte)
-
+                    finish()
                 } else {
 
                 }
@@ -423,7 +423,7 @@ class AuthActivity : AppCompatActivity() {
         private const val STATE_CODE_SENT = 2
         private const val STATE_SIGNIN_FAILED = 5
         private const val STATE_SIGNIN_SUCCESS = 6
-        const val TOTAL_COUNT = "total_count"
+        //const val TOTAL_COUNT = "total_count"
         // private const val TAG = "GoogleActivity"
         private const val TAG = "PhoneAuthActivity"
         private const val KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress"

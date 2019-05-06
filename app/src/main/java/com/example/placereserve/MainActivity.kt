@@ -27,7 +27,6 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import com.example.placereserve.AuthActivity.Companion.TOTAL_COUNT
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -41,6 +40,7 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
+import com.imangazaliev.notelin.ui.commons.ItemClickSupport
 import com.shobhitpuri.custombuttons.GoogleSignInButton
 import kotlinx.android.synthetic.main.activity_changedata.*
 import java.util.*
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
    // lateinit var mGoogleSignInClient: GoogleSignInClient
    // lateinit var gso: GoogleSignInOptions
   //  val RC_SIGN_IN: Int = 1
-
+  // private lateinit var listView : ListView
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -64,6 +64,8 @@ class MainActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+
+       //listView = findViewById<ListView>(R.id.placesList)
 //        val signIn = findViewById<View>(R.id.signInBtn) as GoogleSignInButton
 //        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //            .requestIdToken("1014005822352-fpebtqgcjo9o6h2phr6oq0jf3d79eube.apps.googleusercontent.com")
@@ -106,6 +108,10 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
+
+
+
+
 
 
         //слушаетль на изменение поля ввода серчвью
@@ -159,6 +165,20 @@ class MainActivity : AppCompatActivity() {
                 startActivity(cda)
             }
         })
+
+
+
+
+        /// слушатель на итемы листа
+//        listView.setOnItemClickListener { parent, view, position, id ->
+//
+//            Toast.makeText(this, "Clicked item :"+" "+position,Toast.LENGTH_SHORT).show()
+//
+//        }
+
+
+
+
     }
     public override fun onStart() {
         super.onStart()

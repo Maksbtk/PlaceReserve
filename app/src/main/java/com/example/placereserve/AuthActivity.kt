@@ -56,7 +56,9 @@ class AuthActivity : AppCompatActivity() {
                 if (!validatePhoneNumber()) {
                     return
                 }
-                startPhoneNumberVerification(fieldPhoneNumber.text.toString())
+
+                val phoneNumber = fixNumber(fieldPhoneNumber.text.toString())
+                startPhoneNumberVerification(phoneNumber)
             }
         })
 
@@ -185,9 +187,14 @@ class AuthActivity : AppCompatActivity() {
                 // [END_EXCLUDE]
             }
         }
-
     }
 
+    fun fixNumber(str: String): String {
+        if(str[0] == '8'){
+            return str.substring(0, 0) + "+7" + str.substring(0 + 1)
+        }
+        return str
+    }
 
     private fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]

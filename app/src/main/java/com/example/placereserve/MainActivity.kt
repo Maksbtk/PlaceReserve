@@ -290,6 +290,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     val auth = Intent(this@MainActivity, AuthActivity::class.java)
                     startActivity(auth)
+                    finish()
                 }
 
             }
@@ -318,6 +319,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     val auth = Intent(this@MainActivity, AuthActivity::class.java)
                     startActivity(auth)
+                    finish()
                 }
                 intent.removeExtra(TOTAL_COUNT)
             }

@@ -19,6 +19,7 @@ import android.content.Intent
 import android.widget.*
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
+import com.imangazaliev.notelin.ui.commons.ItemClickSupport
 
 
 class MainActivity : AppCompatActivity() {
@@ -116,6 +117,20 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
         }
+
+
+
+
+        /// слушатель на итемы листа
+//        listView.setOnItemClickListener { parent, view, position, id ->
+//
+//            Toast.makeText(this, "Clicked item :"+" "+position,Toast.LENGTH_SHORT).show()
+//
+//        }
+
+
+
+
     }
     public override fun onStart() {
         super.onStart()

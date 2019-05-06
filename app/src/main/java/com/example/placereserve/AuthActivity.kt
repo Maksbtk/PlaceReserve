@@ -40,8 +40,14 @@ class AuthActivity : AppCompatActivity() {
         val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
         firebaseAuth = FirebaseAuth.getInstance()
 
+        var user = firebaseAuth.currentUser;
 
-
+        if(user != null) {
+            val inte = Intent(this, MainActivity::class.java)
+            startActivity(inte)
+            finish()
+            return;
+        }
 
 
         buttonStartVerification.setOnClickListener(object : View.OnClickListener {

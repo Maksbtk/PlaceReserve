@@ -13,18 +13,25 @@
             tools:ignore="GoogleAppIndexingWarning">
 
 
-
-
-        <activity android:name=".MainActivity"
-                  android:screenOrientation="portrait">
+        <!-- Splash screen -->
+        <activity android:name=".SplashActivity"
+                  android:screenOrientation="portrait" android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-            <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
-
+        <!-- AuthActivity -->
         <activity android:name=".AuthActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <!-- MainActivity -->
+        <activity android:name=".MainActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -37,7 +44,5 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
     </application>
-
 </manifest>

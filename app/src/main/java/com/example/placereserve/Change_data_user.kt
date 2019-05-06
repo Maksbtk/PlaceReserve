@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import com.example.placereserve.MainActivity.Companion.TOTAL_COUNT
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_auth.*

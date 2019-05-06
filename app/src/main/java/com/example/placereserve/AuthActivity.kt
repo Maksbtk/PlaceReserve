@@ -1,9 +1,7 @@
 package com.example.placereserve
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -16,7 +14,6 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_auth.*
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.TimeUnit
 
 class AuthActivity : AppCompatActivity() {
@@ -46,7 +43,7 @@ class AuthActivity : AppCompatActivity() {
             val inte = Intent(this, MainActivity::class.java)
             startActivity(inte)
             finish()
-            return;
+            return
         }
 
 
@@ -75,16 +72,6 @@ class AuthActivity : AppCompatActivity() {
                 verifyPhoneNumberWithCode(storedVerificationId, code)
             }
         })
-
-
-//        btn_sign_out.setOnClickListener(object : View.OnClickListener {
-//            override fun onClick(v: View) {
-//                v.startAnimation(animAlpha)
-//                signOut()
-//            }
-//        })
-
-
 
         buttonResend.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
@@ -115,8 +102,6 @@ class AuthActivity : AppCompatActivity() {
 
             }
         })
-
-
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -283,12 +268,6 @@ class AuthActivity : AppCompatActivity() {
             }
     }
 
-//    private fun signOut() {
-//        firebaseAuth.signOut()
-//        updateUI(STATE_INITIALIZED)
-//    }
-
-
     private fun validatePhoneNumber(): Boolean {
         val phoneNumber = fieldPhoneNumber.text.toString()
         if (TextUtils.isEmpty(phoneNumber)) {
@@ -310,7 +289,6 @@ class AuthActivity : AppCompatActivity() {
             v.isEnabled = false
         }
     }
-
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
@@ -335,8 +313,6 @@ class AuthActivity : AppCompatActivity() {
                 // Initialized state, show only the phone number field and start button
                 enableViews(buttonStartVerification, fieldPhoneNumber)
                 disableViews(buttonVerifyPhone, buttonResend, fieldVerificationCode)
-
-
 
                 buttonSaveNameUser.setVisibility(View.VISIBLE)
                 text_vvediteNameUser.setVisibility(View.VISIBLE)
@@ -366,8 +342,6 @@ class AuthActivity : AppCompatActivity() {
                 buttonVerifyPhone.setVisibility(View.VISIBLE)
                 text_resend.setVisibility(View.VISIBLE)
                 buttonResend.setVisibility(View.VISIBLE)
-
-
             }
             STATE_VERIFY_FAILED -> {
                 // Verification has failed, show all options
@@ -377,8 +351,6 @@ class AuthActivity : AppCompatActivity() {
                 )
                 disableViews(buttonVerifyPhone)
                 Snackbar.make(layout_auth, "Ошибка", Snackbar.LENGTH_SHORT).show()
-
-
             }
             STATE_VERIFY_SUCCESS -> {
                 // Verification has succeeded, proceed to firebase sign in
@@ -395,8 +367,6 @@ class AuthActivity : AppCompatActivity() {
                         fieldVerificationCode.setText("???")
                     }
                 }
-
-
             }
             STATE_SIGNIN_FAILED ->
                 // No-op, handled by sign-in check
@@ -413,7 +383,6 @@ class AuthActivity : AppCompatActivity() {
                     val myRef = database.getReference("Пользователи").child(user.phoneNumber!!)
                     myRef.child("ИмяПользователя").setValue(userName)
                     myRef.child("Cтатус").setValue("1")
-                    //   nameUser.text= user.displayName
 
                     val inte = Intent(this, MainActivity::class.java)
                     startActivity(inte)
@@ -430,7 +399,6 @@ class AuthActivity : AppCompatActivity() {
         private const val STATE_CODE_SENT = 2
         private const val STATE_SIGNIN_FAILED = 5
         private const val STATE_SIGNIN_SUCCESS = 6
-        //const val TOTAL_COUNT = "total_count"
         // private const val TAG = "GoogleActivity"
         private const val TAG = "PhoneAuthActivity"
         private const val KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress"

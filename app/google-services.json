@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "1014005822352-q3hntk35k59hhnvndtibl5lo3n85cmle.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.back_end",
-            "certificate_hash": "9dd528bf1e4e73fd846cf28252c534bfb585d8b8"
-          }
-        },
-        {
           "client_id": "1014005822352-8nh3nrafll2ilcvctv07sqpf8k62dep7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.back_end",
             "certificate_hash": "e3df6b91dedb460ea46943743a9ae696a94417ec"
+          }
+        },
+        {
+          "client_id": "1014005822352-q3hntk35k59hhnvndtibl5lo3n85cmle.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.back_end",
+            "certificate_hash": "9dd528bf1e4e73fd846cf28252c534bfb585d8b8"
           }
         },
         {
@@ -59,6 +59,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1014005822352-p39hd9s24l4b97ch95prvvdgbqn5r8e6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.placereserve",
+            "certificate_hash": "ea21d594cfd7b36199fa620228d151d5d968874d"
+          }
+        },
         {
           "client_id": "1014005822352-fh6hrcll2g0dmc43481209e7ho61a3ib.apps.googleusercontent.com",
           "client_type": 1,

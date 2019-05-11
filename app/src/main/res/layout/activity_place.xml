@@ -1,6 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent">
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        tools:context="com.example.placereserve.PlaceActivity"
+        android:id="@+id/place_layout">
 
-</android.support.constraint.ConstraintLayout>
+    <!-- Main Body -->
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/linear_layout">
+
+        <!-- Верхний headbar -->
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical" android:id="@+id/header_layout">
+
+            <!-- Restaurant block-->
+            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="6sp"
+                         android:orientation="vertical" android:id="@+id/header_block">
+                <!-- Инфа о ресторане -->
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="top|right"
+                        android:id="@+id/restaurant_block">
+
+                    <!-- Название -->
+                    <TextView
+                            android:text="Default name"
+                            android:textSize="30sp"
+                            android:layout_gravity="right"
+                            android:layout_height="40sp"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/TeztColorInPLaces"
+                            android:id="@+id/restaurant_name"
+                    />
+
+                    <!-- Адрес заведения -->
+                    <TextView
+                            android:text="Default address"
+                            android:textSize="18sp"
+                            android:layout_gravity="right"
+                            android:layout_height="28sp"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/TeztColorInPLaces"
+                            android:id="@+id/restaurant_address"
+                    />
+                </LinearLayout>
+
+                <!-- Невероятная кнопка назад -->
+                <ImageButton
+                        app:srcCompat="@drawable/ico_backk"
+                        android:id="@+id/back_in_place"
+                        android:layout_gravity="top|left"
+                        android:layout_marginTop="13dp"
+                        android:tint="@color/TeztColorInPLaces"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_width="42dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_height="42dp"
+                />
+            </FrameLayout>
+
+            <!-- Time & Date picker, sit count -->
+            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10sp"
+                         android:orientation="vertical" android:id="@+id/second_block">
+                <!-- Кол-во мест -->
+                <TextView
+                        android:text="- места"
+                        android:textSize="18sp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="right"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/TeztColorInPLaces"
+                        android:id="@+id/sit_count"
+                />
+
+                <!-- Date & Picker -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                              android:orientation="horizontal" android:layout_marginStart="23dp" android:id="@+id/date_block">
+                    <!-- date text -->
+                    <TextView
+                            android:text="01.01.1997"
+                            android:textSize="18sp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_gravity="center"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/TeztColorInPLaces"
+                            android:id="@+id/date_text"
+                    />
+
+                    <!-- date icon -->
+                    <ImageButton
+                            app:srcCompat="@drawable/ic_date"
+                            android:id="@+id/date_icon"
+                            android:layout_marginEnd="8dp"
+                            android:layout_gravity="center"
+                            android:background="@color/colorPrimaryDark"
+                            android:scaleType="fitXY"
+                            android:layout_width="18sp"
+                            android:layout_height="18sp"
+                            app:tint="@color/TeztColorInPLaces"
+                    />
+
+                    <!-- Time text -->
+                    <TextView
+                            android:text="10:00"
+                            android:textSize="18sp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_gravity="center"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/TeztColorInPLaces"
+                            android:id="@+id/time_text"
+                    />
+
+                    <!-- Time icon -->
+                    <ImageButton
+                            app:srcCompat="@drawable/ic_time"
+                            android:id="@+id/time_icon"
+                            android:layout_marginEnd="8dp"
+                            android:layout_gravity="center"
+                            app:tint="@color/TeztColorInPLaces"
+                            android:background="@color/colorPrimaryDark"
+                            android:scaleType="fitXY"
+                            android:layout_width="18sp"
+                            android:layout_height="18sp"
+                    />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Поле с картой -->
+        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                     android:orientation="vertical" android:id="@+id/map_layout">
+            <include layout="@layout/map_view"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <!-- Button -->
+    <ImageButton
+            android:layout_width="293dp"
+            android:layout_height="54dp"
+            android:id="@+id/btn_confirm"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="bottom|center"
+            app:srcCompat="@drawable/btn_confirm"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+    />
+</FrameLayout>

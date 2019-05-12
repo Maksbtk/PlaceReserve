@@ -16,13 +16,14 @@
                 android:layout_gravity="top|center"
                 android:imeOptions="actionDone"
                 android:gravity="left"
+                android:maxLength="15"
+                android:digits="йцукенгшщзхфывапролджэячсмитьбюЙЦУКЕНГШЩЗХФЫВАПРОЛДЖЭЯЧСМИТЬБЮёЁ "
+                android:inputType="textCapSentences|textFilter|textNoSuggestions"
                 android:layout_marginTop="140dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-
                 android:textColor="@color/TeztColorInPLaces"
-                android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/edit_name_user"/>
         <TextView

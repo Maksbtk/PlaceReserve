@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.InputType
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
@@ -15,6 +18,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_auth.*
 import java.util.concurrent.TimeUnit
+import kotlin.text.Regex.Companion.escapeReplacement
 
 class AuthActivity : AppCompatActivity() {
 
@@ -82,7 +86,7 @@ class AuthActivity : AppCompatActivity() {
 
         buttonSaveNameUser.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                v.startAnimation(animAlpha)
+                //v.startAnimation(animAlpha)
 
                 userName = fieldNameUser.text.toString()
 

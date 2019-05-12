@@ -2,6 +2,7 @@ package com.example.placereserve
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.DialogInterface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.NonNull
@@ -16,6 +17,7 @@ import android.view.animation.AnimationUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 import android.content.Intent
+import android.support.v7.app.AlertDialog
 import android.widget.*
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
@@ -55,7 +57,29 @@ class MainActivity : AppCompatActivity() {
         signOut.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
-                signOut()
+
+                // build alert dialog
+                val dialogBuilder = AlertDialog.Builder(this@MainActivity)
+
+                // set message of alert dialog
+                    //  dialogBuilder.setMessage("Вы уверены что хотите выйти?")
+                    // if the dialog is cancelable
+                    .setCancelable(false)
+                    // positive button text and action
+                    .setPositiveButton("Принять", DialogInterface.OnClickListener {
+                            dialog, id -> signOut()
+                    })
+                    // negative button text and action
+                    .setNegativeButton("Отменить", DialogInterface.OnClickListener {
+                            dialog, id -> dialog.cancel()
+                    })
+
+                // create dialog box
+                val alert = dialogBuilder.create()
+                // set title for alert dialog box
+                alert.setTitle("Вы уверены что хотите выйти?")
+                // show alert dialog
+                alert.show()
             }
         })
 

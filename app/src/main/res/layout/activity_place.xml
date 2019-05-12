@@ -18,11 +18,14 @@
             android:id="@+id/linear_layout">
 
         <!-- Верхний headbar -->
+
+        <!-- Поле с картой -->
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical" android:id="@+id/header_layout">
 
             <!-- Restaurant block-->
-            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="6sp"
+            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                         android:layout_marginBottom="6sp"
                          android:orientation="vertical" android:id="@+id/header_block">
                 <!-- Инфа о ресторане -->
                 <LinearLayout
@@ -72,7 +75,8 @@
             </FrameLayout>
 
             <!-- Time & Date picker, sit count -->
-            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10sp"
+            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                         android:layout_marginBottom="10sp"
                          android:orientation="vertical" android:id="@+id/second_block">
                 <!-- Кол-во мест -->
                 <TextView
@@ -88,7 +92,8 @@
 
                 <!-- Date & Picker -->
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                              android:orientation="horizontal" android:layout_marginStart="23dp" android:id="@+id/date_block">
+                              android:orientation="horizontal" android:layout_marginStart="23dp"
+                              android:id="@+id/date_block">
                     <!-- date text -->
                     <TextView
                             android:text="01.01.1997"
@@ -141,8 +146,6 @@
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
-
-        <!-- Поле с картой -->
         <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
                      android:orientation="vertical" android:id="@+id/map_layout">
             <include layout="@layout/map_view"/>

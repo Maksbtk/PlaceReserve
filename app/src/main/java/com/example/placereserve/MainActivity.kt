@@ -37,6 +37,20 @@ class MainActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
 
+        val user = firebaseAuth.currentUser
+        if(user != null) {
+            database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        nameUser.text = dataSnapshot.value.toString()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Failed to read value
+                    }
+                })
+        }
+
         var signOut = findViewById<View>(R.id.btn_sign_out) as  ImageButton
 
         val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
@@ -127,19 +141,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        val user = firebaseAuth.currentUser
-        if(user != null) {
-            database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        nameUser.text = dataSnapshot.value.toString()
-                    }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        // Failed to read value
-                    }
-                })
-        }
     }
     public override fun onStart() {
         super.onStart()

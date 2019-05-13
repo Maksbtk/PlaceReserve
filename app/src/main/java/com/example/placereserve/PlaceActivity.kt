@@ -160,6 +160,7 @@ class PlaceActivity : AppCompatActivity() {
                 Log.i(TAG, "onMapLoadSuccess")
 
                 val bmp = BitmapFactory.decodeResource(resources, R.drawable.free_1)
+
                 val fixedBmp = Bitmap.createScaledBitmap(bmp, 150, 150, false)
                 bitmapLayer = BitmapLayer(mapView, fixedBmp)
                 bitmapLayer!!.location = PointF(150f, 150f)
@@ -173,6 +174,7 @@ class PlaceActivity : AppCompatActivity() {
                     intent.putExtra(SELECTED_TAG, SELECTED)
                     sit_count.text = "1 место"
                     updateUI()
+
                 })
                 mapView!!.addLayer(bitmapLayer)
                 mapView!!.refresh()

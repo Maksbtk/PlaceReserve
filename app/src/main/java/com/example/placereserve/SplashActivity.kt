@@ -12,8 +12,11 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 import android.net.NetworkInfo
 import android.content.Context.CONNECTIVITY_SERVICE
+import android.content.DialogInterface
 import android.net.ConnectivityManager
+import android.support.v7.app.AlertDialog
 import android.widget.Toast
+import kotlin.concurrent.thread
 
 
 class SplashActivity : AppCompatActivity() {
@@ -26,28 +29,41 @@ class SplashActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         val user = firebaseAuth.currentUser
 
-        if (isOnline()) {
-            if (user != null) {
-                database.getReference("Пользователи").child(user.phoneNumber!!).child("Cтатус")
-                    .addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val flag = dataSnapshot.getValue(String::class.java)
-                            if (flag == "1") {
-                                goAuth()
-                            } else if (flag == "2") {
-                                goAdmin()
-                            }
-                        }
+        if (!isOnline()) {
+            val dialogBuilder = AlertDialog.Builder(this@SplashActivity)
 
-                        override fun onCancelled(error: DatabaseError) {
-                            // Failed to read value
+                // set message of alert dialog
+                  dialogBuilder.setMessage("Проверьте подключение к WiFi или сотовой сети")
+                // if the dialog is cancelable
+                .setCancelable(false)
+                // positive button text and action
+                .setPositiveButton("Ок", DialogInterface.OnClickListener {
+                        dialog, id -> dialog.cancel()
+                })
+            // create dialog box
+            val alert = dialogBuilder.create()
+            // set title for alert dialog box
+            alert.setTitle("Отсутствует интернет-соединение")
+            // show alert dialog
+            alert.show()
+        }
+        if (user != null) {
+            database.getReference("Пользователи").child(user.phoneNumber!!).child("Cтатус")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val flag = dataSnapshot.getValue(String::class.java)
+                        if (flag == "1") {
+                            goAuth()
+                        } else if (flag == "2") {
+                            goAdmin()
                         }
-                    })
-            } else {
-                goAuth()
-            }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        // Failed to read value
+                    }
+                })
         } else {
-            Toast.makeText(this@SplashActivity, "Отсутствует интернет-соединение. Проверьте подключение к WiFi или сотовой сети", Toast.LENGTH_LONG).show()
+            goAuth()
         }
     }
     private fun goAuth(){

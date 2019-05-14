@@ -24,10 +24,6 @@ import android.widget.TimePicker
 import android.text.format.DateUtils
 
 
-
-
-
-
 class PlaceActivity : AppCompatActivity() {
 
     private val TAG = "PlaceActivity"
@@ -37,11 +33,16 @@ class PlaceActivity : AppCompatActivity() {
     // MAP
     private var mapView: MapView? = null
     private var bitmapLayer: BitmapLayer? = null
+    private var posBut = -1
+    private var bitmapChoosed: BitmapLayer? = null
+    private var bitmapLayer1: BitmapLayer? = null
+    private var bitmapLayer2: BitmapLayer? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place)
-        val animAlpha : Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
+        val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
         back_in_place.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
@@ -75,6 +76,8 @@ class PlaceActivity : AppCompatActivity() {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
         updateTime()
+//        posBut = -1
+//        intent.putExtra(SELECTED_TAG, UNSELECTED)
     }
 
     // установка обработчика выбора даты
@@ -84,20 +87,26 @@ class PlaceActivity : AppCompatActivity() {
             calendar.set(Calendar.MONTH, monthOfYear)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateDate()
+//            posBut = -1
+//            intent.putExtra(SELECTED_TAG, UNSELECTED)
         }
 
     private fun updateDate() {
         date_text!!.text =
-            (DateUtils.formatDateTime(this,
+            (DateUtils.formatDateTime(
+                this,
                 calendar.timeInMillis,
-                DateUtils.FORMAT_NUMERIC_DATE or DateUtils.FORMAT_SHOW_YEAR))
+                DateUtils.FORMAT_NUMERIC_DATE or DateUtils.FORMAT_SHOW_YEAR
+            ))
     }
 
     private fun updateTime() {
         time_text!!.text =
-            (DateUtils.formatDateTime(this,
+            (DateUtils.formatDateTime(
+                this,
                 calendar.timeInMillis,
-                DateUtils.FORMAT_SHOW_TIME))
+                DateUtils.FORMAT_SHOW_TIME
+            ))
     }
 
     // отображаем диалоговое окно для выбора даты
@@ -121,26 +130,28 @@ class PlaceActivity : AppCompatActivity() {
             .show()
     }
 
+    var flag = UNSELECTED
     fun updateUI() {
-        if(!intent.hasExtra("place_name") || !intent.hasExtra("place_address")) {
+        if (!intent.hasExtra("place_name") || !intent.hasExtra("place_address")) {
             // sorry, but not
             Log.e(TAG, "Extras is null!")
             finish()
             return
         }
 
-        var flag = intent.getIntExtra(SELECTED_TAG, UNSELECTED)
+        flag = intent.getIntExtra(SELECTED_TAG, UNSELECTED)
         when (flag) {
-            UNSELECTED->{
+            UNSELECTED -> {
                 btn_confirm.visibility = View.INVISIBLE
             }
-            SELECTED->{
+            SELECTED -> {
                 btn_confirm.visibility = View.VISIBLE
             }
         }
     }
 
-    fun loadMap(){
+    val but = arrayListOf<BitmapLayer>()
+    fun loadMap() {
         // Поиск mapview
         mapView = findViewById<MapView>(R.id.mapview)
 
@@ -159,25 +170,58 @@ class PlaceActivity : AppCompatActivity() {
             override fun onMapLoadSuccess() {
                 Log.i(TAG, "onMapLoadSuccess")
 
-                val bmp = BitmapFactory.decodeResource(resources, R.drawable.free_1)
+                val free = BitmapFactory.decodeResource(resources, R.drawable.free_1)
+                val freeBmp = Bitmap.createScaledBitmap(free, 150, 150, false)
 
-                val fixedBmp = Bitmap.createScaledBitmap(bmp, 150, 150, false)
-                bitmapLayer = BitmapLayer(mapView, fixedBmp)
-                bitmapLayer!!.location = PointF(150f, 150f)
-                bitmapLayer!!.isAutoScale = true
-                bitmapLayer!!.setOnBitmapClickListener(BitmapLayer.OnBitmapClickListener {
-                    Toast.makeText(
-                        applicationContext,
-                        "click",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    intent.putExtra(SELECTED_TAG, SELECTED)
-                    sit_count.text = "1 место"
-                    updateUI()
+                val choosed = BitmapFactory.decodeResource(resources, R.drawable.choosedtable)
+                val choosedBmp = Bitmap.createScaledBitmap(choosed, 150, 150, false)
 
-                })
-                mapView!!.addLayer(bitmapLayer)
-                mapView!!.refresh()
+                var x = 150f
+                var y = 150f
+                for (i in 0..3) {
+                    bitmapLayer = BitmapLayer(mapView, freeBmp)
+                    but.add(bitmapLayer!!)
+                    but[i].location = PointF(x, y)
+                    but[i].isAutoScale = true
+                    but[i].setOnBitmapClickListener(BitmapLayer.OnBitmapClickListener {
+
+
+                        but[i].bitmap = choosedBmp
+                        intent.putExtra(SELECTED_TAG, SELECTED)
+
+                        if(posBut == i){
+                            but[posBut].bitmap = freeBmp
+                            intent.putExtra(SELECTED_TAG, UNSELECTED)
+                        }
+
+                        if (posBut != i && posBut != -1){
+                            but[posBut].bitmap = freeBmp
+                        }
+
+                        updateUI()
+
+                        if (flag == UNSELECTED){
+                            posBut = -1
+                        }
+                        else {
+                            posBut = i
+                        }
+
+                        mapView!!.refresh()
+
+                        Toast.makeText(
+                            applicationContext,
+                            "click2333333",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        sit_count.text = "1 место"
+                        updateUI()
+                    })
+                    mapView!!.addLayer(but[i])
+                    mapView!!.refresh()
+                    x += 60f
+                    y += 60f
+                }
             }
 
             // когда произошла ошибка загрузки
@@ -186,6 +230,7 @@ class PlaceActivity : AppCompatActivity() {
             }
         })
     }
+
 
     companion object {
         const val SELECTED_TAG = "sit_selected"

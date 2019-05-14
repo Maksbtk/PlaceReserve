@@ -76,8 +76,7 @@ class PlaceActivity : AppCompatActivity() {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
         updateTime()
-//        posBut = -1
-//        intent.putExtra(SELECTED_TAG, UNSELECTED)
+
     }
 
     // установка обработчика выбора даты
@@ -87,8 +86,6 @@ class PlaceActivity : AppCompatActivity() {
             calendar.set(Calendar.MONTH, monthOfYear)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateDate()
-//            posBut = -1
-//            intent.putExtra(SELECTED_TAG, UNSELECTED)
         }
 
     private fun updateDate() {

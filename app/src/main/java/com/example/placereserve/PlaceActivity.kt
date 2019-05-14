@@ -76,7 +76,8 @@ class PlaceActivity : AppCompatActivity() {
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
         updateTime()
-
+//        posBut = -1
+//        intent.putExtra(SELECTED_TAG, UNSELECTED)
     }
 
     // установка обработчика выбора даты
@@ -86,6 +87,8 @@ class PlaceActivity : AppCompatActivity() {
             calendar.set(Calendar.MONTH, monthOfYear)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateDate()
+//            posBut = -1
+//            intent.putExtra(SELECTED_TAG, UNSELECTED)
         }
 
     private fun updateDate() {
@@ -166,6 +169,16 @@ class PlaceActivity : AppCompatActivity() {
             // когда карта загрузилась
             override fun onMapLoadSuccess() {
                 Log.i(TAG, "onMapLoadSuccess")
+
+
+                val bmp = BitmapFactory.decodeResource(resources, R.drawable.free_1)
+
+                val choosed = BitmapFactory.decodeResource(resources, R.drawable.choosedtable)
+                val choosedBmp = Bitmap.createScaledBitmap(choosed, 150, 150, false)
+
+                })
+                mapView!!.addLayer(bitmapLayer)
+                mapView!!.refresh()
 
                 val free = BitmapFactory.decodeResource(resources, R.drawable.free_1)
                 val freeBmp = Bitmap.createScaledBitmap(free, 150, 150, false)

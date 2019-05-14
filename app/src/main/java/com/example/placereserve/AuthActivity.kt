@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -81,28 +82,31 @@ class AuthActivity : AppCompatActivity() {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
                 resendVerificationCode(fieldPhoneNumber.text.toString(), resendToken)
+                buttonResend.isEnabled=false
             }
         })
 
         buttonSaveNameUser.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 //v.startAnimation(animAlpha)
+                if (fieldNameUser.text.isEmpty()) {
+                    Toast.makeText(this@AuthActivity, "Поле не заполнено!", Toast.LENGTH_SHORT).show()
+                } else {
+                    userName = fieldNameUser.text.toString()
 
-                userName = fieldNameUser.text.toString()
+                    buttonSaveNameUser.setVisibility(View.INVISIBLE)
+                    text_vvediteNameUser.setVisibility(View.INVISIBLE)
+                    fieldNameUser.setVisibility(View.INVISIBLE)
 
-                buttonSaveNameUser.setVisibility(View.INVISIBLE)
-                text_vvediteNameUser.setVisibility(View.INVISIBLE)
-                fieldNameUser.setVisibility(View.INVISIBLE)
+                    buttonStartVerification.setVisibility(View.VISIBLE)
+                    text_vvedite.setVisibility(View.VISIBLE)
+                    fieldPhoneNumber.setVisibility(View.VISIBLE)
 
-                buttonStartVerification.setVisibility(View.VISIBLE)
-                text_vvedite.setVisibility(View.VISIBLE)
-                fieldPhoneNumber.setVisibility(View.VISIBLE)
-
-                fieldVerificationCode.setVisibility(View.INVISIBLE)
-                buttonVerifyPhone.setVisibility(View.INVISIBLE)
-                text_resend.setVisibility(View.INVISIBLE)
-                buttonResend.setVisibility(View.INVISIBLE)
-
+                    fieldVerificationCode.setVisibility(View.INVISIBLE)
+                    buttonVerifyPhone.setVisibility(View.INVISIBLE)
+                    text_resend.setVisibility(View.INVISIBLE)
+                    buttonResend.setVisibility(View.INVISIBLE)
+                }
 
             }
         })
@@ -139,7 +143,7 @@ class AuthActivity : AppCompatActivity() {
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
                     // [START_EXCLUDE]
-                    fieldPhoneNumber.error = "Invalid phone number."
+                    fieldPhoneNumber.error = "Неправильный номер телефона"
                     // [END_EXCLUDE]
                 } else if (e is FirebaseTooManyRequestsException) {
                     // The SMS quota for the project has been exceeded
@@ -342,6 +346,7 @@ class AuthActivity : AppCompatActivity() {
                 text_vvedite.setVisibility(View.INVISIBLE)
                 fieldPhoneNumber.setVisibility(View.INVISIBLE)
 
+                text_suc.setVisibility(View.VISIBLE)
                 fieldVerificationCode.setVisibility(View.VISIBLE)
                 buttonVerifyPhone.setVisibility(View.VISIBLE)
                 text_resend.setVisibility(View.VISIBLE)
@@ -353,7 +358,7 @@ class AuthActivity : AppCompatActivity() {
                     buttonStartVerification, buttonVerifyPhone, buttonResend, fieldPhoneNumber,
                     fieldVerificationCode
                 )
-                disableViews(buttonVerifyPhone)
+               // disableViews(buttonVerifyPhone)
                 Snackbar.make(layout_auth, "Ошибка", Snackbar.LENGTH_SHORT).show()
             }
             STATE_VERIFY_SUCCESS -> {
@@ -380,20 +385,20 @@ class AuthActivity : AppCompatActivity() {
             }
         } // Np-op, handled by sign-in check
 
-                if (user != null) {
+        if (user != null) {
 
-                    userName= fieldNameUser.text.toString()
+            userName= fieldNameUser.text.toString()
 
-                    val myRef = database.getReference("Пользователи").child(user.phoneNumber!!)
-                    myRef.child("ИмяПользователя").setValue(userName)
-                    myRef.child("Cтатус").setValue("1")
+            val myRef = database.getReference("Пользователи").child(user.phoneNumber!!)
+            myRef.child("ИмяПользователя").setValue(userName)
+            myRef.child("Cтатус").setValue("1")
 
-                    val inte = Intent(this, MainActivity::class.java)
-                    startActivity(inte)
-                    finish()
-                } else {
+            val inte = Intent(this, MainActivity::class.java)
+            startActivity(inte)
+            finish()
+        } else {
 
-                }
+        }
     }
 
     companion object {

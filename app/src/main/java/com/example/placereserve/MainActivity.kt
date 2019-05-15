@@ -21,8 +21,6 @@ import android.support.v7.app.AlertDialog
 import android.widget.*
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
-import com.imangazaliev.notelin.ui.commons.ItemClickSupport
-
 
 class MainActivity : AppCompatActivity() {
 

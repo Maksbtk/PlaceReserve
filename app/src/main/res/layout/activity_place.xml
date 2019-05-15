@@ -10,12 +10,18 @@
         tools:context="com.example.placereserve.PlaceActivity"
         android:id="@+id/place_layout">
 
-    <!-- Main Body -->
+    <!-- Include activity info -->
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                 android:orientation="vertical">
+        <include layout="@layout/activity_place_info"/>
+    </FrameLayout>
+
+    <!-- Main Body for choose table -->
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/linear_layout">
+            android:id="@+id/choose_layout">
 
         <!-- Верхний headbar -->
 
@@ -45,7 +51,7 @@
                             android:layout_height="40sp"
                             android:layout_width="wrap_content"
                             android:textColor="@color/TeztColorInPLaces"
-                            android:id="@+id/restaurant_name"
+                            android:id="@+id/restaurant_name_from_choose"
                     />
 
                     <!-- Адрес заведения -->
@@ -63,7 +69,7 @@
                 <!-- Невероятная кнопка назад -->
                 <ImageButton
                         app:srcCompat="@drawable/ico_backk"
-                        android:id="@+id/back_in_place"
+                        android:id="@+id/back_in_place_from_choose"
                         android:layout_gravity="top|left"
                         android:layout_marginTop="13dp"
                         android:tint="@color/TeztColorInPLaces"

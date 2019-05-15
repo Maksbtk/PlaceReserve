@@ -6,5 +6,6 @@
     <color name="colorAccent">#673AB7</color>
     <color name="TeztColorInPLaces">#1F2041</color>
 
+    <color name="image_background_color">#c1c1c1</color>
 
 </resources>

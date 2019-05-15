@@ -22,7 +22,6 @@ import android.widget.*
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
 
-
 class MainActivity : AppCompatActivity() {
 
     //инициализируем ViewModel ленивым способом

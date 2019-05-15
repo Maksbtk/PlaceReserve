@@ -13,15 +13,20 @@ import android.widget.Toast
 import com.onlylemi.mapview.library.MapView
 import com.onlylemi.mapview.library.layer.BitmapLayer
 import com.onlylemi.mapview.library.MapViewListener
-import kotlinx.android.synthetic.main.activity_place.*
 import java.io.IOException
 import android.app.TimePickerDialog
 import android.app.DatePickerDialog
-import android.widget.TextView
 import java.util.*
-import android.widget.DatePicker
-import android.widget.TimePicker
 import android.text.format.DateUtils
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.activity_place.*
+import kotlinx.android.synthetic.main.activity_place_info.*
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
 
 
 class PlaceActivity : AppCompatActivity() {
@@ -29,21 +34,36 @@ class PlaceActivity : AppCompatActivity() {
     private val TAG = "PlaceActivity"
 
     var calendar = Calendar.getInstance()
+    val database = FirebaseDatabase.getInstance()
 
     // MAP
     private var mapView: MapView? = null
-    private var bitmapLayer: BitmapLayer? = null
-    private var posBut = -1
-    private var bitmapChoosed: BitmapLayer? = null
-    private var bitmapLayer1: BitmapLayer? = null
-    private var bitmapLayer2: BitmapLayer? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place)
+        if (!intent.hasExtra("place_name") || !intent.hasExtra("place_address")) {
+            // sorry, but not
+            Log.e(TAG, "Extras is null!")
+            finish()
+            return
+        }
+
+        select_table.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                intent.putExtra(PAGE_TAG, CHOOSE_PAGE)
+                updatePageUI(true)
+            }
+        })
+
         val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
-        back_in_place.setOnClickListener(object : View.OnClickListener {
+        back_in_place_from_choose.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                v.startAnimation(animAlpha)
+                finish()
+            }
+        })
+        back_in_place_from_info.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
                 finish()
@@ -61,14 +81,13 @@ class PlaceActivity : AppCompatActivity() {
                 setTime(v)
             }
         })
-
-        restaurant_name.text = intent.getStringExtra("place_name")
-        restaurant_address.text = intent.getStringExtra("place_address")
-        updateDate()
-        updateTime()
-        updateUI()
-        loadMap()
-        Toast.makeText(this, intent.getStringExtra("place_name"), Toast.LENGTH_SHORT).show()
+        btn_confirm.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                //TODO: something
+                finish()
+            }
+        })
+        updatePageUI(true)
     }
 
     // установка обработчика выбора времени
@@ -130,8 +149,7 @@ class PlaceActivity : AppCompatActivity() {
             .show()
     }
 
-    var flag = UNSELECTED
-    fun updateUI() {
+    private fun parsingFromDatabase(page: Int) {
         if (!intent.hasExtra("place_name") || !intent.hasExtra("place_address")) {
             // sorry, but not
             Log.e(TAG, "Extras is null!")
@@ -139,7 +157,72 @@ class PlaceActivity : AppCompatActivity() {
             return
         }
 
+        when(page) {
+            INFO_PAGE-> {
+                restaurant_name_from_info.text = intent.getStringExtra("place_name")
+                restaurant_address_from_info.text = intent.getStringExtra("place_address")
+
+                val myRef = database.getReference("Заведения").child(intent.getStringExtra("place_name")).child("Данные")
+                myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            restaurant_description_from_info.text = dataSnapshot.child("Описание").value.toString()
+                            restaurant_specialinfo_from_info.text = dataSnapshot.child("Кухня").value.toString()
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                    }
+                })
+
+                //типо loading images
+                val images = arrayListOf(R.drawable.photo1, R.drawable.photo2, R.drawable.photo3, R.drawable.photo4)
+                val photos = images.size
+                val width = resources.getDimension(R.dimen.imageview_width)
+                for (i in 0..(photos - 1)) {
+                    val iv = ImageView(this)
+                    iv.setBackgroundColor(resources.getColor(R.color.image_background_color))
+                    val bmp = BitmapFactory.decodeResource(resources, images[i])
+                    iv.setImageBitmap(bmp)
+                    linear_images.addView(iv)
+                    iv.layoutParams.width = width.toInt()
+                    iv.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+                }
+            }
+            CHOOSE_PAGE->{
+                restaurant_name_from_choose.text = intent.getStringExtra("place_name")
+                restaurant_address.text = intent.getStringExtra("place_address")
+                loadMap("test_map1.png")
+            }
+        }
+    }
+
+    fun updatePageUI(reparse:Boolean){
+        var flag = intent.getIntExtra(PAGE_TAG, INFO_PAGE)
+
+        when (flag) {
+            INFO_PAGE-> {
+                choose_layout.visibility = View.INVISIBLE
+                place_info_layout.visibility = View.VISIBLE
+            }
+            CHOOSE_PAGE->{
+                choose_layout.visibility = View.VISIBLE
+                place_info_layout.visibility = View.INVISIBLE
+                updateDate()
+                updateTime()
+            }
+        }
+        if(reparse) {
+            parsingFromDatabase(flag)
+        }
+        updateButton(flag)
+    }
+
+
+    var flag = UNSELECTED
+    fun updateButton(page: Int) {
         flag = intent.getIntExtra(SELECTED_TAG, UNSELECTED)
+        if(page == INFO_PAGE) {
+            flag = UNSELECTED
+        }
         when (flag) {
             UNSELECTED -> {
                 btn_confirm.visibility = View.INVISIBLE
@@ -150,110 +233,31 @@ class PlaceActivity : AppCompatActivity() {
         }
     }
 
-    val but = arrayListOf<BitmapLayer>()
-    fun loadMap() {
+    fun loadMap(mapName:String) {
         // Поиск mapview
-        mapView = findViewById<MapView>(R.id.mapview)
+        mapView = findViewById(R.id.mapview)
 
         // подгрузка карты
         var bitmap: Bitmap? = null
         try {
-            bitmap = BitmapFactory.decodeStream(assets.open("test_map1.png"))
+            bitmap = BitmapFactory.decodeStream(assets.open(mapName))
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
         // загружаем в view
+        val listener = CustomMapViewListener(this, mapView!!)
+        mapView!!.setMapViewListener(listener)
         mapView!!.loadMap(bitmap)
-        mapView!!.setMapViewListener(object : MapViewListener {
-            // когда карта загрузилась
-            override fun onMapLoadSuccess() {
-                Log.i(TAG, "onMapLoadSuccess")
-
-
-                val bmp = BitmapFactory.decodeResource(resources, R.drawable.free_1)
-
-                val fixedBmp = Bitmap.createScaledBitmap(bmp, 150, 150, false)
-                bitmapLayer = BitmapLayer(mapView, fixedBmp)
-                bitmapLayer!!.location = PointF(150f, 150f)
-                bitmapLayer!!.isAutoScale = true
-                bitmapLayer!!.setOnBitmapClickListener(BitmapLayer.OnBitmapClickListener {
-                    Toast.makeText(
-                        applicationContext,
-                        "click",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    intent.putExtra(SELECTED_TAG, SELECTED)
-                    sit_count.text = "1 место"
-                    updateUI()
-
-                })
-                mapView!!.addLayer(bitmapLayer)
-                mapView!!.refresh()
-
-                val free = BitmapFactory.decodeResource(resources, R.drawable.free_1)
-                val freeBmp = Bitmap.createScaledBitmap(free, 150, 150, false)
-
-                val choosed = BitmapFactory.decodeResource(resources, R.drawable.choosedtable)
-                val choosedBmp = Bitmap.createScaledBitmap(choosed, 150, 150, false)
-
-                var x = 150f
-                var y = 150f
-                for (i in 0..3) {
-                    bitmapLayer = BitmapLayer(mapView, freeBmp)
-                    but.add(bitmapLayer!!)
-                    but[i].location = PointF(x, y)
-                    but[i].isAutoScale = true
-                    but[i].setOnBitmapClickListener(BitmapLayer.OnBitmapClickListener {
-
-
-                        but[i].bitmap = choosedBmp
-                        intent.putExtra(SELECTED_TAG, SELECTED)
-
-                        if(posBut == i){
-                            but[posBut].bitmap = freeBmp
-                            intent.putExtra(SELECTED_TAG, UNSELECTED)
-                        }
-
-                        if (posBut != i && posBut != -1){
-                            but[posBut].bitmap = freeBmp
-                        }
-
-                        updateUI()
-
-                        if (flag == UNSELECTED){
-                            posBut = -1
-                        }
-                        else {
-                            posBut = i
-                        }
-
-                        mapView!!.refresh()
-
-                        Toast.makeText(
-                            applicationContext,
-                            "click2333333",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        sit_count.text = "1 место"
-                        updateUI()
-                    })
-                    mapView!!.addLayer(but[i])
-                    mapView!!.refresh()
-                    x += 60f
-                    y += 60f
-                }
-            }
-
-            // когда произошла ошибка загрузки
-            override fun onMapLoadFail() {
-                Log.i(TAG, "onMapLoadFail")
-            }
-        })
     }
 
 
     companion object {
+        // Pages
+        const val PAGE_TAG = "page"
+        const val INFO_PAGE = 1
+        const val CHOOSE_PAGE = 2
+
         const val SELECTED_TAG = "sit_selected"
         const val UNSELECTED = 0
         const val SELECTED = 1

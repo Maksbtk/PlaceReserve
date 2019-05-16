@@ -17,6 +17,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
     var isLoader:Boolean = false
     private val database = FirebaseDatabase.getInstance()
     var bitmapChoosed: BitmapLayer? = null
+    var choosedTableNumber = 0
     private var TAG: String = "CustomMapViewListener"
 
     override fun onMapLoadSuccess() {
@@ -30,16 +31,19 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
         Log.e(TAG, "Ah shit, here we go again")
     }
 
-    fun drawDick(x:Float, y:Float){
+    fun drawDick(x:Float, y:Float, id:Int){
         if(!isLoader) return
         val freeBmp = BitmapFactory.decodeResource(placeActivity.resources, R.drawable.free_1)
-
         val fixedFreeBmp = Bitmap.createScaledBitmap(freeBmp, 150, 150, false)
+        val busyBmp = BitmapFactory.decodeResource(placeActivity.resources, R.drawable.busy_1)
+        val fixedBusyBmp = Bitmap.createScaledBitmap(busyBmp, 150, 150, false)
         var bitmapLayer = BitmapLayer(currentMap, fixedFreeBmp)
         bitmapLayer!!.location = PointF(x, y)
         bitmapLayer!!.isAutoScale = true
         bitmapLayer!!.setOnBitmapClickListener { // Вешаем на кнопку слушатель кликбейта за сто морей
+
             var tagValue = PlaceActivity.SELECTED
+            val choosedId = id
 
             if(bitmapChoosed != null) { // Если предыдущий стол выбран
                 if(bitmapChoosed!!.equals(bitmapLayer)) { // Если это один и тот же стол. то отменяем галку
@@ -47,6 +51,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     bitmapChoosed!!.bitmap = fixedFreeBmp
                     bitmapChoosed = null
                     placeActivity.sit_count.text = "- место"
+                    choosedTableNumber = 0
                     Toast.makeText(
                         placeActivity,
                         "Отмена",
@@ -59,10 +64,11 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     val choosedBmp = Bitmap.createScaledBitmap(choosed, 150, 150, false)
                     bitmapChoosed!!.bitmap = choosedBmp
                     placeActivity.sit_count.text = "1 место"
+                    choosedTableNumber = choosedId
 
                     Toast.makeText(
                         placeActivity,
-                        "Место выбрано",
+                        "Место выбрано " + choosedTableNumber,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -73,10 +79,11 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                 val choosedBmp = Bitmap.createScaledBitmap(choosed, 150, 150, false)
                 bitmapChoosed!!.bitmap = choosedBmp
                 placeActivity.sit_count.text = "1 место"
+                choosedTableNumber = choosedId
 
                 Toast.makeText(
                     placeActivity,
-                    "Место выбрано",
+                    "Место выбрано " + choosedTableNumber,
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -98,9 +105,10 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
         tree.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (ds in dataSnapshot.children) {
+                    val id = ds.key
                     val x = ds.child("Координаты").child("x").value.toString()
                     val y = ds.child("Координаты").child("y").value.toString()
-                    drawDick(x!!.toFloat(),y!!.toFloat())
+                    drawDick(x!!.toFloat(),y!!.toFloat(), id.toString().toInt())
                 }
             }
 

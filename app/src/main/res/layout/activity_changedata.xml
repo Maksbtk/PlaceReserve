@@ -37,13 +37,13 @@
         <TextView
                 android:text="Редактирование"
 
-                android:textSize="19sp"
+                android:textSize="25sp"
                 android:gravity="left"
                 android:layout_gravity="top|center"
                 style="SemiBold"
                 android:layout_width="wrap_content"
                 android:textColor="@color/TeztColorInPLaces"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="Montserrat"
                 android:layout_height="42dp"
 
@@ -65,24 +65,24 @@
 
                 android:id="@+id/save_userdata"
                 android:layout_gravity="top|right"
-                android:layout_marginTop="41dp"
+                android:layout_marginTop="40dp"
                 android:tint="@color/TeztColorInPLaces"
                 android:background="@drawable/ico_ok"
-                android:layout_width="19dp"
+                android:layout_width="22dp"
                 android:layout_marginEnd="14dp"
-                android:layout_height="14.62dp"
+                android:layout_height="18dp"
 
         />
         <ImageButton
 
                 android:id="@+id/back_in_useer"
                 android:layout_gravity="top|left"
-                android:layout_marginTop="41dp"
+                android:layout_marginTop="38dp"
                 android:tint="@color/TeztColorInPLaces"
                 android:background="@drawable/ico_backk"
-                android:layout_width="10dp"
+                android:layout_width="13dp"
                 android:layout_marginStart="22dp"
-                android:layout_height="17.5dp"
+                android:layout_height="20dp"
 
         />
 

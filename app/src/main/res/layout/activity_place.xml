@@ -68,15 +68,15 @@
 
                 <!-- Невероятная кнопка назад -->
                 <ImageButton
-                        app:srcCompat="@drawable/ico_backk"
+
                         android:id="@+id/back_in_place_from_choose"
                         android:layout_gravity="top|left"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="25dp"
                         android:tint="@color/TeztColorInPLaces"
-                        android:background="@color/colorPrimaryDark"
-                        android:layout_width="42dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_height="42dp"
+                        android:background="@drawable/ico_backk"
+                        android:layout_width="13dp"
+                        android:layout_marginStart="22dp"
+                        android:layout_height="20dp"
                 />
             </FrameLayout>
 
@@ -108,9 +108,9 @@
                             android:layout_gravity="center"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:textColor="@color/TeztColorInPLaces"
-                            android:id="@+id/date_text"
-                    />
+                            android:textColor="#6642B4"
+                            style="@style/Hyperlink"                            android:id="@+id/date_text"
+                            android:textColorLink="#6642B4"/>
 
                     <!-- date icon -->
                     <ImageButton
@@ -131,9 +131,10 @@
                             android:textSize="18sp"
                             android:layout_marginEnd="8dp"
                             android:layout_gravity="center"
+                            style="@style/Hyperlink"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
-                            android:textColor="@color/TeztColorInPLaces"
+                            android:textColor="#6642B4"
                             android:id="@+id/time_text"
                     />
 

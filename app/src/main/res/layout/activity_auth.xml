@@ -72,7 +72,7 @@
         <TextView
                 android:text="Вход"
                 style="SemiBold"
-                android:textSize="33sp"
+                android:textSize="25sp"
                 android:gravity="center"
                 android:textColor="@color/TeztColorInPLaces"
                 android:layout_gravity="top|center"

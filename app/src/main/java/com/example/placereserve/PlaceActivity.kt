@@ -21,9 +21,12 @@ import android.text.format.DateUtils
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import com.google.firebase.database.*
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_place.*
 import kotlinx.android.synthetic.main.activity_place_info.*
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
 
 
 class PlaceActivity : AppCompatActivity() {
@@ -32,30 +35,20 @@ class PlaceActivity : AppCompatActivity() {
 
     var calendar = Calendar.getInstance()
     val database = FirebaseDatabase.getInstance()
-    private lateinit var mapListener:CustomMapViewListener
 
     // MAP
     private var mapView: MapView? = null
-    private val ref = FirebaseDatabase.getInstance().reference
-    private lateinit var database2: DatabaseReference
-    var date = ""
-    var time = ""
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place)
-        date = "" +  calendar.get(Calendar.DAY_OF_MONTH) + " " + ( calendar.get(Calendar.MONTH) + 1) + " " + calendar.get(Calendar.YEAR)
-        time = "" + calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE)
-
-
         if (!intent.hasExtra("place_name") || !intent.hasExtra("place_address")) {
             // sorry, but not
             Log.e(TAG, "Extras is null!")
             finish()
             return
         }
-        database2 = FirebaseDatabase.getInstance().reference
+
         select_table.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 intent.putExtra(PAGE_TAG, CHOOSE_PAGE)
@@ -90,36 +83,7 @@ class PlaceActivity : AppCompatActivity() {
         })
         btn_confirm.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-
-                Toast.makeText(
-                    this@PlaceActivity,
-                    "time: $time",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                val a = ref.child("Заведения").child("Йохан Пивохан")
-                    .child("Столы").child("Номер стола").child(mapListener.choosedTableNumber.toString())
-                    .child("Бронь").child("Дата").child(date).child("Забронирован")
-                a.setValue("true")
-
-
-                val b = ref.child("Заведения").child("Йохан Пивохан")
-                    .child("Столы").child("Номер стола").child(mapListener.choosedTableNumber.toString())
-                    .child("Бронь").child("Дата").child(date)
-                    .child("Время").child(time)
-                b.setValue("true")
-
-                if(mapListener.bitmapChoosed != null) {
-                    val busyBmp = BitmapFactory.decodeResource(resources, R.drawable.busy_1)
-                    val fixedBusyBmp = Bitmap.createScaledBitmap(busyBmp, 150, 150, false)
-                    mapListener!!.bitmapChoosed!!.bitmap = fixedBusyBmp
-                    mapView!!.refresh()
-                }
-                Toast.makeText(
-                    this@PlaceActivity,
-                    "Вы забронировали стол на $date в $time",
-                    Toast.LENGTH_SHORT
-                ).show()
+                //TODO: something
                 finish()
             }
         })
@@ -130,7 +94,6 @@ class PlaceActivity : AppCompatActivity() {
     var t: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
-        time = "$hourOfDay:$minute"
         updateTime()
 //        posBut = -1
 //        intent.putExtra(SELECTED_TAG, UNSELECTED)
@@ -142,12 +105,9 @@ class PlaceActivity : AppCompatActivity() {
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, monthOfYear)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            date = "" + dayOfMonth + " " + (monthOfYear + 1) + " " + year
-
             updateDate()
 //            posBut = -1
 //            intent.putExtra(SELECTED_TAG, UNSELECTED)
-
         }
 
     private fun updateDate() {
@@ -205,8 +165,8 @@ class PlaceActivity : AppCompatActivity() {
                 val myRef = database.getReference("Заведения").child(intent.getStringExtra("place_name")).child("Данные")
                 myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            restaurant_description_from_info.text = dataSnapshot.child("Описание").value.toString()
-                            restaurant_specialinfo_from_info.text = dataSnapshot.child("Кухня").value.toString()
+                        restaurant_description_from_info.text = dataSnapshot.child("Описание").value.toString()
+                        restaurant_specialinfo_from_info.text = dataSnapshot.child("Кухня").value.toString()
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
@@ -286,8 +246,8 @@ class PlaceActivity : AppCompatActivity() {
         }
 
         // загружаем в view
-        mapListener = CustomMapViewListener(this, mapView!!)
-        mapView!!.setMapViewListener(mapListener)
+        val listener = CustomMapViewListener(this, mapView!!)
+        mapView!!.setMapViewListener(listener)
         mapView!!.loadMap(bitmap)
     }
 

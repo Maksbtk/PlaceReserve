@@ -1,8 +1,12 @@
 package com.example.placereserve
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.InputType
@@ -44,6 +48,10 @@ class AuthActivity : AppCompatActivity() {
 
         var user = firebaseAuth.currentUser;
 
+
+        if (!isOnline()) {
+            Dialog()
+        }
         if(user != null) {
             val inte = Intent(this, MainActivity::class.java)
             startActivity(inte)
@@ -55,6 +63,10 @@ class AuthActivity : AppCompatActivity() {
         buttonStartVerification.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
+                if (!isOnline()) {
+                    Dialog()
+                    return
+                }
                 if (!validatePhoneNumber()) {
                     return
                 }
@@ -68,6 +80,10 @@ class AuthActivity : AppCompatActivity() {
         buttonVerifyPhone.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
+                if (!isOnline()) {
+                    Dialog()
+                    return
+                }
                 val code = fieldVerificationCode.text.toString()
                 if (TextUtils.isEmpty(code)) {
                     fieldVerificationCode.error = "Cannot be empty."
@@ -80,6 +96,10 @@ class AuthActivity : AppCompatActivity() {
 
         buttonResend.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
+                if (!isOnline()) {
+                    Dialog()
+                    return
+                }
                 v.startAnimation(animAlpha)
                 resendVerificationCode(fieldPhoneNumber.text.toString(), resendToken)
                 buttonResend.isEnabled=false
@@ -89,6 +109,10 @@ class AuthActivity : AppCompatActivity() {
         buttonSaveNameUser.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 //v.startAnimation(animAlpha)
+                if (!isOnline()) {
+                    Dialog()
+                    return
+                }
                 if (fieldNameUser.text.isEmpty()) {
                     Toast.makeText(this@AuthActivity, "Поле не заполнено!", Toast.LENGTH_SHORT).show()
                 } else {
@@ -110,6 +134,7 @@ class AuthActivity : AppCompatActivity() {
 
             }
         })
+
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -188,7 +213,30 @@ class AuthActivity : AppCompatActivity() {
         }
         return str
     }
+    fun isOnline(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = cm.activeNetworkInfo
+        return netInfo != null && netInfo.isConnectedOrConnecting
+    }
 
+    fun Dialog() {
+        val dialogBuilder = AlertDialog.Builder(this@AuthActivity)
+
+        // set message of alert dialog
+        dialogBuilder.setMessage("Проверьте подключение к WiFi или сотовой сети")
+            // if the dialog is cancelable
+            .setCancelable(false)
+            // positive button text and action
+            .setPositiveButton("Ок", DialogInterface.OnClickListener {
+                    dialog, id -> dialog.cancel()
+            })
+        // create dialog box
+        val alert = dialogBuilder.create()
+        // set title for alert dialog box
+        alert.setTitle("Отсутствует интернет-соединение")
+        // show alert dialog
+        alert.show()
+    }
     private fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]
         PhoneAuthProvider.getInstance().verifyPhoneNumber(

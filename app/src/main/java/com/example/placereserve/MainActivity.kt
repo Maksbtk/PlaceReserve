@@ -21,6 +21,15 @@ import android.support.v7.app.AlertDialog
 import android.widget.*
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
+import android.text.InputFilter
+import android.widget.TextView
+import android.widget.EditText
+
+
+
+
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +44,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         firebaseAuth = FirebaseAuth.getInstance()
+
+        val et = SearchId.findViewById(
+            SearchId.getContext().getResources()
+                .getIdentifier("android:id/search_src_text", null, null)
+        ) as EditText
+        et.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(15))
 
         val user = firebaseAuth.currentUser
         if(user != null) {

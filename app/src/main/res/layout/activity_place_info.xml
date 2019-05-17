@@ -23,25 +23,28 @@
                 android:background="@drawable/custom_card"
                 android:id="@+id/restaurant_block">
             <!-- Невероятная кнопка назад -->
+
             <ImageButton
-                    app:srcCompat="@drawable/ico_backk"
+
                     android:id="@+id/back_in_place_from_info"
                     android:layout_gravity="top|left"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginTop="25dp"
                     android:tint="@color/TeztColorInPLaces"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_width="42dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_height="42dp"
+                    android:background="@drawable/ico_backk"
+                    android:layout_width="13dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_height="20dp"
             />
             <!-- Restaraunt name -->
             <TextView
                     android:text="Default name"
-                    android:textSize="30sp"
+                    android:textSize="25sp"
+                    style="SemiBold"
+                    android:fontFamily="Montserrat"
                     android:layout_gravity="top|center"
                     android:layout_width="wrap_content"
                     android:layout_marginTop="13sp"
-                    android:layout_height="40sp"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/TeztColorInPLaces"
                     android:id="@+id/restaurant_name_from_info"
             />

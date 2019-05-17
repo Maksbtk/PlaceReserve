@@ -30,22 +30,7 @@ class SplashActivity : AppCompatActivity() {
         val user = firebaseAuth.currentUser
 
         if (!isOnline()) {
-            val dialogBuilder = AlertDialog.Builder(this@SplashActivity)
-
-                // set message of alert dialog
-                  dialogBuilder.setMessage("Проверьте подключение к WiFi или сотовой сети")
-                // if the dialog is cancelable
-                .setCancelable(false)
-                // positive button text and action
-                .setPositiveButton("Ок", DialogInterface.OnClickListener {
-                        dialog, id -> dialog.cancel()
-                })
-            // create dialog box
-            val alert = dialogBuilder.create()
-            // set title for alert dialog box
-            alert.setTitle("Отсутствует интернет-соединение")
-            // show alert dialog
-            alert.show()
+            Dialog()
         }
         if (user != null) {
             database.getReference("Пользователи").child(user.phoneNumber!!).child("Cтатус")
@@ -80,5 +65,24 @@ class SplashActivity : AppCompatActivity() {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = cm.activeNetworkInfo
         return netInfo != null && netInfo.isConnectedOrConnecting
+    }
+
+    fun Dialog() {
+        val dialogBuilder = AlertDialog.Builder(this@SplashActivity)
+
+        // set message of alert dialog
+        dialogBuilder.setMessage("Проверьте подключение к WiFi или сотовой сети")
+            // if the dialog is cancelable
+            .setCancelable(false)
+            // positive button text and action
+            .setPositiveButton("Ок", DialogInterface.OnClickListener {
+                    dialog, id -> dialog.cancel()
+            })
+        // create dialog box
+        val alert = dialogBuilder.create()
+        // set title for alert dialog box
+        alert.setTitle("Отсутствует интернет-соединение")
+        // show alert dialog
+        alert.show()
     }
 }

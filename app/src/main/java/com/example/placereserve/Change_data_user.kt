@@ -36,14 +36,17 @@ class Change_data_user : AppCompatActivity()  {
         }
 
         if (user != null) {
-            database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
-                .addValueEventListener(object : ValueEventListener {
+            var ref = database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         edit_name_user.setText(dataSnapshot.getValue(String::class.java))
+                        //after all, remove listener
+                        ref.removeEventListener(this)
                     }
 
                     override fun onCancelled(error: DatabaseError) {
                         // Failed to read value
+                        ref.removeEventListener(this)
                     }
                 })
         }
@@ -57,7 +60,7 @@ class Change_data_user : AppCompatActivity()  {
                     return
                 }
                 if (edit_name_user.text.isEmpty()) {
-                    Toast.makeText(this@Change_data_user, "Поле не заполнено!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@Change_data_user.applicationContext, "Поле не заполнено!", Toast.LENGTH_SHORT).show()
                 } else {
 
                     UserName = edit_name_user.text.toString()

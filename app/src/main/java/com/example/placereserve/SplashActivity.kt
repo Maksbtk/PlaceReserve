@@ -33,8 +33,8 @@ class SplashActivity : AppCompatActivity() {
             Dialog()
         }
         if (user != null) {
-            database.getReference("Пользователи").child(user.phoneNumber!!).child("Cтатус")
-                .addValueEventListener(object : ValueEventListener {
+            var ref = database.getReference("Пользователи").child(user.phoneNumber!!).child("Cтатус")
+                ref.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val flag = dataSnapshot.getValue(String::class.java)
                         if (flag == "1") {
@@ -42,9 +42,10 @@ class SplashActivity : AppCompatActivity() {
                         } else if (flag == "2") {
                             goAdmin()
                         }
+                        ref.removeEventListener(this)
                     }
                     override fun onCancelled(error: DatabaseError) {
-                        // Failed to read value
+                        ref.removeEventListener(this)
                     }
                 })
         } else {

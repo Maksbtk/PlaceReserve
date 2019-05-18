@@ -30,6 +30,7 @@ dependencies {
     implementation 'com.github.onlylemi:mapview:v1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
@@ -50,4 +51,17 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
 
 }
+
+// for fix issues with Picasso API 28
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '28.0.0'
+            }
+        }
+    }
+}
+
 apply plugin: 'com.google.gms.google-services'

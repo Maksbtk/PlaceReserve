@@ -38,6 +38,9 @@ class MainActivity : AppCompatActivity() {
     val database = FirebaseDatabase.getInstance()
     private lateinit var firebaseAuth: FirebaseAuth
 
+    // firebase listeners
+    private var changeNameListener: ValueEventListener? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -53,8 +56,8 @@ class MainActivity : AppCompatActivity() {
 
         val user = firebaseAuth.currentUser
         if(user != null) {
-            database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
-                .addValueEventListener(object : ValueEventListener {
+            if(changeNameListener == null) {
+                changeNameListener = object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         nameUser.text = dataSnapshot.value.toString()
                     }
@@ -62,7 +65,10 @@ class MainActivity : AppCompatActivity() {
                     override fun onCancelled(error: DatabaseError) {
                         // Failed to read value
                     }
-                })
+                }
+                database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
+                    .addValueEventListener(changeNameListener as ValueEventListener)
+            }
         }
 
         var signOut = findViewById<View>(R.id.btn_sign_out) as  ImageButton
@@ -168,6 +174,12 @@ class MainActivity : AppCompatActivity() {
         updateUI(user)
     }
     private fun signOut() {
+        if(changeNameListener != null) {
+            val user = firebaseAuth.currentUser
+            database.getReference("Пользователи").child(user!!.phoneNumber!!).child("ИмяПользователя")
+                .removeEventListener(changeNameListener!!)
+            changeNameListener = null
+        }
         firebaseAuth.signOut()
         updateInterface()
     }

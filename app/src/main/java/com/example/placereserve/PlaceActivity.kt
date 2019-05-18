@@ -1,8 +1,6 @@
 package com.example.placereserve
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.PointF
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -11,15 +9,11 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.onlylemi.mapview.library.MapView
-import com.onlylemi.mapview.library.layer.BitmapLayer
-import com.onlylemi.mapview.library.MapViewListener
-import java.io.IOException
 import android.app.TimePickerDialog
 import android.app.DatePickerDialog
 import android.graphics.drawable.Drawable
 import java.util.*
 import android.text.format.DateUtils
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.google.firebase.database.FirebaseDatabase
@@ -47,6 +41,16 @@ class PlaceActivity : AppCompatActivity() {
     private val ref = FirebaseDatabase.getInstance().reference
     var date = ""
     var time = ""
+
+    override fun onDestroy() {
+        mapTarget = null
+        mapView = null
+        mapListener = null
+        intent.removeExtra(PAGE_TAG)
+        intent.removeExtra(SELECTED_TAG)
+        //DebugApp.getRefWatcher(this).watch(this) // LeakCanary test
+        super.onDestroy()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -204,9 +208,11 @@ class PlaceActivity : AppCompatActivity() {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         restaurant_description_from_info.text = dataSnapshot.child("Описание").value.toString()
                         restaurant_specialinfo_from_info.text = dataSnapshot.child("Кухня").value.toString()
+                        myRef.removeEventListener(this)
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
+                        myRef.removeEventListener(this)
                     }
                 })
 

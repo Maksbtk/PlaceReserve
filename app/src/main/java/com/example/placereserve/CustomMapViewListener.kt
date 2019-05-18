@@ -110,9 +110,13 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     val y = ds.child("Координаты").child("y").value.toString()
                     drawDick(x!!.toFloat(),y!!.toFloat(), id.toString().toInt())
                 }
+
+                //after all remove listener
+                tree.removeEventListener(this)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                tree.removeEventListener(this)
                 Log.e(TAG, "Ah shit, here we go again")
             }
         })

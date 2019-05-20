@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.support.design.widget.TabLayout
 import android.util.Log
 import android.widget.Toast
+import com.example.placereserve.TableIconsCache.Companion.busyIconBmp
 import com.example.placereserve.TableIconsCache.Companion.choosedIconBmp
 import com.example.placereserve.TableIconsCache.Companion.freeIconBmp
 import com.google.firebase.database.*
@@ -40,31 +41,48 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
         Log.e(TAG, "Ah shit, here we go again")
     }
 
-    fun drawDick(x:Float, y:Float, id:Int){
-        if(!isLoader) return
+    fun drawDick(x:Float, y:Float, id:Int, reserved: Boolean) {
+        if (!isLoader) return
         var bitmapLayer = BitmapLayer(currentMap, freeIconBmp)
+        if (reserved)
+            bitmapLayer!!.bitmap = busyIconBmp
         bitmapLayer!!.location = PointF(x, y)
         bitmapLayer!!.isAutoScale = true
-        bitmapLayer!!.setOnBitmapClickListener { // Вешаем на кнопку слушатель кликбейта за сто морей
+        if (bitmapLayer.bitmap != busyIconBmp){
+            bitmapLayer!!.setOnBitmapClickListener {
+                // Вешаем на кнопку слушатель кликбейта за сто морей
 
-            var tagValue = PlaceActivity.SELECTED
-            val choosedId = id
 
-            if(bitmapChoosed != null) { // Если предыдущий стол выбран
-                if(bitmapChoosed!!.equals(bitmapLayer)) { // Если это один и тот же стол. то отменяем галку
-                    tagValue = PlaceActivity.UNSELECTED
-                    bitmapChoosed!!.bitmap = freeIconBmp
-                    bitmapChoosed = null
-                    placeActivity.sit_count.text = "- место"
-                    choosedTableNumber = 0
-                    Toast.makeText(
-                        placeActivity.applicationContext,
-                        "Отмена",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else { // если это другой стол
-                    bitmapChoosed!!.bitmap = freeIconBmp // обозначем занятой стол свободным
-                    bitmapChoosed = bitmapLayer // и обозначем новый стол занятым
+                var tagValue = PlaceActivity.SELECTED
+                val choosedId = id
+
+                if (bitmapChoosed != null) { // Если предыдущий стол выбран
+                    if (bitmapChoosed!!.equals(bitmapLayer)) { // Если это один и тот же стол. то отменяем галку
+                        tagValue = PlaceActivity.UNSELECTED
+                        bitmapChoosed!!.bitmap = freeIconBmp
+                        bitmapChoosed = null
+                        placeActivity.sit_count.text = "- место"
+                        choosedTableNumber = 0
+                        Toast.makeText(
+                            placeActivity.applicationContext,
+                            "Отмена",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else { // если это другой стол
+                        bitmapChoosed!!.bitmap = freeIconBmp // обозначем занятой стол свободным
+                        bitmapChoosed = bitmapLayer // и обозначем новый стол занятым
+                        bitmapChoosed!!.bitmap = choosedIconBmp
+                        placeActivity.sit_count.text = "1 место"
+                        choosedTableNumber = choosedId
+
+                        Toast.makeText(
+                            placeActivity.applicationContext,
+                            "Место выбрано " + choosedTableNumber,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    bitmapChoosed = bitmapLayer
                     bitmapChoosed!!.bitmap = choosedIconBmp
                     placeActivity.sit_count.text = "1 место"
                     choosedTableNumber = choosedId
@@ -75,22 +93,11 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            } else {
-                bitmapChoosed = bitmapLayer
-                bitmapChoosed!!.bitmap = choosedIconBmp
-                placeActivity.sit_count.text = "1 место"
-                choosedTableNumber = choosedId
-
-                Toast.makeText(
-                    placeActivity.applicationContext,
-                    "Место выбрано " + choosedTableNumber,
-                    Toast.LENGTH_SHORT
-                ).show()
+                placeActivity.intent.putExtra(PlaceActivity.SELECTED_TAG, tagValue)
+                placeActivity.updateButton(PlaceActivity.CHOOSE_PAGE)
+                currentMap!!.refresh()
             }
-            placeActivity.intent.putExtra(PlaceActivity.SELECTED_TAG, tagValue)
-            placeActivity.updateButton(PlaceActivity.CHOOSE_PAGE)
-            currentMap!!.refresh()
-        }
+    }
         currentMap!!.addLayer(bitmapLayer)
         currentMap!!.refresh()
     }
@@ -108,7 +115,9 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     val id = ds.key
                     val x = ds.child("Координаты").child("x").value.toString()
                     val y = ds.child("Координаты").child("y").value.toString()
-                    drawDick(x!!.toFloat(),y!!.toFloat(), id.toString().toInt())
+                    val reserved =
+                        ds.child("Бронь").child("Дата").child(placeActivity.date).child("Забронирован").value.toString()
+                    drawDick(x!!.toFloat(), y!!.toFloat(), id.toString().toInt(), reserved!!.toBoolean())
                 }
 
                 //after all remove listener

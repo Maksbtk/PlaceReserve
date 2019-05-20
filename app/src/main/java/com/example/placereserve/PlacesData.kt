@@ -38,9 +38,6 @@ object PlacesData{
 
 
 
-//        PlacesList.add(Places("Йохан Пивохан","Проспект Кирова, 58"))
-//        PlacesList.add(Places("Йохан Пивохан","Проспект Кирова, 58"))
-
 
         PlacesList.add(Places("Йохан Пивохан","Проспект Кирова, 58",R.drawable.r1))
         PlacesList.add(Places("Карл у Клары","Проспект Кирова, 51Б",R.drawable.r2))

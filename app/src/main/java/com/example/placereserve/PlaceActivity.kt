@@ -45,6 +45,8 @@ class PlaceActivity : AppCompatActivity() {
 
 
 
+
+
     override fun onDestroy() {
         mapTarget = null
         mapView = null

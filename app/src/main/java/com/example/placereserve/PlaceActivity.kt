@@ -42,6 +42,9 @@ class PlaceActivity : AppCompatActivity() {
     var date = ""
     var time = ""
 
+
+
+
     override fun onDestroy() {
         mapTarget = null
         mapView = null

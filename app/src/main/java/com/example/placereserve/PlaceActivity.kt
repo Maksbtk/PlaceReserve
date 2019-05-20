@@ -1,8 +1,6 @@
 package com.example.placereserve
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.PointF
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -11,11 +9,9 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.onlylemi.mapview.library.MapView
-import com.onlylemi.mapview.library.layer.BitmapLayer
-import com.onlylemi.mapview.library.MapViewListener
-import java.io.IOException
 import android.app.TimePickerDialog
 import android.app.DatePickerDialog
+import android.graphics.drawable.Drawable
 import android.content.Intent
 import java.util.*
 import android.text.format.DateUtils
@@ -24,12 +20,16 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.activity_place.*
 import kotlinx.android.synthetic.main.activity_place_info.*
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
-
+import com.squareup.picasso.MemoryPolicy
+import java.lang.Exception
 
 class PlaceActivity : AppCompatActivity() {
 
@@ -37,13 +37,31 @@ class PlaceActivity : AppCompatActivity() {
 
     var calendar = Calendar.getInstance()
     val database = FirebaseDatabase.getInstance()
+    private var mapListener:CustomMapViewListener? = null
 
     // MAP
     private var mapView: MapView? = null
+    private val ref = FirebaseDatabase.getInstance().reference
+    var date = ""
+    var time = ""
+
+    override fun onDestroy() {
+        mapTarget = null
+        mapView = null
+        mapListener = null
+        intent.removeExtra(PAGE_TAG)
+        intent.removeExtra(SELECTED_TAG)
+        //DebugApp.getRefWatcher(this).watch(this) // LeakCanary test
+        super.onDestroy()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place)
+        mapView = null
+        date = "" +  calendar.get(Calendar.DAY_OF_MONTH) + " " + ( calendar.get(Calendar.MONTH) + 1) + " " + calendar.get(Calendar.YEAR)
+        time = "" + calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE)
+
         if (!intent.hasExtra("place_name") || !intent.hasExtra("place_address")) {
             // sorry, but not
             Log.e(TAG, "Extras is null!")
@@ -62,7 +80,8 @@ class PlaceActivity : AppCompatActivity() {
         back_in_place_from_choose.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
-                finish()
+                intent.putExtra(PAGE_TAG, INFO_PAGE)
+                updatePageUI(false)
             }
         })
         back_in_place_from_info.setOnClickListener(object : View.OnClickListener {
@@ -85,8 +104,29 @@ class PlaceActivity : AppCompatActivity() {
         })
         btn_confirm.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                //TODO: something
-                finish()
+                if(mapListener!!.bitmapChoosed != null) {
+                    val a = ref.child("Заведения").child(intent.getStringExtra("place_name"))
+                        .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
+                        .child("Бронь").child("Дата").child(date).child("Забронирован")
+                    a.setValue("true")
+
+
+                    val b = ref.child("Заведения").child(intent.getStringExtra("place_name"))
+                        .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
+                        .child("Бронь").child("Дата").child(date)
+                        .child("Время").child(time)
+                    b.setValue("true")
+
+                    mapListener!!.bitmapChoosed!!.bitmap = TableIconsCache.busyIconBmp
+                    mapView!!.refresh()
+
+                    Toast.makeText(
+                        this@PlaceActivity,
+                        "Вы забронировали стол на $date в $time",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    finish()
+                }
             }
         })
         updatePageUI(true)
@@ -96,6 +136,7 @@ class PlaceActivity : AppCompatActivity() {
     var t: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
+        time = "$hourOfDay:$minute"
         updateTime()
 //        posBut = -1
 //        intent.putExtra(SELECTED_TAG, UNSELECTED)
@@ -107,6 +148,7 @@ class PlaceActivity : AppCompatActivity() {
             calendar.set(Calendar.YEAR, year)
             calendar.set(Calendar.MONTH, monthOfYear)
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            date = "" + dayOfMonth + " " + (monthOfYear + 1) + " " + year
             updateDate()
 //            posBut = -1
 //            intent.putExtra(SELECTED_TAG, UNSELECTED)
@@ -169,9 +211,11 @@ class PlaceActivity : AppCompatActivity() {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         restaurant_description_from_info.text = dataSnapshot.child("Описание").value.toString()
                         restaurant_specialinfo_from_info.text = dataSnapshot.child("Кухня").value.toString()
+                        myRef.removeEventListener(this)
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
+                        myRef.removeEventListener(this)
                     }
                 })
 
@@ -180,7 +224,7 @@ class PlaceActivity : AppCompatActivity() {
                     val msg = "You have " + (if (isChecked) "checked" else "unchecked") + " this Check it Checkbox."
                     Toast.makeText(this@PlaceActivity, msg, Toast.LENGTH_SHORT).show()
                     if (isChecked) {
-                        
+
                     }
                 }
 //                    val checkBox : CheckBox = findViewById(R.id.checkBox)
@@ -191,12 +235,9 @@ class PlaceActivity : AppCompatActivity() {
                 val width = resources.getDimension(R.dimen.imageview_width)
                 for (i in 0..(photos - 1)) {
                     val iv = ImageView(this)
-                    iv.setBackgroundColor(resources.getColor(R.color.imageBackgroundColor))
-                    val bmp = BitmapFactory.decodeResource(resources, images[i])
-                    iv.setImageBitmap(bmp)
+                    iv.setBackgroundColor(resources.getColor(R.color.image_background_color))
+                    Picasso.get().load(images[i]).memoryPolicy(MemoryPolicy.NO_CACHE).resize(width.toInt(), 0).into(iv)
                     linear_images.addView(iv)
-                    iv.layoutParams.width = width.toInt()
-                    iv.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
                 }
             }
             CHOOSE_PAGE->{
@@ -245,22 +286,39 @@ class PlaceActivity : AppCompatActivity() {
         }
     }
 
-    fun loadMap(mapName:String) {
-        // Поиск mapview
-        mapView = findViewById(R.id.mapview)
-
-        // подгрузка карты
-        var bitmap: Bitmap? = null
-        try {
-            bitmap = BitmapFactory.decodeStream(assets.open(mapName))
-        } catch (e: IOException) {
-            e.printStackTrace()
+    // подгрузка карты с помощью Picasso
+    private var mapTarget: Target? = object: com.squareup.picasso.Target {
+        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            if (bitmap == null) {
+                Log.e(TAG, "Image is null!")
+            } else {
+                // загружаем в view
+                mapListener = CustomMapViewListener(this@PlaceActivity, mapView!!)
+                if(mapListener != null) {
+                    mapView!!.setMapViewListener(mapListener)
+                    mapView!!.loadMap(bitmap)
+                }
+            }
         }
 
-        // загружаем в view
-        val listener = CustomMapViewListener(this, mapView!!)
-        mapView!!.setMapViewListener(listener)
-        mapView!!.loadMap(bitmap)
+        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+            Log.e(TAG, "Ah shit, here we go again")
+        }
+
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+        }
+    }
+
+    fun loadMap(mapName:String) {
+        if(mapView != null) return
+
+        // Поиск mapview
+        mapView = findViewById(R.id.mapview)
+        TableIconsCache.prepareIcons()
+
+        // TODO: change to firebase images database
+        val url = "file:///android_asset/$mapName"
+        Picasso.get().load(url).into(mapTarget!!)
     }
 
 

@@ -25,12 +25,6 @@ import android.text.InputFilter
 import android.widget.TextView
 import android.widget.EditText
 
-
-
-
-
-
-
 class MainActivity : AppCompatActivity() {
 
     //инициализируем ViewModel ленивым способом
@@ -65,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                 })
         }
 
-        var signOut = findViewById<View>(R.id.btn_sign_out) as  ImageButton
+        val signOut = findViewById<View>(R.id.btn_sign_out) as  ImageButton
 
         val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
         val btnnvg: BottomNavigationView = this.findViewById(R.id.Navigationb)
@@ -78,6 +72,17 @@ class MainActivity : AppCompatActivity() {
         userViewModel.getListPlaces().observe(this, Observer {
             it?.let {
                 adapter.refreshPlaces(it)
+            }
+        })
+
+        val goToFavoritePlaces = findViewById<View>(R.id.favoriteBtn) as ImageButton
+
+        goToFavoritePlaces.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+
+                val favoriteIntent = Intent(this@MainActivity, FavoritePlaces::class.java)
+
+                startActivity(favoriteIntent)
             }
         })
 
@@ -154,7 +159,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(cda)
             }
         })
-
 
     }
     public override fun onStart() {

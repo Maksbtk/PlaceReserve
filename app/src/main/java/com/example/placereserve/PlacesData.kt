@@ -1,46 +1,24 @@
 package com.example.placereserve
 
-import android.arch.lifecycle.MutableLiveData
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 object PlacesData{
 
+    val favoritePlacesList : MutableList<PlacesFavorite> = mutableListOf()
 
-    //
-    //Русик,здеся надо закачивать заведения из бд
-    //
+    private lateinit var firebaseAuth: FirebaseAuth
 
-    //val database = FirebaseDatabase.getInstance().reference
+    fun getData(str1: String, str2: String) {
+        favoritePlacesList.add(PlacesFavorite(str1, str2, R.drawable.background_favorite_places))
+    }
 
     fun getPlaces () :List<Places>{
 
         var PlacesList : MutableList<Places> =   mutableListOf()
-        //val PlacesList : List<Places> = listOf()
-
-        //val user = firebaseAuth.currentUser
-
-
-
-//        database.child("Places").addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//              //  nameUser.text = dataSnapshot.getValue().toString()
-//               val placesList = (dataSnapshot.children.mapNotNull{it.getValue<Places>(Places::class.java)})
-//                PlacesList=placesList.toMutableList()
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                // Failed to read value
-//            }
-//        })
-
-
-
-//        PlacesList.add(Places("Йохан Пивохан","Проспект Кирова, 58"))
-//        PlacesList.add(Places("Йохан Пивохан","Проспект Кирова, 58"))
-
 
         PlacesList.add(Places("Йохан Пивохан","Проспект Кирова, 58",R.drawable.r1))
         PlacesList.add(Places("Карл у клары","Проспект Кирова, 51Б",R.drawable.r2))
@@ -50,7 +28,29 @@ object PlacesData{
         return  PlacesList
     }
 
+    fun getFavoritePlaces () :List<PlacesFavorite>{
 
+    val database = FirebaseDatabase.getInstance()
 
+    firebaseAuth = FirebaseAuth.getInstance()
 
+    val user = firebaseAuth.currentUser
+
+        if (user != null) {
+            val myRef = database.getReference("Пользователи").child(user.phoneNumber!!).child("ИзбранныеЗаведения")
+            myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (ds in dataSnapshot.children) {
+                        var place = ds.key.toString()
+                        var addressFav = ds.getValue().toString()
+                        getData(place, addressFav)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
+        }
+        return  favoritePlacesList
+    }
 }

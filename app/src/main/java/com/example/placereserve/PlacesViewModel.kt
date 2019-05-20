@@ -14,6 +14,15 @@ class PlacesViewModel: ViewModel() {
 
     fun getListPlaces() = placesList
 
+    var favoritePlacesList : MutableLiveData<List<PlacesFavorite>> = MutableLiveData()
+
+    init {
+        favoritePlacesList.value = PlacesData.getFavoritePlaces()
+
+    }
+
+    fun getListFavoritePlaces() = favoritePlacesList
+
     //для обновления списка передаем второй список пользователей
 //    fun updateListPlaces() {
   //      PlacesList.value = PlacesData.getAnotherPlaces()

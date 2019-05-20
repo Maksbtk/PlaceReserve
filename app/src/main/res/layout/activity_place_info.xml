@@ -132,6 +132,13 @@
                             android:textStyle="bold"
                             android:textColor="@color/TeztColorInPLaces"
                             android:layout_marginTop="5dp"/>
+                    <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/checkBox"
+                            android:layout_marginStart="370dp"
+                            android:layout_marginTop="5dp"
+                            android:checked="false"/>
                 </FrameLayout>
             </LinearLayout>
         </ScrollView>

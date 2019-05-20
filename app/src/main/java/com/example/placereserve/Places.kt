@@ -6,3 +6,9 @@ data class Places (
         var address: String,
         var image: Int
 )
+
+data class PlacesFavorite (
+        val nameF: String,
+        val addressF: String,
+        val imageF: Int
+)

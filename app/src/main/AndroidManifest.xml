@@ -12,8 +12,8 @@
             android:roundIcon="@drawable/draw"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            tools:ignore="GoogleAppIndexingWarning">
-
+            tools:ignore="GoogleAppIndexingWarning"
+    >
 
         <!-- Splash screen -->
         <activity android:name=".SplashActivity"
@@ -53,6 +53,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".AdminActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".FavoritePlaces"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT"/>

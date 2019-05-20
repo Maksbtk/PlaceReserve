@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:orientation="vertical" android:id="@+id/parent_layoutt"
+>
+
+    <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/imageFav"
+            app:srcCompat="@drawable/background_favorite_places"
+            android:clickable="true"
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+    >
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="92dp"
+                app:srcCompat="@drawable/background_favorite_places"
+                android:id="@+id/imageFavorite"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:layout_alignEnd="@+id/imageFav"/>
+
+        <TextView
+                android:id="@+id/placesAdressF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="address"
+                tools:layout_conversion_absoluteHeight="19dp"
+                tools:layout_editor_absoluteY="50dp"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_conversion_absoluteWidth="395dp"
+                android:text="address"
+                android:textColor="@color/colorPrimary"
+                android:textColorLink="@color/TeztColorInPLaces"
+                android:textSize="22sp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="60dp"
+        />
+
+        <TextView
+                android:id="@+id/placesNameF"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                tools:text="name"
+                tools:layout_conversion_absoluteHeight="22dp"
+                tools:layout_editor_absoluteY="100dp"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_conversion_absoluteWidth="403dp"
+                android:text="name"
+                android:textColorLink="@color/TeztColorInPLaces"
+                android:textColor="@color/colorPrimary"
+                android:textSize="26sp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="15dp"
+        />
+
+        <Button
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:id="@+id/button_star"
+                android:layout_marginLeft="338dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/favorite_star"
+        />
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

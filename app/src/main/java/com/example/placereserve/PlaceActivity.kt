@@ -16,9 +16,11 @@ import com.onlylemi.mapview.library.MapViewListener
 import java.io.IOException
 import android.app.TimePickerDialog
 import android.app.DatePickerDialog
+import android.content.Intent
 import java.util.*
 import android.text.format.DateUtils
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.google.firebase.database.FirebaseDatabase
@@ -173,13 +175,23 @@ class PlaceActivity : AppCompatActivity() {
                     }
                 })
 
+                val checkBox = findViewById<CheckBox>(R.id.checkBox)
+                checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+                    val msg = "You have " + (if (isChecked) "checked" else "unchecked") + " this Check it Checkbox."
+                    Toast.makeText(this@PlaceActivity, msg, Toast.LENGTH_SHORT).show()
+                    if (isChecked) {
+                        
+                    }
+                }
+//                    val checkBox : CheckBox = findViewById(R.id.checkBox)
+
                 //типо loading images
                 val images = arrayListOf(R.drawable.photo1, R.drawable.photo2, R.drawable.photo3, R.drawable.photo4)
                 val photos = images.size
                 val width = resources.getDimension(R.dimen.imageview_width)
                 for (i in 0..(photos - 1)) {
                     val iv = ImageView(this)
-                    iv.setBackgroundColor(resources.getColor(R.color.image_background_color))
+                    iv.setBackgroundColor(resources.getColor(R.color.imageBackgroundColor))
                     val bmp = BitmapFactory.decodeResource(resources, images[i])
                     iv.setImageBitmap(bmp)
                     linear_images.addView(iv)

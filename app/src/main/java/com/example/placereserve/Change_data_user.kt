@@ -35,18 +35,20 @@ class Change_data_user : AppCompatActivity()  {
             Dialog()
         }
 
-        if (user != null) {
-            database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        edit_name_user.setText(dataSnapshot.getValue(String::class.java))
-                    }
+        val numb = user?.phoneNumber
 
-                    override fun onCancelled(error: DatabaseError) {
-                        // Failed to read value
-                    }
-                })
-        }
+//        if (user != null) {
+//            database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
+//                .addValueEventListener(object : ValueEventListener {
+//                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                        edit_name_user.setText(dataSnapshot.getValue(String::class.java))
+//                    }
+//
+//                    override fun onCancelled(error: DatabaseError) {
+//                        // Failed to read value
+//                    }
+//                })
+//        }
 
         save_userdata.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {

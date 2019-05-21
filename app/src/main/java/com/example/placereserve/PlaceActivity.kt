@@ -65,8 +65,8 @@ class PlaceActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         val user = firebaseAuth.currentUser
 
-//        myRef =
-//            database.getReference("Заведения").child(this.intent.getStringExtra("place_name")).child("Столы")
+        myRef =
+            database.getReference("Заведения").child(this.intent.getStringExtra("place_name")).child("Столы")
 //        database2 = FirebaseDatabase.getInstance().reference
 
         if (!intent.hasExtra("place_name") || !intent.hasExtra("place_address")) {
@@ -215,6 +215,7 @@ class PlaceActivity : AppCompatActivity() {
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             date = "" + dayOfMonth + " " + (monthOfYear + 1) + " " + year
             updateDate()
+
 //            posBut = -1
 //            intent.putExtra(SELECTED_TAG, UNSELECTED)
         }

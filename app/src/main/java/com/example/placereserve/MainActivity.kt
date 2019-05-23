@@ -24,6 +24,7 @@ import com.google.firebase.database.*
 import android.text.InputFilter
 import android.widget.TextView
 import android.widget.EditText
+import kotlinx.android.synthetic.main.activity_favoriteplaces.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -82,12 +83,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         val goToFavoritePlaces = findViewById<View>(R.id.favoriteBtn) as ImageButton
-
         goToFavoritePlaces.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-
                 val favoriteIntent = Intent(this@MainActivity, FavoritePlaces::class.java)
-
                 startActivity(favoriteIntent)
             }
         })

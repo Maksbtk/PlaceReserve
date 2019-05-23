@@ -19,6 +19,8 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.example.placereserve.PlacesData.favoritePlacesList
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
@@ -34,9 +36,11 @@ import java.lang.Exception
 class PlaceActivity : AppCompatActivity() {
 
     private val TAG = "PlaceActivity"
+    private lateinit var firebaseAuth: FirebaseAuth
 
     var calendar = Calendar.getInstance()
     val database = FirebaseDatabase.getInstance()
+
     private var mapListener:CustomMapViewListener? = null
 
     // MAP
@@ -58,6 +62,7 @@ class PlaceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place)
+        firebaseAuth = FirebaseAuth.getInstance()
         mapView = null
         date = "" +  calendar.get(Calendar.DAY_OF_MONTH) + " " + ( calendar.get(Calendar.MONTH) + 1) + " " + calendar.get(Calendar.YEAR)
         time = "" + calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE)
@@ -203,42 +208,62 @@ class PlaceActivity : AppCompatActivity() {
 
         when(page) {
             INFO_PAGE-> {
-                restaurant_name_from_info.text = intent.getStringExtra("place_name")
-                restaurant_address_from_info.text = intent.getStringExtra("place_address")
+                    restaurant_name_from_info.text = intent.getStringExtra("place_name")
+                    restaurant_address_from_info.text = intent.getStringExtra("place_address")
 
-                val myRef = database.getReference("Заведения").child(intent.getStringExtra("place_name")).child("Данные")
-                myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        restaurant_description_from_info.text = dataSnapshot.child("Описание").value.toString()
-                        restaurant_specialinfo_from_info.text = dataSnapshot.child("Кухня").value.toString()
-                        myRef.removeEventListener(this)
+                    val myRef = database.getReference("Заведения").child(intent.getStringExtra("place_name")).child("Данные")
+                    myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            restaurant_description_from_info.text = dataSnapshot.child("Описание").value.toString()
+                            restaurant_specialinfo_from_info.text = dataSnapshot.child("Кухня").value.toString()
+                            myRef.removeEventListener(this)
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            myRef.removeEventListener(this)
+                        }
+                    })
+                val adapterFav = FavoritePlacesAdapter()
+                    val btnForFavorite = findViewById<ImageView>(R.id.btn_for_favorite)
+                    btnForFavorite.setOnClickListener(object : View.OnClickListener {
+                        override fun onClick(v: View) {
+                            val user = firebaseAuth.currentUser
+                            val myRef = database.getReference("Пользователи").child(user?.phoneNumber!!).child("ИзбранныеЗаведения").child(intent.getStringExtra("place_name"))
+                            myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    val a = dataSnapshot.getValue()
+                                    if ( a == null ) {
+                                        database.getReference("Пользователи")
+                                            .child(user?.phoneNumber!!)
+                                            .child("ИзбранныеЗаведения")
+                                            .child(intent.getStringExtra("place_name"))
+                                            .setValue(intent.getStringExtra("place_address"))
+                                    } else {
+                                        myRef.removeValue()
+                                        favoritePlacesList.remove(PlacesFavorite(
+                                            intent.getStringExtra("place_name"),
+                                            intent.getStringExtra("place_address"),
+                                            R.drawable.background_favorite_places))
+                                        adapterFav.refreshFavoritePlaces(favoritePlacesList)
+                                        adapterFav.notifyDataSetChanged()
+                                    }
+                                }
+                                override fun onCancelled(databaseError: DatabaseError) {
+                                }
+                            })
+                        }
+                    })
+
+                    //типо loading images
+                    val images = arrayListOf(R.drawable.photo1, R.drawable.photo2, R.drawable.photo3, R.drawable.photo4)
+                    val photos = images.size
+                    val width = resources.getDimension(R.dimen.imageview_width)
+                    for (i in 0..(photos - 1)) {
+                        val iv = ImageView(this)
+                        iv.setBackgroundColor(resources.getColor(R.color.image_background_color))
+                        Picasso.get().load(images[i]).memoryPolicy(MemoryPolicy.NO_CACHE).resize(width.toInt(), 0).into(iv)
+                        linear_images.addView(iv)
                     }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        myRef.removeEventListener(this)
-                    }
-                })
-
-                val checkBox = findViewById<CheckBox>(R.id.checkBox)
-                checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-                    val msg = "You have " + (if (isChecked) "checked" else "unchecked") + " this Check it Checkbox."
-                    Toast.makeText(this@PlaceActivity, msg, Toast.LENGTH_SHORT).show()
-                    if (isChecked) {
-
-                    }
-                }
-//                    val checkBox : CheckBox = findViewById(R.id.checkBox)
-
-                //типо loading images
-                val images = arrayListOf(R.drawable.photo1, R.drawable.photo2, R.drawable.photo3, R.drawable.photo4)
-                val photos = images.size
-                val width = resources.getDimension(R.dimen.imageview_width)
-                for (i in 0..(photos - 1)) {
-                    val iv = ImageView(this)
-                    iv.setBackgroundColor(resources.getColor(R.color.image_background_color))
-                    Picasso.get().load(images[i]).memoryPolicy(MemoryPolicy.NO_CACHE).resize(width.toInt(), 0).into(iv)
-                    linear_images.addView(iv)
-                }
             }
             CHOOSE_PAGE->{
                 restaurant_name_from_choose.text = intent.getStringExtra("place_name")

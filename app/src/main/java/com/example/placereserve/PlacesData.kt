@@ -29,13 +29,12 @@ object PlacesData{
     }
 
     fun getFavoritePlaces () :List<PlacesFavorite>{
-
-    val database = FirebaseDatabase.getInstance()
-
-    firebaseAuth = FirebaseAuth.getInstance()
-
-    val user = firebaseAuth.currentUser
-
+        val database = FirebaseDatabase.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance()
+        val user = firebaseAuth.currentUser
+//        if ( favoritePlacesList.size != 0) {
+//            favoritePlacesList.clear()
+//        }
         if (user != null) {
             val myRef = database.getReference("Пользователи").child(user.phoneNumber!!).child("ИзбранныеЗаведения")
             myRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -43,10 +42,11 @@ object PlacesData{
                     for (ds in dataSnapshot.children) {
                         var place = ds.key.toString()
                         var addressFav = ds.getValue().toString()
-                        getData(place, addressFav)
+                        if ( !favoritePlacesList.contains(PlacesFavorite(place, addressFav, R.drawable.background_favorite_places))) {
+                            getData(place, addressFav)
+                        }
                     }
                 }
-
                 override fun onCancelled(databaseError: DatabaseError) {
                 }
             })

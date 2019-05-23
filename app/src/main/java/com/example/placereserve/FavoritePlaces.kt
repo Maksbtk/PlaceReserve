@@ -12,6 +12,7 @@ import android.widget.ListView
 import kotlinx.android.synthetic.main.activity_changedata.*
 import kotlinx.android.synthetic.main.activity_main.*
 import android.arch.lifecycle.Observer
+import com.example.placereserve.PlacesData.favoritePlacesList
 import kotlinx.android.synthetic.main.activity_changedata.back_in_useer
 import kotlinx.android.synthetic.main.activity_favoriteplaces.*
 
@@ -26,11 +27,11 @@ class FavoritePlaces : AppCompatActivity() {
         val adapter = FavoritePlacesAdapter()
         favorite_places_list.layoutManager = LinearLayoutManager(this)
         favorite_places_list.adapter = adapter
-
         //подписываем адаптер на изменения списка
         userViewModel.getListFavoritePlaces().observe(this, Observer {
             it?.let {
                 adapter.refreshFavoritePlaces(it)
+                adapter.notifyDataSetChanged()
             }
         })
 

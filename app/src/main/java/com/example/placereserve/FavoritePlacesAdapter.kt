@@ -9,14 +9,15 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.places_item.view.*
 import android.widget.RelativeLayout
 import android.widget.Toast
+import com.example.placereserve.PlacesData.favoritePlacesList
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.favorite_place_item.view.*
 
 class FavoritePlacesAdapter : RecyclerView.Adapter<FavoritePlacesAdapter.PlacesHolder>() {
     //создает ViewHolder и инициализирует views для списка
 
-    private var favoritePlaces:MutableList<PlacesFavorite> = mutableListOf()
-    private var SourceListFavorite:MutableList<PlacesFavorite> = mutableListOf()
+     var favoritePlaces:MutableList<PlacesFavorite> = mutableListOf()
+     var SourceListFavorite:MutableList<PlacesFavorite> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesHolder {
         return PlacesHolder(
@@ -41,7 +42,6 @@ class FavoritePlacesAdapter : RecyclerView.Adapter<FavoritePlacesAdapter.PlacesH
         viewHolder.bind(favoritePlaces[position])
 
         viewHolder.itemView.imageFavorite.setOnClickListener {
-
             val intent: Intent = Intent(viewHolder.itemView.context, PlaceActivity::class.java)
             intent.putExtra("place_name", viewHolder.itemView.placesNameF.text)
             intent.putExtra("place_address", viewHolder.itemView.placesAdressF.text)

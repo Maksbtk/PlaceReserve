@@ -4,7 +4,7 @@
     <color name="colorNIGHTgrey">#EFEFF4</color>
     <color name="colorPrimaryDark">#E4E4E4</color>
     <color name="colorAccent">#673AB7</color>
-    <color name="TeztColorInPLaces">#1F2041</color>
-    <color name="imageBackgroundColor">#c1c1c1</color>
-
+    <color name="TextColorInPLaces">#1F2041</color>
+    <color name="image_background_color">#c1c1c1</color>
+    <color name="qwe">#000</color>
 </resources>

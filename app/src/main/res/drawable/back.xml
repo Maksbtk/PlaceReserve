@@ -10,7 +10,7 @@
     <!-- View border color and width -->
     <stroke
             android:width="2dp"
-            android:color="@color/TeztColorInPLaces" >
+            android:color="@color/TextColorInPLaces" >
     </stroke>
 
     <!-- The radius makes the corners rounded -->

@@ -16,6 +16,7 @@ import java.util.*
 import android.text.format.DateUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
@@ -39,8 +40,13 @@ class PlaceActivity : AppCompatActivity() {
     // MAP
     private var mapView: MapView? = null
     private val ref = FirebaseDatabase.getInstance().reference
-    var date = ""
-    var time = ""
+    private lateinit var myRef: DatabaseReference
+    private lateinit var database2: DatabaseReference
+    var date = "" + calendar.get(Calendar.DAY_OF_MONTH) + " " + (calendar.get(Calendar.MONTH) + 1) + " " + calendar.get(
+        Calendar.YEAR
+    )
+    var time = "" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE)
+    public lateinit var firebaseAuth: FirebaseAuth
 
     override fun onDestroy() {
         mapTarget = null
@@ -56,8 +62,9 @@ class PlaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place)
         mapView = null
-        date = "" +  calendar.get(Calendar.DAY_OF_MONTH) + " " + ( calendar.get(Calendar.MONTH) + 1) + " " + calendar.get(Calendar.YEAR)
-        time = "" + calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE)
+        firebaseAuth = FirebaseAuth.getInstance()
+        val user = firebaseAuth.currentUser
+
 
         if (!intent.hasExtra("place_name") || !intent.hasExtra("place_address")) {
             // sorry, but not
@@ -101,28 +108,95 @@ class PlaceActivity : AppCompatActivity() {
         })
         btn_confirm.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
-                if(mapListener!!.bitmapChoosed != null) {
-                    val a = ref.child("Заведения").child(intent.getStringExtra("place_name"))
+                if (mapListener!!.bitmapChoosed != null) {
+                    var reserve = ""
+
+                    ref.child("Заведения").child("Йохан Пивохан")
                         .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
                         .child("Бронь").child("Дата").child(date).child("Забронирован")
-                    a.setValue("true")
+                        .addValueEventListener(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                reserve = dataSnapshot.getValue().toString()
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                // Failed to read value
+                            }
+                        })
+
+                    if (reserve != "true") {
+
+                        ref.child("Заведения").child(intent.getStringExtra("place_name"))
+                            .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
+                            .child("Бронь").child("Дата").child(date).child("Забронирован").setValue("true")
 
 
-                    val b = ref.child("Заведения").child(intent.getStringExtra("place_name"))
-                        .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
-                        .child("Бронь").child("Дата").child(date)
-                        .child("Время").child(time)
-                    b.setValue("true")
+                        ref.child("Заведения").child(intent.getStringExtra("place_name"))
+                            .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
+                            .child("Бронь").child("Дата").child(date)
+                            .child("Время").setValue(time)
 
-                    mapListener!!.bitmapChoosed!!.bitmap = TableIconsCache.busyIconBmp
-                    mapView!!.refresh()
+                        ref.child("Заведения").child(intent.getStringExtra("place_name"))
+                            .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
+                            .child("Бронь").child("Дата").child(date)
+                            .child("Номер клиента").setValue(user!!.phoneNumber!!)
 
-                    Toast.makeText(
-                        this@PlaceActivity,
-                        "Вы забронировали стол на $date в $time",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    finish()
+//                        ref.child("Пользователи").child(user.phoneNumber!!).child("Активные брони")
+//                            .child(intent.getStringExtra("place_name")).child("Дата")
+//                            .child(date).setValue(date)
+
+                        ref.child("Пользователи").child(user.phoneNumber!!).child("Активные брони")
+                            .child(intent.getStringExtra("place_name")).child(date).setValue(time)
+
+                        ref.child("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
+                            .addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    ref.child("Заведения").child(intent.getStringExtra("place_name"))
+                                        .child("Столы").child("Номер стола")
+                                        .child(mapListener!!.choosedTableNumber.toString())
+                                        .child("Бронь").child("Дата").child(date)
+                                        .child("Имя клиента").setValue(dataSnapshot.getValue())
+
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    // Failed to read value
+                                }
+                            })
+
+                        ref.child("Заведения").child(intent.getStringExtra("place_name"))
+                            .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
+                            .child("Бронь").child("Дата").child(date)
+                            .child("Номер клиента")
+                            .addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    if (dataSnapshot.getValue().toString() == user!!.phoneNumber.toString()) {
+                                        mapListener!!.bitmapChoosed!!.bitmap = TableIconsCache.busyIconBmp
+                                        mapView!!.refresh()
+                                        Toast.makeText(
+                                            this@PlaceActivity,
+                                            "Вы забронировали стол на $date в $time",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+
+
+                                        finish()
+
+                                    } else {
+                                        mapView!!.refresh()
+                                        Toast.makeText(
+                                            this@PlaceActivity,
+                                            "К сожалению, кто-то забронировал раньше Вас. Выберите, пожалуйста, другой стол.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    // Failed to read value
+                                }
+                            })
+                    }
                 }
             }
         })
@@ -171,13 +245,16 @@ class PlaceActivity : AppCompatActivity() {
 
     // отображаем диалоговое окно для выбора даты
     fun setDate(v: View) {
-        DatePickerDialog(
+
+        val startEndDate = DatePickerDialog(
             this@PlaceActivity, d,
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
-            .show()
+        startEndDate.datePicker.minDate = System.currentTimeMillis()
+        startEndDate.datePicker.maxDate = System.currentTimeMillis() + 2592000000
+        startEndDate.show()
     }
 
     // отображаем диалоговое окно для выбора времени

@@ -28,6 +28,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.MemoryPolicy
 import java.lang.Exception
+import kotlin.collections.ArrayList
 
 class PlaceActivity : AppCompatActivity() {
 
@@ -243,7 +244,7 @@ class PlaceActivity : AppCompatActivity() {
                                         .setValue(intent.getStringExtra("place_address"))
                                     Snackbar.make(
                                         place_info_layout,
-                                        "Заведение добавлено в избранные заведения",
+                                        "Добавлено в избранные",
                                         Snackbar.LENGTH_SHORT
                                     ).show()
                                 } else {
@@ -259,7 +260,7 @@ class PlaceActivity : AppCompatActivity() {
                                     adapterFav.notifyDataSetChanged()
                                     Snackbar.make(
                                         place_info_layout,
-                                        "Заведение убрано из избранных заведений",
+                                        "Удалено из избранных",
                                         Snackbar.LENGTH_SHORT
                                     ).show()
                                 }
@@ -272,7 +273,9 @@ class PlaceActivity : AppCompatActivity() {
                 })
 
                 //типо loading images
-                val images = arrayListOf(R.drawable.photo1, R.drawable.photo2, R.drawable.photo3, R.drawable.photo4)
+
+
+                var images = getImages()
                 val photos = images.size
                 val width = resources.getDimension(R.dimen.imageview_width)
                 for (i in 0..(photos - 1)) {
@@ -285,11 +288,36 @@ class PlaceActivity : AppCompatActivity() {
             CHOOSE_PAGE -> {
                 restaurant_name_from_choose.text = intent.getStringExtra("place_name")
                 restaurant_address.text = intent.getStringExtra("place_address")
-                loadMap("test_map1.png")
+
+                when (intent.getStringExtra("place_name")) {
+                    "Йохан Пивохан" -> {
+                        loadMap("test_map1.png")
+
+                    }
+                    "Карл у Клары" -> {
+                        loadMap("test_map_2.png")
+                    }
+                }
             }
         }
     }
 
+    fun getImages():ArrayList<Int>{
+        var arr : ArrayList<Int>
+        when (intent.getStringExtra("place_name")) {
+            "Йохан Пивохан" -> {
+                arr = arrayListOf(R.drawable.yohan1, R.drawable.yohan2, R.drawable.yohan3)
+
+            }
+            "Карл у Клары" -> {
+                arr= arrayListOf(R.drawable.karl1, R.drawable.karl2)
+            }
+            else -> {
+                arr =  arrayListOf(R.drawable.yohan1)
+            }
+        }
+        return arr
+    }
     fun updatePageUI(reparse: Boolean) {
         var flag = intent.getIntExtra(PAGE_TAG, INFO_PAGE)
 

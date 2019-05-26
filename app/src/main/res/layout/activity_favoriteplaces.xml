@@ -5,19 +5,18 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         tools:context=".MainActivity"
         android:id="@+id/favorite_framelayout"
 >
     <TextView
             android:text="Избранные заведения"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:layout_gravity="top|center"
             android:layout_width="wrap_content"
             android:textColor="@color/TextColorInPLaces"
-            android:layout_marginTop="20dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginTop="23dp"
+            android:layout_height="wrap_content"
             android:id="@+id/favorite_title"
     />
     <ImageButton
@@ -26,7 +25,7 @@
             android:layout_gravity="top|left"
             android:layout_marginTop="20dp"
             android:tint="@color/TextColorInPLaces"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             android:layout_width="42dp"
             android:layout_marginStart="10dp"
             android:layout_height="42dp"
@@ -36,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             tools:listitem="@layout/favorite_place_item"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             android:layout_marginTop="90dp"
     />
 </FrameLayout>

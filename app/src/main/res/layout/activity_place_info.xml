@@ -142,6 +142,7 @@
                             android:layout_height="36dp"
                             android:id="@+id/btn_for_favorite"
                             android:layout_gravity="end"
+                            android:layout_marginEnd="8dp"
                             android:background="@drawable/favorite_star"
                             android:backgroundTint="@color/favoriteStar_color"
                     />

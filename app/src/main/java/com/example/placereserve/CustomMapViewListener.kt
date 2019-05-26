@@ -22,8 +22,9 @@ import java.lang.Exception
 import java.util.concurrent.CompletableFuture
 
 
-class CustomMapViewListener(private var placeActivity: PlaceActivity, private var currentMap: MapView) : MapViewListener {
-    var isLoader:Boolean = false
+class CustomMapViewListener(private var placeActivity: PlaceActivity, private var currentMap: MapView) :
+    MapViewListener {
+    var isLoader: Boolean = false
     private val database = FirebaseDatabase.getInstance()
     var bitmapChoosed: BitmapLayer? = null
     var choosedTableNumber = 0
@@ -32,7 +33,8 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
     override fun onMapLoadSuccess() {
         isLoader = true
 
-        val myRef = database.getReference("Заведения").child(placeActivity.intent.getStringExtra("place_name")).child("Столы")
+        val myRef =
+            database.getReference("Заведения").child(placeActivity.intent.getStringExtra("place_name")).child("Столы")
         createTables(myRef)
     }
 
@@ -40,18 +42,19 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
         Log.e(TAG, "Ah shit, here we go again")
     }
 
-    fun drawDick(x:Float, y:Float, id:Int){
-        if(!isLoader) return
+    fun drawDick(x: Float, y: Float, id: Int) {
+        if (!isLoader) return
         var bitmapLayer = BitmapLayer(currentMap, freeIconBmp)
         bitmapLayer!!.location = PointF(x, y)
         bitmapLayer!!.isAutoScale = true
-        bitmapLayer!!.setOnBitmapClickListener { // Вешаем на кнопку слушатель кликбейта за сто морей
+        bitmapLayer!!.setOnBitmapClickListener {
+            // Вешаем на кнопку слушатель кликбейта за сто морей
 
             var tagValue = PlaceActivity.SELECTED
             val choosedId = id
 
-            if(bitmapChoosed != null) { // Если предыдущий стол выбран
-                if(bitmapChoosed!!.equals(bitmapLayer)) { // Если это один и тот же стол. то отменяем галку
+            if (bitmapChoosed != null) { // Если предыдущий стол выбран
+                if (bitmapChoosed!!.equals(bitmapLayer)) { // Если это один и тот же стол. то отменяем галку
                     tagValue = PlaceActivity.UNSELECTED
                     bitmapChoosed!!.bitmap = freeIconBmp
                     bitmapChoosed = null
@@ -99,7 +102,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
      * database должен начинаться с чайлада "Столы"
      */
     fun createTables(database: DatabaseReference) {
-        if(!isLoader) return
+        if (!isLoader) return
         var tree = database.child("Номер стола")
 
         tree.addValueEventListener(object : ValueEventListener {
@@ -108,7 +111,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     val id = ds.key
                     val x = ds.child("Координаты").child("x").value.toString()
                     val y = ds.child("Координаты").child("y").value.toString()
-                    drawDick(x!!.toFloat(),y!!.toFloat(), id.toString().toInt())
+                    drawDick(x!!.toFloat(), y!!.toFloat(), id.toString().toInt())
                 }
 
                 //after all remove listener

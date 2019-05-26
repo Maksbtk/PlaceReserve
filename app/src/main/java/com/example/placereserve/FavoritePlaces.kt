@@ -23,11 +23,12 @@ class FavoritePlaces : AppCompatActivity() {
         setContentView(R.layout.activity_favoriteplaces)
 
         val userViewModel by lazy { ViewModelProviders.of(this).get(PlacesViewModel::class.java) }
-
         val adapter = FavoritePlacesAdapter()
+        val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
+
         favorite_places_list.layoutManager = LinearLayoutManager(this)
         favorite_places_list.adapter = adapter
-        //подписываем адаптер на изменения списка
+
         userViewModel.getListFavoritePlaces().observe(this, Observer {
             it?.let {
                 adapter.refreshFavoritePlaces(it)
@@ -35,12 +36,27 @@ class FavoritePlaces : AppCompatActivity() {
             }
         })
 
-        val animAlpha : Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
-
         back_in_useer.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
                 finish()
+            }
+        })
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val userViewModel by lazy { ViewModelProviders.of(this).get(PlacesViewModel::class.java) }
+        val adapter = FavoritePlacesAdapter()
+
+        favorite_places_list.layoutManager = LinearLayoutManager(this)
+        favorite_places_list.adapter = adapter
+
+        userViewModel.getListFavoritePlaces().observe(this, Observer {
+            it?.let {
+                adapter.refreshFavoritePlaces(it)
+                adapter.notifyDataSetChanged()
             }
         })
     }

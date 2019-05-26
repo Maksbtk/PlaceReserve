@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
-                android:orientation="vertical" android:id="@+id/parent_layoutt">
-
+                android:orientation="vertical"
+                android:id="@+id/parent_layoutt"
+>
     <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="280dp"
             android:id="@+id/imG"
             android:clickable="true"
-            app:cardBackgroundColor="@color/colorPrimaryDark">
+            app:cardBackgroundColor="@color/colorPrimaryDark"
+    >
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/r1"
                 android:id="@+id/image2"
-                android:layout_marginEnd="10dp" android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp" android:clickable="true"/>
-
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+        />
         <TextView
-
                 android:id="@+id/placesAdress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -32,7 +36,8 @@
                 android:text="ewfwef" android:textColor="@color/colorPrimary"
                 android:textColorLink="@color/TextColorInPLaces" android:textSize="22sp"
                 android:layout_marginLeft="17dp"
-                android:layout_marginTop="210dp"/>
+                android:layout_marginTop="210dp"
+        />
         <TextView
                 android:id="@+id/placesName"
                 android:layout_alignParentLeft="true"
@@ -42,13 +47,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                tools:text="wqrfwfweg" tools:layout_conversion_absoluteHeight="22dp"
+                tools:text="wqrfwfweg"
+                tools:layout_conversion_absoluteHeight="22dp"
                 tools:layout_editor_absoluteY="100dp"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_conversion_absoluteWidth="403dp"
                 android:text="wegweg"
-                android:textColorLink="@color/TextColorInPLaces" android:textColor="@color/colorPrimary"
-                android:textSize="26sp" android:layout_marginLeft="17dp" android:layout_marginTop="180dp"/>
+                android:textColorLink="@color/TextColorInPLaces"
+                android:textColor="@color/colorPrimary"
+                android:textSize="26sp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="180dp"
+        />
     </android.support.v7.widget.CardView>
-
 </RelativeLayout>

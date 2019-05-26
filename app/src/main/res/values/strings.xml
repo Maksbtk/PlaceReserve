@@ -3,15 +3,12 @@
     <string name="user_list">placesList</string>
     <string name="refresh">ref</string>
     <string name="search_hint">Поиск</string>
-
     <string name="description_label">Описание</string>
 
     <!-- VADYA TEXT TEST -->
     <string name="default_loading_msg">Загрузка</string>
-
     <string name="default_org_name">@string/default_loading_msg</string>
     <string name="default_org_desc">@string/default_loading_msg</string>
     <string name="default_org_special_info">@string/default_loading_msg</string>
     <string name="default_org_address">@string/default_loading_msg</string>
-
 </resources>

@@ -18,7 +18,7 @@ class TableIconsCache {
 
         /********************************* IMAGES (Picasso) *************************************/
         /****************************************************************************************/
-        private var freeTarget: Target? = object: com.squareup.picasso.Target {
+        private var freeTarget: Target? = object : com.squareup.picasso.Target {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                 if (bitmap == null) {
                     Log.w(TAG, "Image is null!")
@@ -35,7 +35,7 @@ class TableIconsCache {
             }
         }
 
-        private var choosedTarget: Target? = object: com.squareup.picasso.Target {
+        private var choosedTarget: Target? = object : com.squareup.picasso.Target {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                 if (bitmap == null) {
                     Log.w(TAG, "Image is null!")
@@ -52,7 +52,7 @@ class TableIconsCache {
             }
         }
 
-        private var busyTarget: Target? = object: com.squareup.picasso.Target {
+        private var busyTarget: Target? = object : com.squareup.picasso.Target {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                 if (bitmap == null) {
                     Log.w(TAG, "Image is null!")
@@ -70,18 +70,18 @@ class TableIconsCache {
         }
 
         private fun generateFreeIcon() {
-            if(freeIconBmp != null) return
-            Picasso.get().load(R.drawable.free_1).resize(150,150).into(freeTarget!!)
+            if (freeIconBmp != null) return
+            Picasso.get().load(R.drawable.free_1).resize(150, 150).into(freeTarget!!)
         }
 
         private fun generateChoosedIcon() {
-            if(choosedIconBmp != null) return
-            Picasso.get().load(R.drawable.choosedtable).resize(150,150).into(choosedTarget!!)
+            if (choosedIconBmp != null) return
+            Picasso.get().load(R.drawable.choosedtable).resize(150, 150).into(choosedTarget!!)
         }
 
         private fun generateBusyIcon() {
-            if(busyIconBmp != null) return
-            Picasso.get().load(R.drawable.busy_1).resize(150,150).into(busyTarget!!)
+            if (busyIconBmp != null) return
+            Picasso.get().load(R.drawable.busy_1).resize(150, 150).into(busyTarget!!)
         }
 
         fun prepareIcons() {

@@ -8,11 +8,11 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
         android:id="@+id/place_info_layout">
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+    >
         <!-- First block -->
         <FrameLayout
                 android:orientation="vertical"
@@ -21,11 +21,10 @@
                 android:elevation="4sp"
                 android:clipToPadding="false"
                 android:background="@drawable/custom_card"
-                android:id="@+id/restaurant_block">
+                android:id="@+id/restaurant_block"
+        >
             <!-- Невероятная кнопка назад -->
-
             <ImageButton
-
                     android:id="@+id/back_in_place_from_info"
                     android:layout_gravity="top|left"
                     android:layout_marginTop="25dp"
@@ -48,21 +47,21 @@
                     android:textColor="@color/TextColorInPLaces"
                     android:id="@+id/restaurant_name_from_info"
             />
-
             <!-- Draw dicks -->
             <HorizontalScrollView
                     android:layout_marginTop="70sp"
                     android:layout_width="match_parent"
                     android:layout_height="190sp"
-                    android:id="@+id/images">
+                    android:id="@+id/images"
+            >
                 <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/linear_images">
+                        android:id="@+id/linear_images"
+                >
                 </LinearLayout>
             </HorizontalScrollView>
-
             <!-- Desctiption label -->
             <TextView
                     android:id="@+id/description_label"
@@ -75,21 +74,23 @@
                     android:layout_marginTop="270sp"
                     android:layout_marginBottom="5sp"
                     android:textSize="20sp"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false"
+            />
         </FrameLayout>
-
         <!-- Description text -->
         <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E4E4E4">
+                android:background="#E4E4E4"
+        >
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:elevation="4sp"
                           android:clipToPadding="false"
                           android:background="@drawable/custom_card"
                           android:orientation="vertical"
-                          android:layout_marginBottom="10sp">
+                          android:layout_marginBottom="10sp"
+            >
                 <TextView android:id="@+id/restaurant_description_from_info"
                           android:layout_width="match_parent"
                           android:layout_height="match_parent"
@@ -108,10 +109,12 @@
                           android:layout_marginLeft="10sp"
                           android:textSize="14sp"
                           android:textStyle="bold"
-                          android:layout_marginTop="5sp"/>
-
+                          android:layout_marginTop="5sp"
+                />
                 <!-- Address -->
-                <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                <FrameLayout android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                >
                     <ImageView
                             android:layout_height="18sp"
                             android:layout_width="18sp"
@@ -119,7 +122,8 @@
                             android:layout_marginLeft="10sp"
                             android:scaleType="fitXY"
                             android:background="@android:color/transparent"
-                            android:src="@drawable/ic_location"/>
+                            android:src="@drawable/ic_location"
+                    />
                     <TextView
                             android:id="@+id/restaurant_address_from_info"
                             android:layout_width="match_parent"
@@ -131,14 +135,15 @@
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:textColor="@color/TextColorInPLaces"
-                            android:layout_marginTop="5dp"/>
+                            android:layout_marginTop="5dp"
+                    />
                     <ImageButton
                             android:layout_width="36dp"
                             android:layout_height="36dp"
                             android:id="@+id/btn_for_favorite"
-                            android:layout_marginStart="370dp"
+                            android:layout_gravity="end"
                             android:background="@drawable/favorite_star"
-                            android:backgroundTint="@color/qwe"
+                            android:backgroundTint="@color/favoriteStar_color"
                     />
                 </FrameLayout>
             </LinearLayout>
@@ -154,5 +159,6 @@
             android:layout_height="55sp"
             android:id="@+id/select_table"
             android:textSize="24sp"
-            android:layout_marginBottom="25sp"/>
+            android:layout_marginBottom="25sp"
+    />
 </FrameLayout>

@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity() {
         et.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(15))
 
         val user = firebaseAuth.currentUser
-        if(user != null) {
-            if(changeNameListener == null) {
+        if (user != null) {
+            if (changeNameListener == null) {
                 changeNameListener = object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         nameUser.text = dataSnapshot.value.toString()
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val signOut = findViewById<View>(R.id.btn_sign_out) as  ImageButton
+        val signOut = findViewById<View>(R.id.btn_sign_out) as ImageButton
 
         val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
         val btnnvg: BottomNavigationView = this.findViewById(R.id.Navigationb)
@@ -97,17 +97,17 @@ class MainActivity : AppCompatActivity() {
                 // build alert dialog
                 val dialogBuilder = AlertDialog.Builder(this@MainActivity)
 
-                // set message of alert dialog
+                    // set message of alert dialog
                     //  dialogBuilder.setMessage("Вы уверены что хотите выйти?")
                     // if the dialog is cancelable
                     .setCancelable(false)
                     // positive button text and action
-                    .setPositiveButton("Принять", DialogInterface.OnClickListener {
-                            dialog, id -> signOut()
+                    .setPositiveButton("Принять", DialogInterface.OnClickListener { dialog, id ->
+                        signOut()
                     })
                     // negative button text and action
-                    .setNegativeButton("Отменить", DialogInterface.OnClickListener {
-                            dialog, id -> dialog.cancel()
+                    .setNegativeButton("Отменить", DialogInterface.OnClickListener { dialog, id ->
+                        dialog.cancel()
                     })
 
                 // create dialog box
@@ -134,6 +134,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.filter(newText)
                 return false
             }
+
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
@@ -165,6 +166,7 @@ class MainActivity : AppCompatActivity() {
         })
 
     }
+
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -175,8 +177,9 @@ class MainActivity : AppCompatActivity() {
         val user = firebaseAuth.currentUser
         updateUI(user)
     }
+
     private fun signOut() {
-        if(changeNameListener != null) {
+        if (changeNameListener != null) {
             val user = firebaseAuth.currentUser
             database.getReference("Пользователи").child(user!!.phoneNumber!!).child("ИмяПользователя")
                 .removeEventListener(changeNameListener!!)
@@ -187,8 +190,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        if(user == null) {
-            if(intent.hasExtra(MAIN_MENU_PAGE_TAG)) {
+        if (user == null) {
+            if (intent.hasExtra(MAIN_MENU_PAGE_TAG)) {
                 intent.removeExtra(MAIN_MENU_PAGE_TAG)
             }
             val auth = Intent(this, AuthActivity::class.java)
@@ -200,14 +203,14 @@ class MainActivity : AppCompatActivity() {
         var flag = intent.getIntExtra(MAIN_MENU_PAGE_TAG, PLACES_PAGE)
 
         when (flag) {
-            PLACES_PAGE-> {
+            PLACES_PAGE -> {
                 btnnvg.visibility = View.VISIBLE
                 layout_user.visibility = View.INVISIBLE
                 layout_places.visibility = View.VISIBLE
                 btnnvg.menu.findItem(R.id.navigation_places).isEnabled = false
                 btnnvg.menu.findItem(R.id.navigation_user).isEnabled = true
             }
-            USER_PAGE-> {
+            USER_PAGE -> {
                 btnnvg.visibility = View.VISIBLE
                 layout_user.visibility = View.VISIBLE
                 layout_places.visibility = View.INVISIBLE

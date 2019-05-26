@@ -34,34 +34,38 @@ class SplashActivity : AppCompatActivity() {
         }
         if (user != null) {
             var ref = database.getReference("Пользователи").child(user.phoneNumber!!).child("Cтатус")
-                ref.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val flag = dataSnapshot.getValue(String::class.java)
-                        if (flag == "1") {
-                            goAuth()
-                        } else if (flag == "2") {
-                            goAdmin()
-                        }
-                        ref.removeEventListener(this)
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val flag = dataSnapshot.getValue(String::class.java)
+                    if (flag == "1") {
+                        goAuth()
+                    } else if (flag == "2") {
+                        goAdmin()
                     }
-                    override fun onCancelled(error: DatabaseError) {
-                        ref.removeEventListener(this)
-                    }
-                })
+                    ref.removeEventListener(this)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    ref.removeEventListener(this)
+                }
+            })
         } else {
             goAuth()
         }
     }
-    private fun goAuth(){
+
+    private fun goAuth() {
         val intent = Intent(this, AuthActivity::class.java)
         startActivity(intent)
         finish()
     }
-    private fun goAdmin(){
+
+    private fun goAdmin() {
         val intent = Intent(this, AdminActivity::class.java)
         startActivity(intent)
         finish()
     }
+
     fun isOnline(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = cm.activeNetworkInfo
@@ -76,8 +80,8 @@ class SplashActivity : AppCompatActivity() {
             // if the dialog is cancelable
             .setCancelable(false)
             // positive button text and action
-            .setPositiveButton("Ок", DialogInterface.OnClickListener {
-                    dialog, id -> dialog.cancel()
+            .setPositiveButton("Ок", DialogInterface.OnClickListener { dialog, id ->
+                dialog.cancel()
             })
         // create dialog box
         val alert = dialogBuilder.create()

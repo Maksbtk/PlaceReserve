@@ -52,7 +52,7 @@ class AuthActivity : AppCompatActivity() {
         if (!isOnline()) {
             Dialog()
         }
-        if(user != null) {
+        if (user != null) {
             val inte = Intent(this, MainActivity::class.java)
             startActivity(inte)
             finish()
@@ -102,7 +102,7 @@ class AuthActivity : AppCompatActivity() {
                 }
                 v.startAnimation(animAlpha)
                 resendVerificationCode(fieldPhoneNumber.text.toString(), resendToken)
-                buttonResend.isEnabled=false
+                buttonResend.isEnabled = false
             }
         })
 
@@ -208,11 +208,12 @@ class AuthActivity : AppCompatActivity() {
     }
 
     fun fixNumber(str: String): String {
-        if(str[0] == '8'){
+        if (str[0] == '8') {
             return str.substring(0, 0) + "+7" + str.substring(0 + 1)
         }
         return str
     }
+
     fun isOnline(): Boolean {
         val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = cm.activeNetworkInfo
@@ -227,8 +228,8 @@ class AuthActivity : AppCompatActivity() {
             // if the dialog is cancelable
             .setCancelable(false)
             // positive button text and action
-            .setPositiveButton("Ок", DialogInterface.OnClickListener {
-                    dialog, id -> dialog.cancel()
+            .setPositiveButton("Ок", DialogInterface.OnClickListener { dialog, id ->
+                dialog.cancel()
             })
         // create dialog box
         val alert = dialogBuilder.create()
@@ -237,6 +238,7 @@ class AuthActivity : AppCompatActivity() {
         // show alert dialog
         alert.show()
     }
+
     private fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -406,7 +408,7 @@ class AuthActivity : AppCompatActivity() {
                     buttonStartVerification, buttonVerifyPhone, buttonResend, fieldPhoneNumber,
                     fieldVerificationCode
                 )
-               // disableViews(buttonVerifyPhone)
+                // disableViews(buttonVerifyPhone)
                 Snackbar.make(layout_auth, "Ошибка", Snackbar.LENGTH_SHORT).show()
             }
             STATE_VERIFY_SUCCESS -> {
@@ -435,7 +437,7 @@ class AuthActivity : AppCompatActivity() {
 
         if (user != null) {
 
-            userName= fieldNameUser.text.toString()
+            userName = fieldNameUser.text.toString()
 
             val myRef = database.getReference("Пользователи").child(user.phoneNumber!!)
             myRef.child("ИмяПользователя").setValue(userName)

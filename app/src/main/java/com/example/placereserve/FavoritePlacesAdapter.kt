@@ -1,4 +1,5 @@
 package com.example.placereserve
+
 import android.content.Intent
 import java.util.ArrayList
 import android.support.v7.widget.RecyclerView
@@ -16,8 +17,8 @@ import kotlinx.android.synthetic.main.favorite_place_item.view.*
 class FavoritePlacesAdapter : RecyclerView.Adapter<FavoritePlacesAdapter.PlacesHolder>() {
     //создает ViewHolder и инициализирует views для списка
 
-     var favoritePlaces:MutableList<PlacesFavorite> = mutableListOf()
-     var SourceListFavorite:MutableList<PlacesFavorite> = mutableListOf()
+    var favoritePlaces: MutableList<PlacesFavorite> = mutableListOf()
+    var SourceListFavorite: MutableList<PlacesFavorite> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesHolder {
         return PlacesHolder(
@@ -26,10 +27,10 @@ class FavoritePlacesAdapter : RecyclerView.Adapter<FavoritePlacesAdapter.PlacesH
         )
     }
 
-    fun filter (query: String){
+    fun filter(query: String) {
         favoritePlaces.clear()
         SourceListFavorite.forEach({
-            if (it.nameF.toUpperCase().contains(query.toUpperCase()) || it.addressF.toUpperCase().contains((query.toUpperCase()))){
+            if (it.nameF.toUpperCase().contains(query.toUpperCase()) || it.addressF.toUpperCase().contains((query.toUpperCase()))) {
                 favoritePlaces.add(it)
             }
         })
@@ -62,7 +63,7 @@ class FavoritePlacesAdapter : RecyclerView.Adapter<FavoritePlacesAdapter.PlacesH
     }
 
     //внутренний класс ViewHolder описывает элементы представления списка и привязку их к RecyclerView
-    class PlacesHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    class PlacesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(favoritePlaces: PlacesFavorite) = with(itemView) {
             placesNameF.text = favoritePlaces.nameF

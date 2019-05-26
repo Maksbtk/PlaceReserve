@@ -1,4 +1,5 @@
 package com.example.placereserve
+
 import android.content.Intent
 import java.util.ArrayList
 import android.support.v7.widget.RecyclerView
@@ -14,8 +15,8 @@ import kotlinx.android.synthetic.main.activity_main.view.*
 class PlacesAdapter : RecyclerView.Adapter<PlacesAdapter.PlacesHolder>() {
     //создает ViewHolder и инициализирует views для списка
 
-    private var places:MutableList<Places> =   mutableListOf()
-    private var SourceList:MutableList<Places> = mutableListOf()
+    private var places: MutableList<Places> = mutableListOf()
+    private var SourceList: MutableList<Places> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesHolder {
         return PlacesHolder(
@@ -24,15 +25,16 @@ class PlacesAdapter : RecyclerView.Adapter<PlacesAdapter.PlacesHolder>() {
         )
     }
 
-    fun filter (query: String){
+    fun filter(query: String) {
         places.clear()
         SourceList.forEach({
-            if (it.name.toUpperCase().contains(query.toUpperCase()) || it.address.toUpperCase().contains((query.toUpperCase()))){
+            if (it.name.toUpperCase().contains(query.toUpperCase()) || it.address.toUpperCase().contains((query.toUpperCase()))) {
                 places.add(it)
             }
         })
         notifyDataSetChanged()
     }
+
     //связывает views с содержимым
     override fun onBindViewHolder(viewHolder: PlacesHolder, position: Int) {
 
@@ -63,7 +65,7 @@ class PlacesAdapter : RecyclerView.Adapter<PlacesAdapter.PlacesHolder>() {
     }
 
     //внутренний класс ViewHolder описывает элементы представления списка и привязку их к RecyclerView
-    class PlacesHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    class PlacesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(place: Places) = with(itemView) {
 

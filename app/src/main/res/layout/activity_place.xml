@@ -8,31 +8,36 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
         tools:context="com.example.placereserve.PlaceActivity"
-        android:id="@+id/place_layout">
-
+        android:id="@+id/place_layout"
+>
     <!-- Include activity info -->
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                 android:orientation="vertical">
+    <FrameLayout android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:orientation="vertical"
+    >
         <include layout="@layout/activity_place_info"/>
     </FrameLayout>
-
     <!-- Main Body for choose table -->
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/choose_layout">
-
+            android:id="@+id/choose_layout"
+    >
         <!-- Верхний headbar -->
-
         <!-- Поле с картой -->
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                      android:orientation="vertical" android:id="@+id/header_layout">
-
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:id="@+id/header_layout"
+        >
             <!-- Restaurant block-->
-            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            <FrameLayout android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
                          android:layout_marginBottom="6sp"
-                         android:orientation="vertical" android:id="@+id/header_block">
+                         android:orientation="vertical"
+                         android:id="@+id/header_block"
+            >
                 <!-- Инфа о ресторане -->
                 <LinearLayout
                         android:orientation="vertical"
@@ -41,8 +46,8 @@
                         android:layout_marginTop="13dp"
                         android:layout_marginEnd="10dp"
                         android:layout_gravity="top|right"
-                        android:id="@+id/restaurant_block">
-
+                        android:id="@+id/restaurant_block"
+                >
                     <!-- Название -->
                     <TextView
                             android:text="Default name"
@@ -53,7 +58,6 @@
                             android:textColor="@color/TextColorInPLaces"
                             android:id="@+id/restaurant_name_from_choose"
                     />
-
                     <!-- Адрес заведения -->
                     <TextView
                             android:text="Default address"
@@ -65,10 +69,8 @@
                             android:id="@+id/restaurant_address"
                     />
                 </LinearLayout>
-
                 <!-- Невероятная кнопка назад -->
                 <ImageButton
-
                         android:id="@+id/back_in_place_from_choose"
                         android:layout_gravity="top|left"
                         android:layout_marginTop="25dp"
@@ -79,11 +81,13 @@
                         android:layout_height="20dp"
                 />
             </FrameLayout>
-
             <!-- Time & Date picker, sit count -->
-            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            <FrameLayout android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
                          android:layout_marginBottom="10sp"
-                         android:orientation="vertical" android:id="@+id/second_block">
+                         android:orientation="vertical"
+                         android:id="@+id/second_block"
+            >
                 <!-- Кол-во мест -->
                 <TextView
                         android:text="- места"
@@ -95,11 +99,13 @@
                         android:textColor="@color/TextColorInPLaces"
                         android:id="@+id/sit_count"
                 />
-
                 <!-- Date & Picker -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                              android:orientation="horizontal" android:layout_marginStart="23dp"
-                              android:id="@+id/date_block">
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:orientation="horizontal"
+                              android:layout_marginStart="23dp"
+                              android:id="@+id/date_block"
+                >
                     <!-- date text -->
                     <TextView
                             android:text="01.01.1997"
@@ -109,9 +115,10 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:textColor="#6642B4"
-                            style="@style/Hyperlink"                            android:id="@+id/date_text"
-                            android:textColorLink="#6642B4"/>
-
+                            style="@style/Hyperlink"
+                            android:id="@+id/date_text"
+                            android:textColorLink="#6642B4"
+                    />
                     <!-- date icon -->
                     <ImageButton
                             app:srcCompat="@drawable/ic_date"
@@ -124,7 +131,6 @@
                             android:layout_height="18sp"
                             app:tint="@color/TextColorInPLaces"
                     />
-
                     <!-- Time text -->
                     <TextView
                             android:text="10:00"
@@ -137,7 +143,6 @@
                             android:textColor="#6642B4"
                             android:id="@+id/time_text"
                     />
-
                     <!-- Time icon -->
                     <ImageButton
                             app:srcCompat="@drawable/ic_time"
@@ -153,12 +158,14 @@
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
-        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                     android:orientation="vertical" android:id="@+id/map_layout">
+        <FrameLayout android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:orientation="vertical"
+                     android:id="@+id/map_layout"
+        >
             <include layout="@layout/map_view"/>
         </FrameLayout>
     </LinearLayout>
-
     <!-- Button -->
     <ImageButton
             android:layout_width="293dp"

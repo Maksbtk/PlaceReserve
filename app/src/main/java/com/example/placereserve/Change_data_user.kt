@@ -20,15 +20,15 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.android.synthetic.main.activity_changedata.*
 
-class Change_data_user : AppCompatActivity()  {
+class Change_data_user : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     val database = FirebaseDatabase.getInstance()
-    private var UserName: String= ""
+    private var UserName: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_changedata)
-        val animAlpha : Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
+        val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
         firebaseAuth = FirebaseAuth.getInstance()
         val user = firebaseAuth.currentUser
         if (!isOnline()) {
@@ -38,17 +38,17 @@ class Change_data_user : AppCompatActivity()  {
         if (user != null) {
             var ref = database.getReference("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
             ref.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        edit_name_user.setText(dataSnapshot.getValue(String::class.java))
-                        //after all, remove listener
-                        ref.removeEventListener(this)
-                    }
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    edit_name_user.setText(dataSnapshot.getValue(String::class.java))
+                    //after all, remove listener
+                    ref.removeEventListener(this)
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        // Failed to read value
-                        ref.removeEventListener(this)
-                    }
-                })
+                override fun onCancelled(error: DatabaseError) {
+                    // Failed to read value
+                    ref.removeEventListener(this)
+                }
+            })
         }
 
         save_userdata.setOnClickListener(object : View.OnClickListener {
@@ -60,7 +60,8 @@ class Change_data_user : AppCompatActivity()  {
                     return
                 }
                 if (edit_name_user.text.isEmpty()) {
-                    Toast.makeText(this@Change_data_user.applicationContext, "Поле не заполнено!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@Change_data_user.applicationContext, "Поле не заполнено!", Toast.LENGTH_SHORT)
+                        .show()
                 } else {
 
                     UserName = edit_name_user.text.toString()
@@ -93,8 +94,8 @@ class Change_data_user : AppCompatActivity()  {
             // if the dialog is cancelable
             .setCancelable(false)
             // positive button text and action
-            .setPositiveButton("Ок", DialogInterface.OnClickListener {
-                    dialog, id -> dialog.cancel()
+            .setPositiveButton("Ок", DialogInterface.OnClickListener { dialog, id ->
+                dialog.cancel()
             })
         // create dialog box
         val alert = dialogBuilder.create()

@@ -6,9 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
-        tools:context=".MainActivity" android:id="@+id/favorite_framelayout"
+        tools:context=".MainActivity"
+        android:id="@+id/favorite_framelayout"
 >
-
     <TextView
             android:text="Избранные заведения"
             android:textSize="30sp"
@@ -20,7 +20,6 @@
             android:layout_marginStart="10dp"
             android:id="@+id/favorite_title"
     />
-
     <ImageButton
             app:srcCompat="@drawable/ico_backk"
             android:id="@+id/back_in_useer"
@@ -32,7 +31,6 @@
             android:layout_marginStart="10dp"
             android:layout_height="42dp"
     />
-
     <android.support.v7.widget.RecyclerView
             android:id="@+id/favorite_places_list"
             android:layout_height="match_parent"
@@ -41,5 +39,4 @@
             android:background="@color/colorPrimaryDark"
             android:layout_marginTop="90dp"
     />
-
 </FrameLayout>

@@ -16,16 +16,13 @@ import android.support.design.widget.Snackbar
 import java.util.*
 import android.text.format.DateUtils
 import android.widget.ImageView
-import android.widget.LinearLayout
+import com.example.placereserve.PlacesData.favoritePlacesList
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.activity_place.*
 import kotlinx.android.synthetic.main.activity_place_info.*
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.MemoryPolicy
 import java.lang.Exception
 import kotlin.collections.ArrayList
@@ -33,7 +30,7 @@ import kotlin.collections.ArrayList
 class PlaceActivity : AppCompatActivity() {
 
     private val TAG = "PlaceActivity"
-    private lateinit var firebaseAuth: FirebaseAuth
+    lateinit var firebaseAuth: FirebaseAuth
 
     var calendar = Calendar.getInstance()
     val database = FirebaseDatabase.getInstance()
@@ -49,7 +46,6 @@ class PlaceActivity : AppCompatActivity() {
         Calendar.YEAR
     )
     var time = "" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE)
-    public lateinit var firebaseAuth: FirebaseAuth
 
     override fun onDestroy() {
         mapTarget = null

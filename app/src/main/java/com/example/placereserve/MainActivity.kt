@@ -36,6 +36,18 @@ class MainActivity : AppCompatActivity() {
     // firebase listeners
     private var changeNameListener: ValueEventListener? = null
 
+    // LeakCanary fixes
+    override fun onDestroy() {
+        super.onDestroy()
+
+        if (changeNameListener != null) {
+            val user = firebaseAuth.currentUser
+            database.getReference("Пользователи").child(user!!.phoneNumber!!).child("ИмяПользователя")
+                .removeEventListener(changeNameListener!!)
+            changeNameListener = null
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)

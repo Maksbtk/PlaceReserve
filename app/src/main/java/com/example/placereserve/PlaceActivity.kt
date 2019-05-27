@@ -114,7 +114,7 @@ class PlaceActivity : AppCompatActivity() {
                     ref.child("Заведения").child("Йохан Пивохан")
                         .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
                         .child("Бронь").child("Дата").child(date).child("Забронирован")
-                        .addValueEventListener(object : ValueEventListener {
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(dataSnapshot: DataSnapshot) {
                                 reserve = dataSnapshot.getValue().toString()
                             }
@@ -149,7 +149,7 @@ class PlaceActivity : AppCompatActivity() {
                             .child(intent.getStringExtra("place_name")).child(date).setValue(time)
 
                         ref.child("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
-                            .addValueEventListener(object : ValueEventListener {
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                                     ref.child("Заведения").child(intent.getStringExtra("place_name"))
                                         .child("Столы").child("Номер стола")
@@ -168,7 +168,7 @@ class PlaceActivity : AppCompatActivity() {
                             .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
                             .child("Бронь").child("Дата").child(date)
                             .child("Номер клиента")
-                            .addValueEventListener(object : ValueEventListener {
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                                     if (dataSnapshot.getValue().toString() == user!!.phoneNumber.toString()) {
                                         mapListener!!.bitmapChoosed!!.bitmap = TableIconsCache.busyIconBmp

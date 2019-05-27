@@ -236,6 +236,9 @@ class PlaceActivity : AppCompatActivity() {
                 calendar.timeInMillis,
                 DateUtils.FORMAT_NUMERIC_DATE or DateUtils.FORMAT_SHOW_YEAR
             ))
+        if(mapListener != null) {
+            mapListener!!.updateTables()
+        }
     }
 
     private fun updateTime() {
@@ -245,6 +248,9 @@ class PlaceActivity : AppCompatActivity() {
                 calendar.timeInMillis,
                 DateUtils.FORMAT_SHOW_TIME
             ))
+        if(mapListener != null) {
+            mapListener!!.updateTables()
+        }
     }
 
     // отображаем диалоговое окно для выбора даты

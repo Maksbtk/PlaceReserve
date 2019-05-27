@@ -27,13 +27,10 @@ class FavoritePlacesAdapter : RecyclerView.Adapter<FavoritePlacesAdapter.PlacesH
         )
     }
 
-    fun filter(query: String) {
+    fun filter() {
         favoritePlaces.clear()
-        SourceListFavorite.forEach({
-            if (it.nameF.toUpperCase().contains(query.toUpperCase()) || it.addressF.toUpperCase().contains((query.toUpperCase()))) {
-                favoritePlaces.add(it)
-            }
-        })
+        favoritePlaces.addAll(SourceListFavorite)
+
         notifyDataSetChanged()
     }
 
@@ -57,7 +54,7 @@ class FavoritePlacesAdapter : RecyclerView.Adapter<FavoritePlacesAdapter.PlacesH
     fun refreshFavoritePlaces(favoritePlaces: List<PlacesFavorite>) {
         SourceListFavorite.clear()
         SourceListFavorite.addAll(favoritePlaces)
-        filter("")
+        filter()
         //this.places = places
         notifyDataSetChanged()
     }

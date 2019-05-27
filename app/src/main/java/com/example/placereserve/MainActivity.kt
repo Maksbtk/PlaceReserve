@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
         val goToFavoritePlaces = findViewById<View>(R.id.favoriteBtn) as ImageButton
         goToFavoritePlaces.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
+                v.startAnimation(animAlpha)
                 val favoriteIntent = Intent(this@MainActivity, FavoritePlaces::class.java)
                 startActivity(favoriteIntent)
             }

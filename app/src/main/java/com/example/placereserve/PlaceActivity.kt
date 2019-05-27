@@ -323,6 +323,7 @@ class PlaceActivity : AppCompatActivity() {
                                         "Добавлено в избранные",
                                         Snackbar.LENGTH_SHORT
                                     ).show()
+                                    adapterFav.refreshFavoritePlaces(PlacesData.getFavoritePlaces())
                                 } else {
                                     myRef.removeValue()
                                     favoritePlacesList.remove(

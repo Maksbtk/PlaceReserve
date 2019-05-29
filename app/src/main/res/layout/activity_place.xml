@@ -80,6 +80,17 @@
                         android:layout_marginStart="22dp"
                         android:layout_height="20dp"
                 />
+                <ImageButton
+                        android:id="@+id/admin_exit_btn"
+                        android:layout_gravity="top|left"
+                        android:layout_marginTop="22dp"
+                        android:tint="@color/TextColorInPLaces"
+                        android:background="@drawable/admin_exit"
+                        android:layout_width="82dp"
+                        android:visibility="invisible"
+                        android:layout_marginStart="20dp"
+                        android:layout_height="29.38dp"
+                />admin_exit
             </FrameLayout>
             <!-- Time & Date picker, sit count -->
             <FrameLayout android:layout_width="match_parent"

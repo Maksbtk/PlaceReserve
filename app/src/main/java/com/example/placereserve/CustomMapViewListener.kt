@@ -42,7 +42,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
 
     fun checkDateReservationUser (){
         var ref = database.getReference("Пользователи").child(user!!.phoneNumber!!).child("Активные брони")
-            .child(placeActivity.intent.getStringExtra("place_name")).child(placeActivity.date)
+            .child(placeActivity.intent.getStringExtra("place_name")).child(placeActivity.intent.getStringExtra("place_address")).child(placeActivity.date)
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 checkDateReservationUser = dataSnapshot.getValue().toString()
@@ -79,15 +79,16 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
             /**
              * Если в БД нет нужного элемента, то Firebase возвращает просто 'null'. так что чекать через isEmpty не оч
              */
-            if(checkDateReservationUser != "null") { // Если челик уже занял столик
-                Toast.makeText(
-                    placeActivity.applicationContext,
-                    "Вы уже забронировали стол на " + placeActivity.date,
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnBitmapClickListener
+            if (placeActivity.intent.getStringExtra("place_status")=="1") {
+                if (checkDateReservationUser != "null") { // Если челик уже занял столик
+                    Toast.makeText(
+                        placeActivity.applicationContext,
+                        "Вы уже забронировали стол на " + placeActivity.date,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnBitmapClickListener
+                }
             }
-
             var tagValue = PlaceActivity.SELECTED
             val choosedId = id
 

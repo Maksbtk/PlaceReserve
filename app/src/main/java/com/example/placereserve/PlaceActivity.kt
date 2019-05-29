@@ -11,8 +11,11 @@ import android.widget.Toast
 import com.onlylemi.mapview.library.MapView
 import android.app.TimePickerDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import java.util.*
 import android.text.format.DateUtils
 import android.widget.ImageView
@@ -106,6 +109,36 @@ class PlaceActivity : AppCompatActivity() {
                 setTime(v)
             }
         })
+
+        admin_exit_btn.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                v.startAnimation(animAlpha)
+
+                // build alert dialog
+                val dialogBuilder = AlertDialog.Builder(this@PlaceActivity)
+
+                    // set message of alert dialog
+                      dialogBuilder.setMessage("Вы больше не сможете войти под учетной записью администратора заведения")
+                    // if the dialog is cancelable
+                    .setCancelable(false)
+                    // positive button text and action
+                    .setPositiveButton("Принять", DialogInterface.OnClickListener { dialog, id ->
+                        signOut()
+                    })
+                    // negative button text and action
+                    .setNegativeButton("Отменить", DialogInterface.OnClickListener { dialog, id ->
+                        dialog.cancel()
+                    })
+
+                // create dialog box
+                val alert = dialogBuilder.create()
+                // set title for alert dialog box
+                alert.setTitle("Вы уверены что хотите выйти?")
+                // show alert dialog
+                alert.show()
+            }
+        })
+
         btn_confirm.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 if (mapListener!!.bitmapChoosed != null) {
@@ -145,8 +178,9 @@ class PlaceActivity : AppCompatActivity() {
 //                            .child(intent.getStringExtra("place_name")).child("Дата")
 //                            .child(date).setValue(date)
 
+
                         ref.child("Пользователи").child(user.phoneNumber!!).child("Активные брони")
-                            .child(intent.getStringExtra("place_name")).child(date).setValue(time)
+                            .child(intent.getStringExtra("place_name")).child(intent.getStringExtra("place_address")).child(date).setValue(time)
 
                         ref.child("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
                             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -234,6 +268,28 @@ class PlaceActivity : AppCompatActivity() {
             ))
         if(mapListener != null) {
             mapListener!!.updateTables()
+        }
+    }
+    private var changeNameListener: ValueEventListener? = null
+
+    private fun signOut() {
+        if (changeNameListener != null) {
+            val user = firebaseAuth.currentUser
+            database.getReference("Пользователи").child(user!!.phoneNumber!!).child("ИмяПользователя")
+                .removeEventListener(changeNameListener!!)
+            changeNameListener = null
+        }
+        firebaseAuth.signOut()
+        val user = firebaseAuth.currentUser
+
+        if (user == null) {
+            if (intent.hasExtra(MainActivity.MAIN_MENU_PAGE_TAG)) {
+                intent.removeExtra(MainActivity.MAIN_MENU_PAGE_TAG)
+            }
+            val auth = Intent(this, AuthActivity::class.java)
+            startActivity(auth)
+            finish()
+            return
         }
     }
 
@@ -376,6 +432,20 @@ class PlaceActivity : AppCompatActivity() {
                     }
                 }
             }
+            CHOOSE_PAGE_ADMIN -> {
+                restaurant_name_from_choose.text = intent.getStringExtra("place_name")
+                restaurant_address.text = intent.getStringExtra("place_address")
+
+                when (intent.getStringExtra("place_name")) {
+                    "Йохан Пивохан" -> {
+                        loadMap("test_map1.png")
+
+                    }
+                    "Карл у Клары" -> {
+                        loadMap("test_map_2.png")
+                    }
+                }
+            }
         }
     }
 
@@ -396,7 +466,14 @@ class PlaceActivity : AppCompatActivity() {
         return arr
     }
     fun updatePageUI(reparse: Boolean) {
-        var flag = intent.getIntExtra(PAGE_TAG, INFO_PAGE)
+        var flag : Int
+        if (intent.getStringExtra("place_status")=="2") {
+            flag = intent.getIntExtra(PAGE_TAG, CHOOSE_PAGE_ADMIN)
+
+        } else  {
+            flag = intent.getIntExtra(PAGE_TAG, INFO_PAGE)
+        }
+
 
         when (flag) {
             INFO_PAGE -> {
@@ -406,6 +483,15 @@ class PlaceActivity : AppCompatActivity() {
             CHOOSE_PAGE -> {
                 choose_layout.visibility = View.VISIBLE
                 place_info_layout.visibility = View.INVISIBLE
+                updateDate()
+                updateTime()
+            }
+            CHOOSE_PAGE_ADMIN -> {
+                choose_layout.visibility = View.VISIBLE
+                place_info_layout.visibility = View.INVISIBLE
+                back_in_place_from_choose.visibility = View.INVISIBLE
+                admin_exit_btn.visibility = View.VISIBLE
+                sit_count.visibility = View.INVISIBLE
                 updateDate()
                 updateTime()
             }
@@ -474,7 +560,7 @@ class PlaceActivity : AppCompatActivity() {
         const val PAGE_TAG = "page"
         const val INFO_PAGE = 1
         const val CHOOSE_PAGE = 2
-
+        const val CHOOSE_PAGE_ADMIN = 3
         const val SELECTED_TAG = "sit_selected"
         const val UNSELECTED = 0
         const val SELECTED = 1

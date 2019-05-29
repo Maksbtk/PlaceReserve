@@ -16,6 +16,7 @@ import android.content.DialogInterface
 import android.net.ConnectivityManager
 import android.support.v7.app.AlertDialog
 import android.widget.Toast
+import kotlinx.android.synthetic.main.places_item.view.*
 import kotlin.concurrent.thread
 
 
@@ -61,7 +62,10 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun goAdmin() {
-        val intent = Intent(this, AdminActivity::class.java)
+        val intent: Intent = Intent(this, PlaceActivity::class.java)
+        intent.putExtra("place_name","Йохан Пивохан" )
+        intent.putExtra("place_address", "Проспект Кирова, 58")
+        intent.putExtra("place_status", "2")
         startActivity(intent)
         finish()
     }

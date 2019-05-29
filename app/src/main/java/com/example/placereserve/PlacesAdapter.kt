@@ -45,6 +45,7 @@ class PlacesAdapter : RecyclerView.Adapter<PlacesAdapter.PlacesHolder>() {
             val intent: Intent = Intent(viewHolder.itemView.context, PlaceActivity::class.java)
             intent.putExtra("place_name", viewHolder.itemView.placesName.text)
             intent.putExtra("place_address", viewHolder.itemView.placesAdress.text)
+            intent.putExtra("place_status", "1")
             viewHolder.itemView.context.startActivity(intent)
 
 

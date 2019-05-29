@@ -197,6 +197,7 @@
             android:layout_gravity="bottom|start"
             app:srcCompat="@drawable/btn_rem_ico"
             android:scaleType="fitXY"
+            android:visibility="invisible"
             android:background="@android:color/transparent"
     />
 </FrameLayout>

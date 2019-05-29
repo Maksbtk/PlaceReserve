@@ -98,8 +98,8 @@ object PlacesData {
                                                         PlacesHistory(
                                                             placeHis,
                                                             addressHis,
-                                                            dateHis,
                                                             maskDateHis,
+                                                            timeHis,
                                                             R.drawable.background_history
                                                         )
                                                     )

@@ -109,7 +109,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     updateTable(choosedTableNumber) // обновляем текущий статус с БД
                     bitmapChoosed = bitmapLayer // и обозначем новый стол занятым
                     bitmapChoosed!!.bitmap = choosedIconBmp
-                    placeActivity.sit_count.text = "1 место"
+                    placeActivity.sit_count.text = "Стол выбран"
                     choosedTableNumber = choosedId
 
                     Toast.makeText(

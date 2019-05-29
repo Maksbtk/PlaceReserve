@@ -9,24 +9,24 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.arch.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_changedata.back_in_useer
-import kotlinx.android.synthetic.main.activity_favoriteplaces.*
+import kotlinx.android.synthetic.main.activity_history_places.*
 
-class FavoritePlaces : AppCompatActivity() {
+class HistoryPlaces : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_favoriteplaces)
+        setContentView(R.layout.activity_history_places)
 
         val userViewModel by lazy { ViewModelProviders.of(this).get(PlacesViewModel::class.java) }
-        val adapter = FavoritePlacesAdapter()
+        val adapter = HistoryPlacesAdapter()
         val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
 
-        favorite_places_list.layoutManager = LinearLayoutManager(this)
-        favorite_places_list.adapter = adapter
+        history_places_list.layoutManager = LinearLayoutManager(this)
+        history_places_list.adapter = adapter
 
-        userViewModel.getListFavoritePlaces().observe(this, Observer {
+        userViewModel.getListHistoryPlaces().observe(this, Observer {
             it?.let {
-                adapter.refreshFavoritePlaces(it)
+                adapter.refreshHistoryPlaces(it)
                 adapter.notifyDataSetChanged()
             }
         })
@@ -43,14 +43,14 @@ class FavoritePlaces : AppCompatActivity() {
         super.onStart()
 
         val userViewModel by lazy { ViewModelProviders.of(this).get(PlacesViewModel::class.java) }
-        val adapter = FavoritePlacesAdapter()
+        val adapter = HistoryPlacesAdapter()
 
-        favorite_places_list.layoutManager = LinearLayoutManager(this)
-        favorite_places_list.adapter = adapter
+        history_places_list.layoutManager = LinearLayoutManager(this)
+        history_places_list.adapter = adapter
 
-        userViewModel.getListFavoritePlaces().observe(this, Observer {
+        userViewModel.getListHistoryPlaces().observe(this, Observer {
             it?.let {
-                adapter.refreshFavoritePlaces(it)
+                adapter.refreshHistoryPlaces(it)
                 adapter.notifyDataSetChanged()
             }
         })

@@ -28,7 +28,7 @@
                 android:layout_alignEnd="@+id/imageFav"
         />
         <TextView
-                android:id="@+id/placesAdressF"
+                android:id="@+id/placesAddressF"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="address"

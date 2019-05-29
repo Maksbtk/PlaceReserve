@@ -407,7 +407,6 @@ class PlaceActivity : AppCompatActivity() {
 
                 //типо loading images
 
-
                 var images = getImages()
                 val photos = images.size
                 val width = resources.getDimension(R.dimen.imageview_width)

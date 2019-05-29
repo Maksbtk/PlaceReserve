@@ -9,11 +9,16 @@ import com.google.firebase.database.ValueEventListener
 object PlacesData {
 
     val favoritePlacesList: MutableList<PlacesFavorite> = mutableListOf()
+    val historyPlacesList: MutableList<PlacesHistory> = mutableListOf()
 
     private lateinit var firebaseAuth: FirebaseAuth
 
-    fun getData(str1: String, str2: String) {
-        favoritePlacesList.add(PlacesFavorite(str1, str2, R.drawable.background_favorite_places))
+    fun getFavoriteData(name: String, address: String) {
+        favoritePlacesList.add(PlacesFavorite(name, address, R.drawable.background_favorite_places))
+    }
+
+    fun getHistoryData(name: String, address: String, date: String, time: String) {
+        historyPlacesList.add(PlacesHistory(name, address, date, time, R.drawable.background_history))
     }
 
     fun getPlaces(): List<Places> {
@@ -32,9 +37,7 @@ object PlacesData {
         val database = FirebaseDatabase.getInstance()
         firebaseAuth = FirebaseAuth.getInstance()
         val user = firebaseAuth.currentUser
-//        if ( favoritePlacesList.size != 0) {
-//            favoritePlacesList.clear()
-//        }
+
         if (user != null) {
             val myRef = database.getReference("Пользователи").child(user.phoneNumber!!).child("ИзбранныеЗаведения")
             myRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -50,7 +53,7 @@ object PlacesData {
                                 )
                             )
                         ) {
-                            getData(place, addressFav)
+                            getFavoriteData(place, addressFav)
                         }
                     }
                 }
@@ -60,5 +63,68 @@ object PlacesData {
             })
         }
         return favoritePlacesList
+    }
+
+    fun getHistoryPlaces(): List<PlacesHistory> {
+        val database = FirebaseDatabase.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance()
+        val user = firebaseAuth.currentUser
+
+        if (user != null) {
+            val myRef = database.getReference("Пользователи")
+                .child(user.phoneNumber!!)
+                .child("Активные брони")
+            myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (ds_1 in dataSnapshot.children) {
+                        var placeHis = ds_1.key.toString()
+                        val myRef_1 = database.getReference("Пользователи")
+                            .child(user.phoneNumber!!)
+                            .child("Активные брони").child(placeHis)
+                        myRef_1.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                for (ds_2 in dataSnapshot.children) {
+                                    var addressHis = ds_2.key.toString()
+                                    val myRef_2 = database.getReference("Пользователи")
+                                        .child(user.phoneNumber!!)
+                                        .child("Активные брони").child(placeHis).child(addressHis)
+                                    myRef_2.addListenerForSingleValueEvent(object : ValueEventListener {
+                                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                            for (ds_3 in dataSnapshot.children) {
+                                                var dateHis = ds_3.key.toString()
+                                                var timeHis = ds_3.getValue().toString()
+                                                var maskDateHis = dateHis.replace(' ', '/')
+                                                if (!historyPlacesList.contains(
+                                                        PlacesHistory(
+                                                            placeHis,
+                                                            addressHis,
+                                                            dateHis,
+                                                            maskDateHis,
+                                                            R.drawable.background_history
+                                                        )
+                                                    )
+                                                ) {
+                                                    getHistoryData(placeHis, addressHis, maskDateHis, timeHis)
+                                                }
+                                            }
+                                        }
+
+                                        override fun onCancelled(databaseError: DatabaseError) {
+                                        }
+                                    })
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                            }
+                        })
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
+        }
+        return historyPlacesList
     }
 }

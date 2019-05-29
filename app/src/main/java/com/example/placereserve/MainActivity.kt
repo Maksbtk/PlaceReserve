@@ -103,6 +103,15 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        val goToHistoryPlaces = findViewById<View>(R.id.HistoryButton) as ImageButton
+        goToHistoryPlaces.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                v.startAnimation(animAlpha)
+                val historyIntent = Intent(this@MainActivity, HistoryPlaces::class.java)
+                startActivity(historyIntent)
+            }
+        })
+
         signOut.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)

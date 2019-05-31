@@ -78,7 +78,6 @@ class SplashActivity : AppCompatActivity() {
 
     fun Dialog() {
         val dialogBuilder = AlertDialog.Builder(this@SplashActivity)
-
         // set message of alert dialog
         dialogBuilder.setMessage("Проверьте подключение к WiFi или сотовой сети")
             // if the dialog is cancelable

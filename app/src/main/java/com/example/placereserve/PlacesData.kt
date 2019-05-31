@@ -17,8 +17,8 @@ object PlacesData {
         favoritePlacesList.add(PlacesFavorite(name, address, R.drawable.background_favorite_places))
     }
 
-    fun getHistoryData(name: String, address: String, date: String, time: String) {
-        historyPlacesList.add(PlacesHistory(name, address, date, time, R.drawable.background_history))
+    fun getHistoryData(name: String, address: String, date: String, time: String, table: String) {
+        historyPlacesList.add(PlacesHistory(name, address, date, time, R.drawable.background_history,table))
     }
 
     fun getPlaces(): List<Places> {
@@ -89,22 +89,25 @@ object PlacesData {
                                         .child(user.phoneNumber!!)
                                         .child("Активные брони").child(placeHis).child(addressHis)
                                     myRef_2.addListenerForSingleValueEvent(object : ValueEventListener {
-                                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        override fun onDataChange (dataSnapshot: DataSnapshot) {
                                             for (ds_3 in dataSnapshot.children) {
                                                 var dateHis = ds_3.key.toString()
-                                                var timeHis = ds_3.getValue().toString()
-                                                var maskDateHis = dateHis.replace(' ', '/')
+                                                var timeHis = ds_3.child("Время").getValue().toString()
+                                                var tableNumber = ds_3.child("НомерСтола").getValue().toString()
+
+
                                                 if (!historyPlacesList.contains(
                                                         PlacesHistory(
                                                             placeHis,
                                                             addressHis,
-                                                            maskDateHis,
+                                                            dateHis,
                                                             timeHis,
-                                                            R.drawable.background_history
+                                                            R.drawable.background_history,
+                                                            tableNumber
                                                         )
                                                     )
                                                 ) {
-                                                    getHistoryData(placeHis, addressHis, maskDateHis, timeHis)
+                                                    getHistoryData(placeHis, addressHis, dateHis, timeHis,tableNumber)
                                                 }
                                             }
                                         }

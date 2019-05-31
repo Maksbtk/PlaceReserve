@@ -20,5 +20,6 @@ data class PlacesHistory(
     val addressH: String,
     val dateH: String,
     val timeH: String,
-    val imageH: Int
+    val imageH: Int,
+    val table :String
 )

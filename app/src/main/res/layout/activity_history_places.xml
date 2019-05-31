@@ -19,16 +19,28 @@
             android:layout_height="wrap_content"
             android:id="@+id/history_title"
     />
+    <TextView
+            android:text="У вас пока нет броней."
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:textColor="@color/TextColorInPLaces"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/inform"
+    />
     <ImageButton
             android:id="@+id/back_in_useer"
             android:layout_gravity="top|left"
             android:layout_marginTop="31dp"
+
             android:tint="@color/TextColorInPLaces"
             android:background="@drawable/ico_backk"
             android:layout_width="13dp"
             android:layout_height="20dp"
             android:layout_marginStart="15dp"
     />
+
     <android.support.v7.widget.RecyclerView
             android:id="@+id/history_places_list"
             android:layout_height="match_parent"

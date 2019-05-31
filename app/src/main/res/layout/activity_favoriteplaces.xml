@@ -31,6 +31,16 @@
             android:layout_marginStart="15dp"
 
     />
+    <TextView
+            android:text="У вас пока нет избранных заведений."
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:textColor="@color/TextColorInPLaces"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/informm"
+    />
     <android.support.v7.widget.RecyclerView
             android:id="@+id/favorite_places_list"
             android:layout_height="match_parent"

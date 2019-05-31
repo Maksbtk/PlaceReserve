@@ -18,6 +18,7 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import java.util.*
 import android.text.format.DateUtils
+import android.widget.FrameLayout
 import android.widget.ImageView
 import com.example.placereserve.PlacesData.favoritePlacesList
 import com.google.firebase.auth.FirebaseAuth
@@ -59,7 +60,7 @@ class PlaceActivity : AppCompatActivity() {
         //DebugApp.getRefWatcher(this).watch(this) // LeakCanary test
         super.onDestroy()
     }
-
+    var id_stola = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place)
@@ -138,7 +139,7 @@ class PlaceActivity : AppCompatActivity() {
                 alert.show()
             }
         })
-
+        val adapterHis = HistoryPlacesAdapter()
         btn_confirm.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 if (mapListener!!.bitmapChoosed != null) {
@@ -179,8 +180,10 @@ class PlaceActivity : AppCompatActivity() {
 //                            .child(date).setValue(date)
 
 
-                        ref.child("Пользователи").child(user.phoneNumber!!).child("Активные брони")
-                            .child(intent.getStringExtra("place_name")).child(intent.getStringExtra("place_address")).child(date).setValue(time)
+                       var r =  ref.child("Пользователи").child(user.phoneNumber!!).child("Активные брони")
+                            .child(intent.getStringExtra("place_name")).child(intent.getStringExtra("place_address")).child(date)
+                        r.child("НомерСтола").setValue(id_stola.toString())
+                        r.child("Время").setValue(time)
 
                         ref.child("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
                             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -207,6 +210,7 @@ class PlaceActivity : AppCompatActivity() {
                                     if (dataSnapshot.getValue().toString() == user!!.phoneNumber.toString()) {
                                         mapListener!!.bitmapChoosed!!.bitmap = TableIconsCache.busyIconBmp
                                         mapView!!.refresh()
+
                                         Toast.makeText(
                                             this@PlaceActivity,
                                             "Вы забронировали стол на $date в $time",
@@ -214,14 +218,21 @@ class PlaceActivity : AppCompatActivity() {
                                         ).show()
 
 
+                                        PlacesData.historyPlacesList.add(PlacesHistory( intent.getStringExtra("place_name"),
+                                            intent.getStringExtra("place_address"),date
+                                            ,time,R.drawable.background_history,
+                                           id_stola.toString()))
+                                        adapterHis.refreshHistoryPlaces(PlacesData.getHistoryPlaces())
+                                        val goHis = Intent(this@PlaceActivity, HistoryPlaces::class.java)
+                                        startActivity(goHis)
                                         finish()
 
                                     } else {
                                         mapView!!.refresh()
-                                        Toast.makeText(
-                                            this@PlaceActivity,
+                                        Snackbar.make(
+                                            place_info_layout,
                                             "К сожалению, кто-то забронировал раньше Вас. Выберите, пожалуйста, другой стол.",
-                                            Toast.LENGTH_SHORT
+                                            Snackbar.LENGTH_SHORT
                                         ).show()
                                     }
                                 }
@@ -232,6 +243,7 @@ class PlaceActivity : AppCompatActivity() {
                             })
                     }
                 }
+
             }
         })
         updatePageUI(true)
@@ -260,6 +272,7 @@ class PlaceActivity : AppCompatActivity() {
         }
 
     private fun updateDate() {
+        sit_count.text = ""
         date_text!!.text =
             (DateUtils.formatDateTime(
                 this,
@@ -429,6 +442,9 @@ class PlaceActivity : AppCompatActivity() {
                     "Карл у Клары" -> {
                         loadMap("test_map_2.png")
                     }
+                    else ->{
+                        loadMap("r00.png")
+                    }
                 }
             }
             CHOOSE_PAGE_ADMIN -> {
@@ -442,6 +458,9 @@ class PlaceActivity : AppCompatActivity() {
                     }
                     "Карл у Клары" -> {
                         loadMap("test_map_2.png")
+                    }
+                    else ->{
+                        loadMap("r00.png")
                     }
                 }
             }
@@ -459,7 +478,7 @@ class PlaceActivity : AppCompatActivity() {
                 arr= arrayListOf(R.drawable.karl1, R.drawable.karl2)
             }
             else -> {
-                arr =  arrayListOf(R.drawable.yohan1)
+                arr =  arrayListOf(R.drawable.r0)
             }
         }
         return arr

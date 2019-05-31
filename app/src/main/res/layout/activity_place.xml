@@ -101,7 +101,7 @@
             >
                 <!-- Кол-во мест -->
                 <TextView
-                        android:text="- места"
+                        android:text=""
                         android:textSize="18sp"
                         android:layout_marginEnd="10dp"
                         android:layout_gravity="right"

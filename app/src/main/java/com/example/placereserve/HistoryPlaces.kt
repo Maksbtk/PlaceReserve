@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.arch.lifecycle.Observer
+import com.example.placereserve.PlacesData.historyPlacesList
 import kotlinx.android.synthetic.main.activity_changedata.back_in_useer
 import kotlinx.android.synthetic.main.activity_history_places.*
 
@@ -35,9 +36,11 @@ class HistoryPlaces : AppCompatActivity() {
         back_in_useer.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
+
                 finish()
             }
         })
+
     }
 
     override fun onStart() {
@@ -49,6 +52,14 @@ class HistoryPlaces : AppCompatActivity() {
         history_places_list.layoutManager = LinearLayoutManager(this)
         history_places_list.adapter = adapter
 
+        if (historyPlacesList.size==0){
+            inform.visibility = View.VISIBLE
+            history_places_list.visibility = View.INVISIBLE
+        }
+        else{
+            inform.visibility = View.INVISIBLE
+            history_places_list.visibility = View.VISIBLE
+        }
         userViewModel.getListHistoryPlaces().observe(this, Observer {
             it?.let {
                 adapter.refreshHistoryPlaces(it)

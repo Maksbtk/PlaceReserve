@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import android.arch.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_changedata.back_in_useer
 import kotlinx.android.synthetic.main.activity_favoriteplaces.*
+import kotlinx.android.synthetic.main.activity_history_places.*
 
 class FavoritePlaces : AppCompatActivity() {
 
@@ -44,6 +45,15 @@ class FavoritePlaces : AppCompatActivity() {
 
         val userViewModel by lazy { ViewModelProviders.of(this).get(PlacesViewModel::class.java) }
         val adapter = FavoritePlacesAdapter()
+
+        if (PlacesData.favoritePlacesList.size==0){
+            informm.visibility = View.VISIBLE
+            favorite_places_list.visibility = View.INVISIBLE
+        }
+        else{
+            informm.visibility = View.INVISIBLE
+            favorite_places_list.visibility = View.VISIBLE
+        }
 
         favorite_places_list.layoutManager = LinearLayoutManager(this)
         favorite_places_list.adapter = adapter

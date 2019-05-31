@@ -60,6 +60,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
      * Создаем столы на карте. ПРОСТО создаем столы на карте, без всяких проверок в БД.
      * Обновление карты не производятся, делайте вручную.
      */
+
     private fun createTable(id:Int, x:Float, y:Float) {
         if (!isLoader) return
         var bitmapLayer = BitmapLayer(currentMap, freeIconBmp) // default free table
@@ -69,7 +70,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
             if (bitmapLayer.bitmap == busyIconBmp){ // Если стол занят другим членом
                 Toast.makeText(
                     placeActivity.applicationContext,
-                    "К сожалению, кто-то забронировал раньше Вас. Выберите, пожалуйста, другой стол.",
+                    "Этот стол занят, выберите другой стол.",
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnBitmapClickListener
@@ -81,9 +82,11 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
              */
             if (placeActivity.intent.getStringExtra("place_status")=="1") {
                 if (checkDateReservationUser != "null") { // Если челик уже занял столик
+
+                    var maskDateHis = placeActivity.date.replace(' ', '/')
                     Toast.makeText(
                         placeActivity.applicationContext,
-                        "Вы уже забронировали стол на " + placeActivity.date,
+                        "Вы уже забронировали 1 стол на эту дату ($maskDateHis).",
                         Toast.LENGTH_SHORT
                     ).show()
                     return@setOnBitmapClickListener
@@ -91,48 +94,38 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
             }
             var tagValue = PlaceActivity.SELECTED
             val choosedId = id
-
+            placeActivity.id_stola = choosedId
+            placeActivity.sit_count.text = "Выбран стол № $choosedId"
             if(bitmapChoosed != null) { // Если предыдущий стол выбран
                 if(bitmapChoosed!!.equals(bitmapLayer)) { // Если это один и тот же стол. то отменяем галку
                     tagValue = PlaceActivity.UNSELECTED
                     bitmapChoosed!!.bitmap = freeIconBmp
                     bitmapChoosed = null
-                    placeActivity.sit_count.text = "- место"
+                    //placeActivity.sit_count.text = "Выбран стол № $choosedId"   //  placeActivity.sit_count.text = "- место"
                     choosedTableNumber = 0
-                    Toast.makeText(
-                        placeActivity.applicationContext,
-                        "Отмена",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    placeActivity.sit_count.text = ""
                 } else { // если это другой стол
                     bitmapChoosed!!.bitmap = freeIconBmp // обозначем занятой стол свободным
                     updateTable(choosedTableNumber) // обновляем текущий статус с БД
                     bitmapChoosed = bitmapLayer // и обозначем новый стол занятым
                     bitmapChoosed!!.bitmap = choosedIconBmp
-                    placeActivity.sit_count.text = "Стол выбран"
+                  //  placeActivity.sit_count.text = "Выбран стол № $choosedId"
                     choosedTableNumber = choosedId
 
-                    Toast.makeText(
-                        placeActivity.applicationContext,
-                        "Место выбрано " + choosedTableNumber,
-                        Toast.LENGTH_SHORT
-                    ).show()
+
                 }
             } else {
                 bitmapChoosed = bitmapLayer
                 bitmapChoosed!!.bitmap = choosedIconBmp
-                placeActivity.sit_count.text = "1 место"
+                //placeActivity.sit_count.text = "1 место"
                 choosedTableNumber = choosedId
 
-                Toast.makeText(
-                    placeActivity.applicationContext,
-                    "Место выбрано " + choosedTableNumber,
-                    Toast.LENGTH_SHORT
-                ).show()
+
             }
             placeActivity.intent.putExtra(PlaceActivity.SELECTED_TAG, tagValue)
             placeActivity.updateButton(PlaceActivity.CHOOSE_PAGE)
             currentMap!!.refresh()
+
         }
         currentMap!!.addLayer(bitmapLayer)
         tableList[id] = bitmapLayer

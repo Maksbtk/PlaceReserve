@@ -8,54 +8,36 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
         tools:context=".MainActivity"
-        android:id="@+id/main_framelayout">
-
+        android:id="@+id/main_framelayout"
+>
+    <TextView
+            android:text="Вход"
+            style="SemiBold"
+            android:textSize="25sp"
+            android:gravity="center"
+            android:textColor="@color/TextColorInPLaces"
+            android:layout_gravity="top|center"
+            android:fontFamily="Montserrat"
+            android:layout_marginTop="33dp"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:id="@+id/vhod"
+    />
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_gravity="top|center"
+            android:layout_marginTop="40dp"
+            android:layout_height="wrap_content"
+            android:tint="@color/TextColorInPLaces"
+            app:srcCompat="@drawable/poloska_dlya_okon"
+            android:id="@+id/poloskaa"
+    />
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/layout_auth"
+            android:id="@+id/layout_auth_1"
             android:visibility="visible"
     >
-        <TextView
-                android:text="Введите полученный код:"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:visibility="invisible"
-                android:textColor="@color/TextColorInPLaces"
-                android:layout_gravity="top|center"
-                android:fontFamily="PingFang SC"
-                android:layout_marginTop="85dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/text_suc"
-        />
-        <TextView
-                android:text="Не пришло СМС с кодом? Попробуйте еще раз через минуту"
-                android:textSize="11sp"
-                android:gravity="center"
-                android:textColor="@color/TextColorInPLaces"
-                android:layout_gravity="top|center"
-                android:visibility="invisible"
-                android:fontFamily="PingFang SC"
-                android:layout_marginTop="213dp"
-                android:layout_width="match_parent"
-                android:layout_height="34dp"
-                android:id="@+id/text_resend"
-        />
-        <TextView
-                android:text="Введите номер телефона:"
-                android:layout_marginStart="16dp"
-                android:textSize="20sp"
-                android:visibility="invisible"
-                android:gravity="left"
-                android:layout_gravity="top|center"
-                android:fontFamily="PingFang SC"
-                android:layout_marginTop="85dp"
-                android:textColor="@color/TextColorInPLaces"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/text_vvedite"
-        />
         <TextView
                 android:text="Введите ваше Имя"
                 android:layout_marginStart="16dp"
@@ -70,19 +52,6 @@
                 android:layout_height="30dp"
                 android:id="@+id/text_vvediteNameUser"
         />
-        <TextView
-                android:text="Вход"
-                style="SemiBold"
-                android:textSize="25sp"
-                android:gravity="center"
-                android:textColor="@color/TextColorInPLaces"
-                android:layout_gravity="top|center"
-                android:fontFamily="Montserrat"
-                android:layout_marginTop="33dp"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:id="@+id/vhod"
-        />
         <ImageButton
                 android:layout_gravity="top|center"
                 android:background="@drawable/suc_ico"
@@ -91,43 +60,6 @@
                 android:layout_width="293dp"
                 android:layout_height="44dp"
                 android:id="@+id/buttonSaveNameUser"
-        />
-        <ImageButton
-                android:layout_gravity="top|center"
-                android:background="@drawable/sign_in_ico"
-                android:layout_marginTop="171dp"
-                android:visibility="invisible"
-                android:layout_width="293dp"
-                android:layout_height="44dp"
-                android:id="@+id/buttonVerifyPhone"
-        />
-        <ImageButton
-                android:layout_gravity="top|center"
-                android:text="снова"
-                android:visibility="invisible"
-                android:layout_marginTop="260dp"
-                android:background="@drawable/resend_ico"
-                android:layout_width="255dp"
-                android:layout_height="44dp"
-                android:id="@+id/buttonResend"
-        />
-        <ImageView
-                android:layout_width="match_parent"
-                android:layout_gravity="top|center"
-                android:layout_marginTop="40dp"
-                android:layout_height="wrap_content"
-                android:tint="@color/TextColorInPLaces"
-                app:srcCompat="@drawable/poloska_dlya_okon"
-                android:id="@+id/poloskaa"
-        />
-        <ImageButton
-                android:layout_gravity="top|center"
-                android:background="@drawable/sendcode_ico"
-                android:visibility="invisible"
-                android:layout_marginTop="171dp"
-                android:layout_width="177dp"
-                android:layout_height="44dp"
-                android:id="@+id/buttonStartVerification"
         />
         <EditText
                 android:layout_width="match_parent"
@@ -148,11 +80,43 @@
                 android:inputType="textCapSentences|textFilter|textNoSuggestions"
                 android:id="@+id/fieldNameUser"
         />
+    </FrameLayout>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layout_auth_2"
+            android:visibility="visible"
+    >
+        <TextView
+                android:text="Введите номер телефона:"
+                android:layout_marginStart="16dp"
+                android:textSize="20sp"
+                android:visibility="visible"
+                android:gravity="left"
+                android:layout_gravity="top|center"
+                android:fontFamily="PingFang SC"
+                android:layout_marginTop="85dp"
+                android:textColor="@color/TextColorInPLaces"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/text_vvedite"
+        />
+
+        <ImageButton
+                android:layout_gravity="top|center"
+                android:background="@drawable/sendcode_ico"
+                android:visibility="visible"
+                android:layout_marginTop="171dp"
+                android:layout_width="177dp"
+                android:layout_height="44dp"
+                android:id="@+id/buttonStartVerification"
+        />
+
         <EditText
                 android:layout_width="match_parent"
                 android:layout_gravity="top|center"
                 android:layout_height="44dp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:gravity="center"
                 android:background="@drawable/back"
                 android:layout_marginStart="16dp"
@@ -165,11 +129,63 @@
                 android:inputType="phone"
                 android:id="@+id/fieldPhoneNumber"
         />
+    </FrameLayout>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layout_auth_3"
+            android:visibility="visible"
+    >
+        <TextView
+                android:text="Введите полученный код:"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:visibility="visible"
+                android:textColor="@color/TextColorInPLaces"
+                android:layout_gravity="top|center"
+                android:fontFamily="PingFang SC"
+                android:layout_marginTop="85dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/text_suc"
+        />
+        <TextView
+                android:text="Не пришло СМС с кодом? Попробуйте еще раз через минуту"
+                android:textSize="11sp"
+                android:gravity="center"
+                android:textColor="@color/TextColorInPLaces"
+                android:layout_gravity="top|center"
+                android:visibility="visible"
+                android:fontFamily="PingFang SC"
+                android:layout_marginTop="213dp"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:id="@+id/text_resend"
+        />
+        <ImageButton
+                android:layout_gravity="top|center"
+                android:text="снова"
+                android:visibility="visible"
+                android:layout_marginTop="260dp"
+                android:background="@drawable/resend_ico"
+                android:layout_width="255dp"
+                android:layout_height="44dp"
+                android:id="@+id/buttonResend"
+        />
+        <ImageButton
+                android:layout_gravity="top|center"
+                android:background="@drawable/sign_in_ico"
+                android:layout_marginTop="171dp"
+                android:visibility="visible"
+                android:layout_width="293dp"
+                android:layout_height="44dp"
+                android:id="@+id/buttonVerifyPhone"
+        />
         <EditText
                 android:layout_gravity="top|center"
                 android:layout_width="match_parent"
                 android:gravity="center"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_marginTop="119dp"
                 android:layout_marginStart="119dp"
                 android:layout_marginEnd="119dp"

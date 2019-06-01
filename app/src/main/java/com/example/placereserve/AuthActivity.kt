@@ -42,11 +42,11 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
-
         val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
         firebaseAuth = FirebaseAuth.getInstance()
 
-        var user = firebaseAuth.currentUser;
+        var user = firebaseAuth.currentUser
+        updateUI(user)
 
 
         if (!isOnline()) {
@@ -118,18 +118,11 @@ class AuthActivity : AppCompatActivity() {
                 } else {
                     userName = fieldNameUser.text.toString()
 
-                    buttonSaveNameUser.setVisibility(View.INVISIBLE)
-                    text_vvediteNameUser.setVisibility(View.INVISIBLE)
-                    fieldNameUser.setVisibility(View.INVISIBLE)
+                    layout_auth_1.setVisibility(View.INVISIBLE)
 
-                    buttonStartVerification.setVisibility(View.VISIBLE)
-                    text_vvedite.setVisibility(View.VISIBLE)
-                    fieldPhoneNumber.setVisibility(View.VISIBLE)
+                    layout_auth_2.setVisibility(View.VISIBLE)
 
-                    fieldVerificationCode.setVisibility(View.INVISIBLE)
-                    buttonVerifyPhone.setVisibility(View.INVISIBLE)
-                    text_resend.setVisibility(View.INVISIBLE)
-                    buttonResend.setVisibility(View.INVISIBLE)
+                    layout_auth_3.setVisibility(View.INVISIBLE)
                 }
 
             }
@@ -168,7 +161,7 @@ class AuthActivity : AppCompatActivity() {
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
                     // [START_EXCLUDE]
-                    fieldPhoneNumber.error = "Неправильный номер телефона"
+                    fieldPhoneNumber.error = "Неверный номер телефона"
                     // [END_EXCLUDE]
                 } else if (e is FirebaseTooManyRequestsException) {
                     // The SMS quota for the project has been exceeded
@@ -257,8 +250,7 @@ class AuthActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = firebaseAuth.currentUser
-        updateUI(currentUser)
+
 
         // [START_EXCLUDE]
         if (verificationInProgress && validatePhoneNumber()) {
@@ -315,7 +307,7 @@ class AuthActivity : AppCompatActivity() {
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
                         // [START_EXCLUDE silent]
-                        fieldVerificationCode.error = "Invalid code."
+                        fieldVerificationCode.error = "Неверный код"
                         // [END_EXCLUDE]
                     }
                     // [START_EXCLUDE silent]
@@ -329,7 +321,7 @@ class AuthActivity : AppCompatActivity() {
     private fun validatePhoneNumber(): Boolean {
         val phoneNumber = fieldPhoneNumber.text.toString()
         if (TextUtils.isEmpty(phoneNumber)) {
-            fieldPhoneNumber.error = "Invalid phone number."
+            fieldPhoneNumber.error = "Неправильный номер телефона."
             return false
         }
 
@@ -372,36 +364,21 @@ class AuthActivity : AppCompatActivity() {
                 enableViews(buttonStartVerification, fieldPhoneNumber)
                 disableViews(buttonVerifyPhone, buttonResend, fieldVerificationCode)
 
-                buttonSaveNameUser.setVisibility(View.VISIBLE)
-                text_vvediteNameUser.setVisibility(View.VISIBLE)
-                fieldNameUser.setVisibility(View.VISIBLE)
-
-                buttonStartVerification.setVisibility(View.INVISIBLE)
-                text_vvedite.setVisibility(View.INVISIBLE)
-                fieldPhoneNumber.setVisibility(View.INVISIBLE)
-
-                fieldVerificationCode.setVisibility(View.INVISIBLE)
-                buttonVerifyPhone.setVisibility(View.INVISIBLE)
-                text_resend.setVisibility(View.INVISIBLE)
-                buttonResend.setVisibility(View.INVISIBLE)
+                layout_auth_1.setVisibility(View.VISIBLE)
+                layout_auth_2.setVisibility(View.INVISIBLE)
+                layout_auth_3.setVisibility(View.INVISIBLE)
 
             }
             STATE_CODE_SENT -> {
                 /* Code sent state, show the verification field, the */
                 enableViews(buttonVerifyPhone, buttonResend, fieldPhoneNumber, fieldVerificationCode)
                 disableViews(buttonStartVerification)
-                Snackbar.make(layout_auth, "Код отправлен", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(main_framelayout, "Код отправлен", Snackbar.LENGTH_SHORT).show()
 
-                buttonStartVerification.setVisibility(View.INVISIBLE)
-                text_vvedite.setVisibility(View.INVISIBLE)
-                fieldPhoneNumber.setVisibility(View.INVISIBLE)
+                layout_auth_2.setVisibility(View.INVISIBLE)
 
-                text_suc.setVisibility(View.VISIBLE)
-                fieldVerificationCode.setVisibility(View.VISIBLE)
-                buttonVerifyPhone.setVisibility(View.VISIBLE)
-                text_resend.setVisibility(View.VISIBLE)
-                buttonResend.setVisibility(View.VISIBLE)
-            }
+                layout_auth_3.setVisibility(View.VISIBLE)
+        }
             STATE_VERIFY_FAILED -> {
                 // Verification has failed, show all options
                 enableViews(
@@ -409,7 +386,7 @@ class AuthActivity : AppCompatActivity() {
                     fieldVerificationCode
                 )
                 // disableViews(buttonVerifyPhone)
-                Snackbar.make(layout_auth, "Ошибка", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(main_framelayout, "Ошибка", Snackbar.LENGTH_SHORT).show()
             }
             STATE_VERIFY_SUCCESS -> {
                 // Verification has succeeded, proceed to firebase sign in
@@ -417,7 +394,7 @@ class AuthActivity : AppCompatActivity() {
                     buttonStartVerification, buttonVerifyPhone, buttonResend, fieldPhoneNumber,
                     fieldVerificationCode
                 )
-                Snackbar.make(layout_auth, "Успешно", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(main_framelayout, "Успешно", Snackbar.LENGTH_SHORT).show()
                 // Set the verification text based on the credential
                 if (cred != null) {
                     if (cred.smsCode != null) {
@@ -429,7 +406,7 @@ class AuthActivity : AppCompatActivity() {
             }
             STATE_SIGNIN_FAILED ->
                 // No-op, handled by sign-in check
-                Snackbar.make(layout_auth, "Ошибка!", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(main_framelayout, "Ошибка!", Snackbar.LENGTH_SHORT).show()
 
             STATE_SIGNIN_SUCCESS -> {
             }

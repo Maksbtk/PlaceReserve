@@ -260,6 +260,7 @@ class PlaceActivity : AppCompatActivity() {
                 // Set a click listener for popup's button widget
                 buttonPopup.setOnClickListener{
                     // Dismiss the popup window
+                    btn_popUp.visibility = View.VISIBLE
                     popupWindow.dismiss()
                 }
 
@@ -298,7 +299,7 @@ class PlaceActivity : AppCompatActivity() {
                     })
 
 
-
+                btn_popUp.visibility = View.INVISIBLE
             }
         })
 

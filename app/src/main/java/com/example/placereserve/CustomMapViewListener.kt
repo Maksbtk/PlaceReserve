@@ -66,20 +66,37 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
         var bitmapLayer = BitmapLayer(currentMap, freeIconBmp) // default free table
         bitmapLayer!!.location = PointF(x, y)
         bitmapLayer!!.isAutoScale = true
+
         bitmapLayer!!.setOnBitmapClickListener { // Вешаем на кнопку слушатель кликбейта за сто морей
+            val choosedId = id
+            placeActivity.id_stola = choosedId
+
             if (bitmapLayer.bitmap == busyIconBmp){ // Если стол занят другим членом
-                Toast.makeText(
-                    placeActivity.applicationContext,
-                    "Этот стол занят, выберите другой стол.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnBitmapClickListener
+                if (placeActivity.intent.getStringExtra("place_status")=="1") {
+                    Toast.makeText(
+                        placeActivity.applicationContext,
+                        "Этот стол занят, выберите другой стол.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnBitmapClickListener
+                } else {
+                   // bitmapChoosed!!.bitmap = freeIconBmp // обозначем занятой стол свободным
+                    updateTable(choosedTableNumber) // обновляем текущий статус с БД
+                    bitmapChoosed = bitmapLayer // и обозначем новый стол занятым
+                  //  bitmapChoosed!!.bitmap = choosedIconBmp////////////
+                    //  placeActivity.sit_count.text = "Выбран стол № $choosedId"
+                    choosedTableNumber = choosedId
+                    placeActivity.sit_count.text = "Выбран стол № $choosedId"
+                    placeActivity.updateButton(PlaceActivity.REMOVE)
+                    return@setOnBitmapClickListener
+                }
             }
 
             //if(!checkDateReservationUser.isEmpty() ){
             /**
              * Если в БД нет нужного элемента, то Firebase возвращает просто 'null'. так что чекать через isEmpty не оч
              */
+
             if (placeActivity.intent.getStringExtra("place_status")=="1") {
                 if (checkDateReservationUser != "null") { // Если челик уже занял столик
 
@@ -93,8 +110,8 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                 }
             }
             var tagValue = PlaceActivity.SELECTED
-            val choosedId = id
-            placeActivity.id_stola = choosedId
+
+
             placeActivity.sit_count.text = "Выбран стол № $choosedId"
             if(bitmapChoosed != null) { // Если предыдущий стол выбран
                 if(bitmapChoosed!!.equals(bitmapLayer)) { // Если это один и тот же стол. то отменяем галку
@@ -105,7 +122,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     choosedTableNumber = 0
                     placeActivity.sit_count.text = ""
                 } else { // если это другой стол
-                    bitmapChoosed!!.bitmap = freeIconBmp // обозначем занятой стол свободным
+                  //  bitmapChoosed!!.bitmap = freeIconBmp // обозначем занятой стол свободным
                     updateTable(choosedTableNumber) // обновляем текущий статус с БД
                     bitmapChoosed = bitmapLayer // и обозначем новый стол занятым
                     bitmapChoosed!!.bitmap = choosedIconBmp

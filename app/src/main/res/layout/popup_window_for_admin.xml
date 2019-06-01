@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/back"
+        android:padding="20dp"
+>
+
+    <ImageButton
+            android:id="@+id/button_exit_popUp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="36dp"
+            android:layout_marginStart="233dp"
+            android:layout_gravity="top|end"
+            android:background="@drawable/popup_exit_ico"
+    />
+    <TextView
+            android:id="@+id/naamee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Имя:"
+            android:textSize="11sp"
+            android:layout_marginTop="9dp"
+            android:layout_marginStart="34dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+    />
+    <TextView
+            android:id="@+id/nameeeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="16sp"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="73dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+    />
+    <TextView
+            android:id="@+id/num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Телефон:"
+            android:layout_marginTop="34dp"
+            android:layout_marginStart="10dp"
+            android:textSize="11sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+    />
+    <TextView
+            android:id="@+id/numValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            style="@style/Hyperlink"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/favoriteStar_color"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="73dp"
+            android:textSize="16sp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+    />
+</FrameLayout>

@@ -193,8 +193,8 @@ class PlaceActivity : AppCompatActivity() {
                 // Initialize a new instance of popup window
                 val popupWindow = PopupWindow(
                     view, // Custom view to show in popup window
-                    LinearLayout.LayoutParams.MATCH_PARENT, // Width of popup window
-                    LinearLayout.LayoutParams.MATCH_PARENT // Window height
+                    LinearLayout.LayoutParams.WRAP_CONTENT, // Width of popup window
+                    LinearLayout.LayoutParams.WRAP_CONTENT // Window height
                 )
 
                 // Set an elevation for the popup window
@@ -258,10 +258,11 @@ class PlaceActivity : AppCompatActivity() {
 
                 }
 
+                btn_popUp.isEnabled = false
                 // Set a click listener for popup's button widget
                 buttonPopup.setOnClickListener{
                     // Dismiss the popup window
-                    btn_popUp.visibility = View.VISIBLE
+                    btn_popUp.isEnabled = true
                     popupWindow.dismiss()
                 }
 
@@ -275,8 +276,8 @@ class PlaceActivity : AppCompatActivity() {
                 TransitionManager.beginDelayedTransition(place_layout)
                 popupWindow.showAtLocation(
                     place_layout, // Location to display popup window
-                    Gravity.BOTTOM, // Exact position of layout to display popup
-                    500, // X offset
+                    Gravity.CENTER, // Exact position of layout to display popup
+                    50, // X offset
                     500 // Y offset
                 )
 
@@ -300,7 +301,7 @@ class PlaceActivity : AppCompatActivity() {
                     })
 
 
-                btn_popUp.visibility = View.INVISIBLE
+
             }
         })
 

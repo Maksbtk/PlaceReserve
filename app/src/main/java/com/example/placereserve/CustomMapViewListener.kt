@@ -141,6 +141,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
             }
             placeActivity.intent.putExtra(PlaceActivity.SELECTED_TAG, tagValue)
             placeActivity.updateButton(PlaceActivity.CHOOSE_PAGE)
+
             currentMap!!.refresh()
 
         }
@@ -195,6 +196,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
      * Меняет иконку стола с БД
      */
     fun updateTable(id:Int) {
+
         if(!isLoader) return
         if(!tableList.containsKey(id)) {
             Log.e(TAG,"table id is not exists!")

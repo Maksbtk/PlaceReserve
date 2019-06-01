@@ -113,6 +113,7 @@ class PlaceActivity : AppCompatActivity() {
         select_table.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 intent.putExtra(PAGE_TAG, CHOOSE_PAGE)
+
                 updatePageUI(true)
             }
         })
@@ -192,8 +193,8 @@ class PlaceActivity : AppCompatActivity() {
                 // Initialize a new instance of popup window
                 val popupWindow = PopupWindow(
                     view, // Custom view to show in popup window
-                    LinearLayout.LayoutParams.WRAP_CONTENT, // Width of popup window
-                    LinearLayout.LayoutParams.WRAP_CONTENT // Window height
+                    LinearLayout.LayoutParams.MATCH_PARENT, // Width of popup window
+                    LinearLayout.LayoutParams.MATCH_PARENT // Window height
                 )
 
                 // Set an elevation for the popup window
@@ -274,9 +275,9 @@ class PlaceActivity : AppCompatActivity() {
                 TransitionManager.beginDelayedTransition(place_layout)
                 popupWindow.showAtLocation(
                     place_layout, // Location to display popup window
-                    Gravity.CENTER, // Exact position of layout to display popup
-                    0, // X offset
-                    0 // Y offset
+                    Gravity.BOTTOM, // Exact position of layout to display popup
+                    500, // X offset
+                    500 // Y offset
                 )
 
 
@@ -444,7 +445,7 @@ class PlaceActivity : AppCompatActivity() {
                             })
                     }
                 }
-
+                updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
             }
         })
 
@@ -492,6 +493,8 @@ class PlaceActivity : AppCompatActivity() {
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             date = "" + dayOfMonth + " " + (monthOfYear + 1) + " " + year
             updateDate()
+            intent.putExtra(SELECTED_TAG, UNSELECTED)
+            updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
 //            posBut = -1
 //            intent.putExtra(SELECTED_TAG, UNSELECTED)
         }
@@ -757,7 +760,7 @@ class PlaceActivity : AppCompatActivity() {
         if (reparse) {
             parsingFromDatabase(flag)
         }
-        updateButton(flag)
+        updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
     }
 
 

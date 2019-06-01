@@ -481,6 +481,9 @@ class PlaceActivity : AppCompatActivity() {
         calendar.set(Calendar.MINUTE, minute)
         time = "$hourOfDay:$minute"
         updateTime()
+        intent.putExtra(SELECTED_TAG, UNSELECTED)
+        sit_count.text=""
+        updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
 //        posBut = -1
 //        intent.putExtra(SELECTED_TAG, UNSELECTED)
     }

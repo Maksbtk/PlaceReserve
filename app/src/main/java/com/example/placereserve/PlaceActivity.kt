@@ -277,8 +277,8 @@ class PlaceActivity : AppCompatActivity() {
                 popupWindow.showAtLocation(
                     place_layout, // Location to display popup window
                     Gravity.CENTER, // Exact position of layout to display popup
-                    50, // X offset
-                    500 // Y offset
+                    0, // X offset
+                    0 // Y offset
                 )
 
 

@@ -17,7 +17,7 @@ import com.onlylemi.mapview.library.MapView
 
 class CustomMapViewListener(private var placeActivity: PlaceActivity, private var currentMap: MapView) :
     MapViewListener {
-    var isLoader: Boolean = false
+    var isLoaded: Boolean = false
     private val database = FirebaseDatabase.getInstance()
 
     var bitmapChoosed: BitmapLayer? = null
@@ -31,7 +31,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
     private var TAG: String = "CustomMapViewListener"
 
     override fun onMapLoadSuccess() {
-        isLoader = true
+        isLoaded = true
 
         val myRef = database.getReference("Заведения").child(placeActivity.intent.getStringExtra("place_name")).child("Столы")
         createTables(myRef)
@@ -63,7 +63,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
      */
 
     private fun createTable(id:Int, x:Float, y:Float) {
-        if (!isLoader) return
+        if (!isLoaded) return
         var bitmapLayer = BitmapLayer(currentMap, freeIconBmp) // default free table
         bitmapLayer!!.location = PointF(x, y)
         bitmapLayer!!.isAutoScale = true
@@ -123,7 +123,6 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
             /**
              * Если в БД нет нужного элемента, то Firebase возвращает просто 'null'. так что чекать через isEmpty не оч
              */
-
             if (placeActivity.intent.getStringExtra("place_status")=="1") {
                 if (checkDateReservationUser != "null") { // Если челик уже занял столик
 
@@ -172,6 +171,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
             currentMap!!.refresh()
 
         }
+
         currentMap!!.addLayer(bitmapLayer)
         tableList[id] = bitmapLayer
     }
@@ -180,7 +180,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
      * Создаем столы. database должен начинаться с чайлада "Столы"
      */
     fun createTables(database: DatabaseReference) {
-        if(!isLoader) return
+        if(!isLoaded) return
         checkDateReservationUser()
         var tree = database.child("Номер стола")
 
@@ -213,7 +213,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
      * Выполняйте чистку только во время БЕЗДЕЙСТВИЯ со стороны пользователя, иначе получите Fatal Error.
      */
     fun clearAllTable() {
-        if(!isLoader) return
+        if(!isLoaded) return
         for(layer in tableList.values) {
             currentMap.layers.remove(layer)
         }
@@ -224,7 +224,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
      */
     fun updateTable(id:Int) {
 
-        if(!isLoader) return
+        if(!isLoaded) return
         if(!tableList.containsKey(id)) {
             Log.e(TAG,"table id is not exists!")
             return
@@ -255,7 +255,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
      * Меняет иконку стола. Обновление карты выполняйте вручную.
      */
     private fun updateTable(id:Int, reserved: Boolean) {
-        if(!isLoader) return
+        if(!isLoaded) return
         if(!tableList.containsKey(id)) {
             Log.e(TAG,"table id is not exists!")
             return
@@ -273,7 +273,7 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
      * Update all tables
      */
     fun updateTables() {
-        if(!isLoader) return
+        if(!isLoaded) return
         checkDateReservationUser()
         val myRef = database.getReference("Заведения").child(placeActivity.intent.getStringExtra("place_name")).child("Столы")
         updateTables(myRef)

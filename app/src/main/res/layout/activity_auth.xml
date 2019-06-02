@@ -4,6 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:mask="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
@@ -112,7 +113,7 @@
                 android:id="@+id/buttonStartVerification"
         />
 
-        <EditText
+        <br.com.sapereaude.maskedEditText.MaskedEditText
                 android:layout_width="match_parent"
                 android:layout_gravity="top|center"
                 android:layout_height="44dp"
@@ -122,12 +123,13 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="110dp"
-                android:ems="10"
-                android:maxLength="12"
-                android:digits="0123456789+"
                 android:imeOptions="actionDone"
                 android:inputType="phone"
                 android:id="@+id/fieldPhoneNumber"
+                mask:allowed_chars="1234567890"
+                mask:mask="+7 (###) ###-##-##"
+                app:keep_hint="true"
+
         />
     </FrameLayout>
     <FrameLayout

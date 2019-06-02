@@ -97,7 +97,10 @@ class PlaceActivity : AppCompatActivity() {
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (mapListener!=null) {
-                        mapListener!!.updateTables()
+                        for (ds in dataSnapshot.children) {
+                            val id = ds.key
+                            mapListener!!.updateTable(id!!.toInt())
+                        }
                     }
                 }
 

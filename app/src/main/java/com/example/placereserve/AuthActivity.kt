@@ -41,23 +41,26 @@ class AuthActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
-
-        val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
         firebaseAuth = FirebaseAuth.getInstance()
-
         var user = firebaseAuth.currentUser
-        updateUI(user)
 
-
-        if (!isOnline()) {
-            Dialog()
-        }
         if (user != null) {
             val inte = Intent(this, MainActivity::class.java)
             startActivity(inte)
             finish()
             return
         }
+
+        val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
+        if (!isOnline()) {
+            Dialog()
+        }
+
+
+        updateUI(user)
+
+
+
 
 
         buttonStartVerification.setOnClickListener(object : View.OnClickListener {

@@ -5,78 +5,38 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         tools:context=".MainActivity"
         android:id="@+id/main_framelayout"
 >
-    <android.support.design.widget.BottomNavigationView
-            android:id="@+id/Navigationb"
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom"
-            android:background="@color/colorNIGHTgrey"
-            app:itemIconTint="@color/TextColorInPLaces"
-            app:itemTextColor="@color/TextColorInPLaces"
-            app:menu="@menu/navigation"
-            android:theme="@style/AppTheme"
-            app:labelVisibilityMode="unlabeled"
-            android:visibility="visible"
-    >
-    </android.support.design.widget.BottomNavigationView>
+            android:layout_height="match_parent"
+    android:visibility="visible">
+
+        <android.support.design.widget.BottomNavigationView
+                android:id="@+id/Navigationb"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:background="@color/colorNIGHTgrey"
+                app:itemIconTint="@color/TextColorInPLaces"
+                app:itemTextColor="@color/TextColorInPLaces"
+                app:menu="@menu/navigation"
+                android:theme="@style/AppTheme"
+                app:labelVisibilityMode="unlabeled"
+                android:visibility="visible"
+        >
+        </android.support.design.widget.BottomNavigationView>
+    </FrameLayout>
+
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layout_user"
+            android:layout_marginBottom="50dp"
             android:background="@color/colorPrimary"
     >
-        <ImageView
-                android:layout_width="match_parent"
-                android:layout_gravity="top|center"
-                android:layout_marginTop="40dp"
-                android:layout_height="wrap_content"
-                android:tint="@color/TextColorInPLaces"
-                app:srcCompat="@drawable/poloska_dlya_okon"
-                android:id="@+id/poloska"
-        />
-        <ImageButton
-                android:scaleType="fitXY"
-                android:layout_width="320dp"
-                android:layout_height="84dp"
-                android:layout_gravity="top|center"
-                android:layout_marginTop="315dp"
-                app:srcCompat="@drawable/history_btn_ico_for_user"
-                android:background="@color/colorPrimary"
-                android:id="@+id/HistoryButton"
-        />
-        <ImageButton
-                android:scaleType="fitXY"
-                android:layout_width="320dp"
-                android:layout_height="84dp"
-                android:layout_gravity="top|center"
-                android:layout_marginTop="220dp"
-                app:srcCompat="@drawable/btn_favorite_ico"
-                android:background="@color/colorPrimary"
-                android:id="@+id/favoriteBtn"
-        />
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ico_for_user_layout"
-                android:id="@+id/imageView"
-                android:tint="@color/TextColorInPLaces"
-                android:layout_gravity="top|center"
-                android:layout_marginTop="81dp"
-        />
-        <ImageButton
-                android:layout_width="203dp"
-                android:layout_height="54dp"
-                android:id="@+id/btn_sign_out"
-                android:background="@color/colorPrimary"
-                android:layout_marginTop="454dp"
-                android:layout_gravity="top|center"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/btn_exit"
-        />
         <ImageButton
                 android:scaleType="fitXY"
                 android:layout_width="21dp"
@@ -86,22 +46,6 @@
                 android:layout_marginEnd="17dp"
                 android:background="@drawable/rename_ico"
                 android:layout_gravity="top|end"
-        />
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/nameUser"
-                android:textSize="18sp"
-                android:fontFamily="Montserrat"
-                style="Bold"
-                android:gravity="center"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_marginTop="126dp"
-                android:layout_marginStart="23dp"
-                android:layout_marginEnd="23dp"
-                android:background="@drawable/name_bcak_ico"
-                android:layout_gravity="top"
-                android:textStyle="bold"
         />
         <TextView
                 android:text="Личный кабинет"
@@ -116,12 +60,98 @@
                 android:layout_height="42dp"
                 android:id="@+id/user_profil"
         />
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_gravity="top|center"
+                android:layout_marginTop="40dp"
+                android:layout_height="wrap_content"
+                android:tint="@color/TextColorInPLaces"
+                app:srcCompat="@drawable/poloska_dlya_okon"
+                android:id="@+id/poloska"
+        />
+        <ScrollView
+                android:layout_marginTop="81dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+        >
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/layout_user_scroll"
+
+                android:background="@color/colorPrimary"
+        >
+        <ImageButton
+                android:scaleType="fitXY"
+                android:layout_width="320dp"
+                android:layout_height="84dp"
+                android:layout_gravity="top|center"
+                android:layout_marginTop="234dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/history_btn_ico_for_user"
+                android:background="@color/colorPrimary"
+                android:id="@+id/HistoryButton"
+        />
+        <ImageButton
+                android:scaleType="fitXY"
+                android:layout_width="320dp"
+                android:layout_height="84dp"
+                android:layout_gravity="top|center"
+                android:layout_marginTop="139dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/btn_favorite_ico"
+                android:background="@color/colorPrimary"
+                android:id="@+id/favoriteBtn"
+        />
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ico_for_user_layout"
+                android:id="@+id/imageView"
+                android:tint="@color/TextColorInPLaces"
+                android:layout_gravity="top|center"
+                android:layout_marginTop="0dp"
+        />
+        <ImageButton
+                android:layout_width="203dp"
+                android:layout_height="54dp"
+                android:id="@+id/btn_sign_out"
+                android:background="@color/colorPrimary"
+                android:layout_marginTop="373dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="top|center"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/btn_exit"
+        />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:id="@+id/nameUser"
+                android:textSize="18sp"
+                android:fontFamily="Montserrat"
+                style="Bold"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginTop="45dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginEnd="23dp"
+                android:background="@drawable/name_bcak_ico"
+                android:layout_gravity="top"
+                android:textStyle="bold"
+        />
+        </FrameLayout>
+        </ScrollView>
     </FrameLayout>
+
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layout_places"
-            tools:visibility="invisible"
     >
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/placesList"

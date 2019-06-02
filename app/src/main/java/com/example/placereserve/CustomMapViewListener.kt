@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.placereserve.TableIconsCache.Companion.busyIconBmp
 import com.example.placereserve.TableIconsCache.Companion.choosedIconBmp
+import com.example.placereserve.TableIconsCache.Companion.choosedIconBmpAdm
 import com.example.placereserve.TableIconsCache.Companion.freeIconBmp
 import com.google.firebase.database.*
 import com.onlylemi.mapview.library.MapViewListener
@@ -70,8 +71,8 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
         bitmapLayer!!.setOnBitmapClickListener { // Вешаем на кнопку слушатель кликбейта за сто морей
             val choosedId = id
             placeActivity.id_stola = choosedId
-
-            if (bitmapLayer.bitmap == busyIconBmp){ // Если стол занят другим членом
+            var tagValue = PlaceActivity.SELECTED
+            if ((bitmapLayer.bitmap == busyIconBmp)||(bitmapLayer.bitmap==choosedIconBmpAdm)){ // Если стол занят другим членом
                 if (placeActivity.intent.getStringExtra("place_status")=="1") {
                     Toast.makeText(
                         placeActivity.applicationContext,
@@ -80,15 +81,41 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     ).show()
                     return@setOnBitmapClickListener
                 } else {
-                   // bitmapChoosed!!.bitmap = freeIconBmp // обозначем занятой стол свободным
-                    updateTable(choosedTableNumber) // обновляем текущий статус с БД
-                    bitmapChoosed = bitmapLayer // и обозначем новый стол занятым
-                  //  bitmapChoosed!!.bitmap = choosedIconBmp////////////
-                    //  placeActivity.sit_count.text = "Выбран стол № $choosedId"
-                    choosedTableNumber = choosedId
-                    placeActivity.sit_count.text = "Выбран стол № $choosedId"
-                    placeActivity.updateButton(PlaceActivity.REMOVE)
-                    return@setOnBitmapClickListener
+                    if (bitmapChoosed!=null) {
+                        if (bitmapChoosed!!.equals(bitmapLayer)) { // Если это один и тот же стол. то отменяем галку
+                            tagValue = PlaceActivity.UNSELECTED
+                            placeActivity.updateButton(PlaceActivity.INFO_PAGE)
+                            bitmapChoosed!!.bitmap = busyIconBmp
+                            bitmapChoosed = null
+                            //placeActivity.sit_count.text = "Выбран стол № $choosedId"   //  placeActivity.sit_count.text = "- место"
+                            choosedTableNumber = 0
+                            placeActivity.sit_count.text = ""
+                            currentMap!!.refresh()
+                            return@setOnBitmapClickListener
+                        } else {
+                            // bitmapChoosed!!.bitmap = freeIconBmp // обозначем занятой стол свободным
+                            updateTable(choosedTableNumber) // обновляем текущий статус с БД
+                            bitmapChoosed = bitmapLayer // и обозначем новый стол занятым
+                            bitmapChoosed!!.bitmap = choosedIconBmpAdm////////////adm_chose_table
+                            //  placeActivity.sit_count.text = "Выбран стол № $choosedId"
+                            choosedTableNumber = choosedId
+                            placeActivity.sit_count.text = "Стол №$choosedId"
+                            placeActivity.updateButton(PlaceActivity.REMOVE)
+                            currentMap!!.refresh()
+                            return@setOnBitmapClickListener
+                        }
+                    }else {
+                        // bitmapChoosed!!.bitmap = freeIconBmp // обозначем занятой стол свободным
+
+                        bitmapChoosed = bitmapLayer // и обозначем новый стол занятым
+                        bitmapChoosed!!.bitmap = choosedIconBmpAdm////////////adm_chose_table
+                        //  placeActivity.sit_count.text = "Выбран стол № $choosedId"
+                        choosedTableNumber = choosedId
+                        placeActivity.sit_count.text = "Стол №$choosedId"
+                        placeActivity.updateButton(PlaceActivity.REMOVE)
+                        currentMap!!.refresh()
+                        return@setOnBitmapClickListener
+                    }
                 }
             }
 
@@ -109,10 +136,10 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     return@setOnBitmapClickListener
                 }
             }
-            var tagValue = PlaceActivity.SELECTED
 
 
-            placeActivity.sit_count.text = "Выбран стол № $choosedId"
+
+            placeActivity.sit_count.text = "Стол №$choosedId"
             if(bitmapChoosed != null) { // Если предыдущий стол выбран
                 if(bitmapChoosed!!.equals(bitmapLayer)) { // Если это один и тот же стол. то отменяем галку
                     tagValue = PlaceActivity.UNSELECTED

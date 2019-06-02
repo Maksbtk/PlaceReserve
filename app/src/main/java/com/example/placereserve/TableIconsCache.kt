@@ -15,6 +15,7 @@ class TableIconsCache {
         var freeIconBmp: Bitmap? = null
         var choosedIconBmp: Bitmap? = null
         var busyIconBmp: Bitmap? = null
+        var choosedIconBmpAdm: Bitmap? = null
 
         /********************************* IMAGES (Picasso) *************************************/
         /****************************************************************************************/
@@ -52,6 +53,25 @@ class TableIconsCache {
             }
         }
 
+
+        private var choosedTargetAdm: Target? = object : com.squareup.picasso.Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                if (bitmap == null) {
+                    Log.w(TAG, "Image is null!")
+                } else {
+                    choosedIconBmpAdm = bitmap
+                }
+            }
+
+            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                Log.e(TAG, "Ah shit, here we go again")
+            }
+
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+            }
+        }
+
+
         private var busyTarget: Target? = object : com.squareup.picasso.Target {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                 if (bitmap == null) {
@@ -78,7 +98,10 @@ class TableIconsCache {
             if (choosedIconBmp != null) return
             Picasso.get().load(R.drawable.choosedtable).resize(150, 150).into(choosedTarget!!)
         }
-
+        private fun generateChoosedIconAdm() {
+            if (choosedIconBmpAdm != null) return
+            Picasso.get().load(R.drawable.adm_chose_table).resize(150, 150).into(choosedTargetAdm!!)
+        }
         private fun generateBusyIcon() {
             if (busyIconBmp != null) return
             Picasso.get().load(R.drawable.busy_1).resize(150, 150).into(busyTarget!!)
@@ -87,6 +110,7 @@ class TableIconsCache {
         fun prepareIcons() {
             Log.i(TAG, "Preparing...")
             generateChoosedIcon()
+            generateChoosedIconAdm()
             generateFreeIcon()
             generateBusyIcon()
             Log.i(TAG, "Prepare done!")

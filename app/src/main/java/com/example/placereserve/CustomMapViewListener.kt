@@ -194,9 +194,9 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                         ds.child("Бронь").child("Дата").child(placeActivity.date).child("Забронирован").value.toString()
                     createTable(id!!.toInt(), x.toFloat(),y.toFloat()) // сначала создаем столы на карте
                     updateTable(id!!.toInt(), reserved.toBoolean()) // затем обновляем картиночки с БД
+                    currentMap!!.refresh()
                 }
 
-                currentMap!!.refresh() // вместо +100500 обновлений рендера карты, вызывайте одну вне цикла.
                 //after all remove listener
                 tree.removeEventListener(this)
             }
@@ -291,9 +291,9 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
                     val reserved =
                         ds.child("Бронь").child("Дата").child(placeActivity.date).child("Забронирован").value.toString()
                     updateTable(id!!.toInt(), reserved.toBoolean())
+                    currentMap!!.refresh()
                 }
 
-                currentMap!!.refresh()
                 //after all remove listener
                 tree.removeEventListener(this)
             }

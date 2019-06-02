@@ -101,7 +101,6 @@
                 android:layout_height="30dp"
                 android:id="@+id/text_vvedite"
         />
-
         <ImageButton
                 android:layout_gravity="top|center"
                 android:background="@drawable/sendcode_ico"
@@ -111,7 +110,6 @@
                 android:layout_height="44dp"
                 android:id="@+id/buttonStartVerification"
         />
-
         <EditText
                 android:layout_width="match_parent"
                 android:layout_gravity="top|center"
@@ -150,7 +148,7 @@
                 android:id="@+id/text_suc"
         />
         <TextView
-                android:text="Не пришло СМС с кодом? Попробуйте еще раз через минуту"
+                android:text="Не пришло СМС с кодом? Попробуйте еще раз через 30 секунд"
                 android:textSize="11sp"
                 android:gravity="center"
                 android:textColor="@color/TextColorInPLaces"
@@ -161,6 +159,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="34dp"
                 android:id="@+id/text_resend"
+        />
+        <TextView
+                android:text=""
+                android:textSize="11sp"
+                android:gravity="center"
+                android:textColor="@color/TextColorInPLaces"
+                android:layout_gravity="top|center"
+                android:visibility="visible"
+                android:fontFamily="PingFang SC"
+                android:layout_marginTop="230dp"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:id="@+id/timer"
         />
         <ImageButton
                 android:layout_gravity="top|center"

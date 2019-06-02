@@ -742,12 +742,12 @@ class PlaceActivity : AppCompatActivity() {
 
         when (flag) {
             INFO_PAGE -> {
-                choose_layout.visibility = View.INVISIBLE
+                choose_layout.visibility = View.GONE
                 place_info_layout.visibility = View.VISIBLE
             }
             CHOOSE_PAGE -> {
                 choose_layout.visibility = View.VISIBLE
-                place_info_layout.visibility = View.INVISIBLE
+                place_info_layout.visibility = View.GONE
                 updateDate()
                 updateTime()
             }

@@ -43,6 +43,7 @@ class FavoritePlacesAdapter : RecyclerView.Adapter<FavoritePlacesAdapter.PlacesH
             val intent: Intent = Intent(viewHolder.itemView.context, PlaceActivity::class.java)
             intent.putExtra("place_name", viewHolder.itemView.placesNameF.text)
             intent.putExtra("place_address", viewHolder.itemView.placesAddressF.text)
+            intent.putExtra("place_status", "1")
             viewHolder.itemView.context.startActivity(intent)
         }
     }

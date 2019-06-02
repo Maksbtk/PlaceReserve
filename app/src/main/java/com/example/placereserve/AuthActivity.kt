@@ -5,17 +5,16 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
-import android.text.InputType
 import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -23,10 +22,8 @@ import com.google.firebase.auth.*
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_auth.*
 import java.util.concurrent.TimeUnit
-import kotlin.text.Regex.Companion.escapeReplacement
 
 class AuthActivity : AppCompatActivity() {
-
 
     private lateinit var firebaseAuth: FirebaseAuth
     private var verificationInProgress = false
@@ -36,6 +33,20 @@ class AuthActivity : AppCompatActivity() {
     val database = FirebaseDatabase.getInstance()
     private var userName: String = ""
 
+    fun timer() {
+        val timer = findViewById<View>(R.id.timer) as TextView
+        object : CountDownTimer(30000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                buttonResend.setEnabled(false)
+                timer.setText("Попробуйте еще через: " + millisUntilFinished / 1000 + " секунд")
+            }
+
+            override fun onFinish() {
+                buttonResend.setEnabled(true)
+                timer.setText("")
+            }
+        }.start()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -56,12 +67,7 @@ class AuthActivity : AppCompatActivity() {
             Dialog()
         }
 
-
         updateUI(user)
-
-
-
-
 
         buttonStartVerification.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
@@ -79,7 +85,6 @@ class AuthActivity : AppCompatActivity() {
             }
         })
 
-
         buttonVerifyPhone.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
@@ -89,7 +94,7 @@ class AuthActivity : AppCompatActivity() {
                 }
                 val code = fieldVerificationCode.text.toString()
                 if (TextUtils.isEmpty(code)) {
-                    fieldVerificationCode.error = "Cannot be empty."
+                    fieldVerificationCode.error = "Заполните поле"
                     return
                 }
 
@@ -99,6 +104,7 @@ class AuthActivity : AppCompatActivity() {
 
         buttonResend.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
+                timer()
                 if (!isOnline()) {
                     Dialog()
                     return
@@ -130,7 +136,6 @@ class AuthActivity : AppCompatActivity() {
 
             }
         })
-
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
@@ -249,11 +254,9 @@ class AuthActivity : AppCompatActivity() {
         verificationInProgress = true
     }
 
-
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-
 
         // [START_EXCLUDE]
         if (verificationInProgress && validatePhoneNumber()) {
@@ -381,7 +384,9 @@ class AuthActivity : AppCompatActivity() {
                 layout_auth_2.setVisibility(View.INVISIBLE)
 
                 layout_auth_3.setVisibility(View.VISIBLE)
-        }
+
+                timer()
+            }
             STATE_VERIFY_FAILED -> {
                 // Verification has failed, show all options
                 enableViews(
@@ -427,7 +432,6 @@ class AuthActivity : AppCompatActivity() {
             startActivity(inte)
             finish()
         } else {
-
         }
     }
 
@@ -443,6 +447,4 @@ class AuthActivity : AppCompatActivity() {
         private const val KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress"
 
     }
-
-
 }

@@ -152,6 +152,19 @@
                 android:id="@+id/text_suc"
         />
         <TextView
+                android:text=""
+                android:textSize="11sp"
+                android:gravity="center"
+                android:textColor="@color/TextColorInPLaces"
+                android:layout_gravity="top|center"
+                android:visibility="visible"
+                android:fontFamily="PingFang SC"
+                android:layout_marginTop="230dp"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:id="@+id/timer"
+        />
+        <TextView
                 android:text="Не пришло СМС с кодом? Попробуйте еще раз через минуту"
                 android:textSize="11sp"
                 android:gravity="center"

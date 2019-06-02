@@ -83,8 +83,6 @@ class PlaceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place)
         firebaseAuth = FirebaseAuth.getInstance()
-        mapView = null
-        firebaseAuth = FirebaseAuth.getInstance()
         val user = firebaseAuth.currentUser
 
 
@@ -490,6 +488,11 @@ class PlaceActivity : AppCompatActivity() {
         calendar.set(Calendar.MINUTE, minute)
         time = "$hourOfDay:$minute"
         updateTime()
+
+        if (mapListener != null) {
+            mapListener!!.updateTables()
+        }
+
         intent.putExtra(SELECTED_TAG, UNSELECTED)
         sit_count.text=""
         updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
@@ -505,6 +508,11 @@ class PlaceActivity : AppCompatActivity() {
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             date = "" + dayOfMonth + " " + (monthOfYear + 1) + " " + year
             updateDate()
+
+            if (mapListener != null) {
+                mapListener!!.updateTables()
+            }
+
             intent.putExtra(SELECTED_TAG, UNSELECTED)
             updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
 //            posBut = -1
@@ -535,9 +543,6 @@ class PlaceActivity : AppCompatActivity() {
                 calendar.timeInMillis,
                 DateUtils.FORMAT_NUMERIC_DATE or DateUtils.FORMAT_SHOW_YEAR
             ))
-        if(mapListener != null) {
-            mapListener!!.updateTables()
-        }
     }
     private var changeNameListener: ValueEventListener? = null
 
@@ -569,9 +574,6 @@ class PlaceActivity : AppCompatActivity() {
                 calendar.timeInMillis,
                 DateUtils.FORMAT_SHOW_TIME
             ))
-        if(mapListener != null) {
-            mapListener!!.updateTables()
-        }
     }
 
     // отображаем диалоговое окно для выбора даты
@@ -748,7 +750,6 @@ class PlaceActivity : AppCompatActivity() {
         } else  {
             flag = intent.getIntExtra(PAGE_TAG, INFO_PAGE)
         }
-
 
         when (flag) {
             INFO_PAGE -> {

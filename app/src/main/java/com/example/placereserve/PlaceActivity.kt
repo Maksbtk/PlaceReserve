@@ -49,7 +49,7 @@ class PlaceActivity : AppCompatActivity() {
     var numberforCall :String = ""
     var calendar = Calendar.getInstance()
     val database = FirebaseDatabase.getInstance()
-    lateinit var checkTableData : ValueEventListener
+    private var checkTableData : ValueEventListener? = null
     private var mapListener: CustomMapViewListener? = null
 
     // MAP
@@ -63,8 +63,13 @@ class PlaceActivity : AppCompatActivity() {
     var time = "" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE)
 
     override fun onDestroy() {
+        if (checkTableData != null){
+            database.getReference("Заведения").child(intent.getStringExtra("place_name"))
+                .child("Столы").child("Номер стола").removeEventListener(checkTableData!!)
+            checkTableData = null
+        }
+
         mapTarget = null
-            //  checkTableData.removeEventListener(this)
         mapView = null
         mapListener = null
         intent.removeExtra(PAGE_TAG)
@@ -660,9 +665,11 @@ class PlaceActivity : AppCompatActivity() {
                                         Snackbar.LENGTH_SHORT
                                     ).show()
                                 }
+                                myRef.removeEventListener(this)
                             }
 
                             override fun onCancelled(databaseError: DatabaseError) {
+                                myRef.removeEventListener(this)
                             }
                         })
                     }

@@ -73,7 +73,7 @@
                 android:imeOptions="actionDone"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="110dp"
+                android:layout_marginTop="115dp"
                 android:ems="10"
                 android:focusable="true"
                 android:maxLength="15"
@@ -122,7 +122,7 @@
                 android:background="@drawable/back"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="110dp"
+                android:layout_marginTop="115dp"
                 android:imeOptions="actionDone"
                 android:inputType="phone"
                 android:id="@+id/fieldPhoneNumber"
@@ -165,7 +165,7 @@
                 android:id="@+id/timer"
         />
         <TextView
-                android:text="Не пришло СМС с кодом? Попробуйте еще раз через минуту"
+                android:text="Не пришло СМС с кодом?"
                 android:textSize="11sp"
                 android:gravity="center"
                 android:textColor="@color/TextColorInPLaces"

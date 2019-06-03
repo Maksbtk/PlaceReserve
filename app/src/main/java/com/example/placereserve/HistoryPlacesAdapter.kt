@@ -15,7 +15,7 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.history_place_item.view.*
 
 
-class HistoryPlacesAdapter : RecyclerView.Adapter<HistoryPlacesAdapter.PlacesHolder>() {
+class HistoryPlacesAdapter(private var historyPlacess: HistoryPlaces) : RecyclerView.Adapter<HistoryPlacesAdapter.PlacesHolder>() {
     //создает ViewHolder и инициализирует views для списка
 
     var historyPlaces: MutableList<PlacesHistory> = mutableListOf()
@@ -75,6 +75,8 @@ class HistoryPlacesAdapter : RecyclerView.Adapter<HistoryPlacesAdapter.PlacesHol
                     historyPlacesList.remove(PlacesHistory( historyPlaces[position].nameH,historyPlaces[position].addressH,historyPlaces[position].dateH
                         ,historyPlaces[position].timeH,R.drawable.background_history,historyPlaces[position].table))
                     refreshHistoryPlaces(PlacesData.getHistoryPlaces())
+                    historyPlacess!!.CheckListOnZeroCount()
+
 
                 })
                 // negative button text and action

@@ -333,7 +333,7 @@ class PlaceActivity : AppCompatActivity() {
                 alert.show()
             }
         })
-        val adapterHis = HistoryPlacesAdapter()
+     //   val adapterHis = HistoryPlacesAdapter(HistoryPlaces())
         btn_confirm.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 if (mapListener!!.bitmapChoosed != null) {
@@ -423,7 +423,7 @@ class PlaceActivity : AppCompatActivity() {
                                                     id_stola.toString()
                                                 )
                                             )
-                                            adapterHis.refreshHistoryPlaces(PlacesData.getHistoryPlaces())
+                                           // adapterHis.refreshHistoryPlaces(PlacesData.getHistoryPlaces())
                                             val goHis = Intent(this@PlaceActivity, HistoryPlaces::class.java)
                                             startActivity(goHis)
                                             finish()

@@ -173,7 +173,7 @@ class PlaceActivity : AppCompatActivity() {
 
                 mapListener!!.updateTables()
                updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
-
+                sit_count.text = ""
             }
         })
 
@@ -422,6 +422,7 @@ class PlaceActivity : AppCompatActivity() {
                                                     , time, R.drawable.background_history,
                                                     id_stola.toString()
                                                 )
+
                                             )
                                            // adapterHis.refreshHistoryPlaces(PlacesData.getHistoryPlaces())
                                             val goHis = Intent(this@PlaceActivity, HistoryPlaces::class.java)
@@ -444,6 +445,7 @@ class PlaceActivity : AppCompatActivity() {
                                     // Failed to read value
                                 }
                             })
+                        sit_count.text = ""
                     }
                 }
                 updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))

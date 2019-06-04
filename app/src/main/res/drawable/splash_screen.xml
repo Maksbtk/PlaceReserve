@@ -6,10 +6,14 @@
 
     <item
             android:left="20dp"
-            android:right="20dp">
+            android:right="20dp"
+
+    >
         <bitmap
                 android:gravity="center"
-                android:src="@drawable/ic_splash_icon"/>
+                android:src="@drawable/ic_splash_icon"
+
+               />
     </item>
 
 </layer-list>

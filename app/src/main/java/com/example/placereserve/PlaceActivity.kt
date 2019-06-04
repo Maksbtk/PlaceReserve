@@ -15,7 +15,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -38,7 +38,6 @@ import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.activity_place.*
 import kotlinx.android.synthetic.main.activity_place_info.*
 import com.squareup.picasso.MemoryPolicy
-import kotlinx.android.synthetic.main.popup_window_for_admin.*
 import java.lang.Exception
 import kotlin.collections.ArrayList
 
@@ -642,6 +641,7 @@ class PlaceActivity : AppCompatActivity() {
                                         Snackbar.LENGTH_SHORT
                                     ).show()
                                     adapterFav.refreshFavoritePlaces(PlacesData.getFavoritePlaces())
+                                    btnForFavorite.getBackground().setColorFilter(getResources().getColor(R.color.favoriteStar_color), PorterDuff.Mode.SRC_ATOP)
                                 } else {
                                     myRef.removeValue()
                                     favoritePlacesList.remove(
@@ -658,6 +658,7 @@ class PlaceActivity : AppCompatActivity() {
                                         "Удалено из избранных",
                                         Snackbar.LENGTH_SHORT
                                     ).show()
+                                    btnForFavorite.getBackground().setColorFilter(getResources().getColor(R.color.favoriteStar_color_afterClick), PorterDuff.Mode.SRC_ATOP)
                                 }
                             }
 

@@ -76,9 +76,9 @@
                         android:layout_marginTop="25dp"
                         android:tint="@color/TextColorInPLaces"
                         android:background="@drawable/ico_backk"
-                        android:layout_width="13dp"
+                        android:layout_width="17dp"
                         android:layout_marginStart="10dp"
-                        android:layout_height="20dp"
+                        android:layout_height="24dp"
                 />
                 <ImageButton
                         android:id="@+id/admin_exit_btn"

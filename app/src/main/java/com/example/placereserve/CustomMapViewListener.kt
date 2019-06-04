@@ -188,13 +188,17 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (ds in dataSnapshot.children) {
                     val id = ds.key
-                    val x = ds.child("Координаты").child("x").value.toString()
-                    val y = ds.child("Координаты").child("y").value.toString()
-                    val reserved =
-                        ds.child("Бронь").child("Дата").child(placeActivity.date).child("Забронирован").value.toString()
-                    createTable(id!!.toInt(), x.toFloat(),y.toFloat()) // сначала создаем столы на карте
-                    updateTable(id!!.toInt(), reserved.toBoolean()) // затем обновляем картиночки с БД
-                    currentMap!!.refresh()
+                    if (id != "0") {
+
+                        val x = ds.child("Координаты").child("x").value.toString()
+                        val y = ds.child("Координаты").child("y").value.toString()
+                        val reserved =
+                            ds.child("Бронь").child("Дата").child(placeActivity.date).child("Забронирован")
+                                .value.toString()
+                        createTable(id!!.toInt(), x.toFloat(), y.toFloat()) // сначала создаем столы на карте
+                        updateTable(id!!.toInt(), reserved.toBoolean()) // затем обновляем картиночки с БД
+                        currentMap!!.refresh()
+                    }
                 }
 
                 //after all remove listener

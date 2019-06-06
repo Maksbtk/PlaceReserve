@@ -14,6 +14,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.WindowManager
 import android.view.WindowManager.LayoutParams.ALPHA_CHANGED
+import android.content.Intent
 import com.example.placereserve.PlacesData.historyPlacesList
 import kotlinx.android.synthetic.main.activity_changedata.back_in_useer
 import kotlinx.android.synthetic.main.activity_history_places.*
@@ -33,7 +34,6 @@ class HistoryPlaces : AppCompatActivity() {
         history_places_list.layoutManager = LinearLayoutManager(this)
         history_places_list.adapter = adapter
 
-
         userViewModel.getListHistoryPlaces().observe(this, Observer {
             it?.let {
                 adapter.refreshHistoryPlaces(it)
@@ -44,7 +44,6 @@ class HistoryPlaces : AppCompatActivity() {
         back_in_useer.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
-
                 finish()
             }
         })

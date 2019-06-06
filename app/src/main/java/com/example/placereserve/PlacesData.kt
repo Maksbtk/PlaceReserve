@@ -10,6 +10,7 @@ object PlacesData {
 
     val favoritePlacesList: MutableList<PlacesFavorite> = mutableListOf()
     val historyPlacesList: MutableList<PlacesHistory> = mutableListOf()
+    val PlacesList: MutableList<Places> = mutableListOf()
 
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -18,12 +19,10 @@ object PlacesData {
     }
 
     fun getHistoryData(name: String, address: String, date: String, time: String, table: String) {
-        historyPlacesList.add(PlacesHistory(name, address, date, time, R.drawable.background_history,table))
+        historyPlacesList.add(PlacesHistory(name, address, date, time, R.drawable.background_history, table))
     }
 
     fun getPlaces(): List<Places> {
-
-        var PlacesList: MutableList<Places> = mutableListOf()
 
         PlacesList.add(Places("Йохан Пивохан", "Проспект Кирова, 58", R.drawable.r1))
         PlacesList.add(Places("Карл у Клары", "Проспект Кирова, 51Б", R.drawable.r2))
@@ -89,12 +88,11 @@ object PlacesData {
                                         .child(user.phoneNumber!!)
                                         .child("Активные брони").child(placeHis).child(addressHis)
                                     myRef_2.addListenerForSingleValueEvent(object : ValueEventListener {
-                                        override fun onDataChange (dataSnapshot: DataSnapshot) {
+                                        override fun onDataChange(dataSnapshot: DataSnapshot) {
                                             for (ds_3 in dataSnapshot.children) {
                                                 var dateHis = ds_3.key.toString()
                                                 var timeHis = ds_3.child("Время").getValue().toString()
                                                 var tableNumber = ds_3.child("НомерСтола").getValue().toString()
-
 
                                                 if (!historyPlacesList.contains(
                                                         PlacesHistory(
@@ -107,7 +105,7 @@ object PlacesData {
                                                         )
                                                     )
                                                 ) {
-                                                    getHistoryData(placeHis, addressHis, dateHis, timeHis,tableNumber)
+                                                    getHistoryData(placeHis, addressHis, dateHis, timeHis, tableNumber)
                                                 }
                                             }
                                         }

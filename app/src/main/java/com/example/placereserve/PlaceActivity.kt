@@ -45,10 +45,10 @@ class PlaceActivity : AppCompatActivity() {
 
     private val TAG = "PlaceActivity"
     lateinit var firebaseAuth: FirebaseAuth
-    var numberforCall :String = ""
+    var numberforCall: String = ""
     var calendar = Calendar.getInstance()
     val database = FirebaseDatabase.getInstance()
-    lateinit var checkTableData : ValueEventListener
+    lateinit var checkTableData: ValueEventListener
     private var mapListener: CustomMapViewListener? = null
 
     // MAP
@@ -63,15 +63,15 @@ class PlaceActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         mapTarget = null
-            //  checkTableData.removeEventListener(this)
+        //  checkTableData.removeEventListener(this)
         mapView = null
         mapListener = null
         intent.removeExtra(PAGE_TAG)
         intent.removeExtra(SELECTED_TAG)
-
         //DebugApp.getRefWatcher(this).watch(this) // LeakCanary test
         super.onDestroy()
     }
+
     var id_stola = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +81,6 @@ class PlaceActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         val user = firebaseAuth.currentUser
 
-
         if (!intent.hasExtra("place_name") || !intent.hasExtra("place_address")) {
             // sorry, but not
             Log.e(TAG, "Extras is null!")
@@ -89,13 +88,11 @@ class PlaceActivity : AppCompatActivity() {
             return
         }
 
-
-
-         checkTableData = database.getReference("Заведения").child(intent.getStringExtra("place_name"))
+        checkTableData = database.getReference("Заведения").child(intent.getStringExtra("place_name"))
             .child("Столы").child("Номер стола")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (mapListener!=null) {
+                    if (mapListener != null) {
                         mapListener!!.updateTables()
                     }
                 }
@@ -104,10 +101,6 @@ class PlaceActivity : AppCompatActivity() {
                     // Failed to read value
                 }
             })
-
-
-
-
 
         select_table.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
@@ -146,18 +139,17 @@ class PlaceActivity : AppCompatActivity() {
             }
         })
 
-            //окно админа, кнопка удаления брони
+        //окно админа, кнопка удаления брони
         btn_remove.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 //v.startAnimation(animAlpha)
-
 
                 val ref = database.getReference("Заведения").child(intent.getStringExtra("place_name"))
                     .child("Столы").child("Номер стола")
                     .child(id_stola.toString()).child("Бронь").child("Дата")
                     .child(date).addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                           var NumberVisitor =dataSnapshot.child("Номер клиента").value.toString()
+                            var NumberVisitor = dataSnapshot.child("Номер клиента").value.toString()
                             DelEteDataVisitio(NumberVisitor)
                             ref.removeEventListener(this)
 
@@ -169,9 +161,8 @@ class PlaceActivity : AppCompatActivity() {
                         }
                     })
 
-
                 mapListener!!.updateTables()
-               updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
+                updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
                 sit_count.text = ""
             }
         })
@@ -181,13 +172,11 @@ class PlaceActivity : AppCompatActivity() {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
 
-
-
                 // Initialize a new layout inflater instance
                 val inflater: LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
                 // Inflate a custom view using layout inflater
-                val view = inflater.inflate(R.layout.popup_window_for_admin,null)
+                val view = inflater.inflate(R.layout.popup_window_for_admin, null)
 
                 // Initialize a new instance of popup window
                 val popupWindow = PopupWindow(
@@ -201,9 +190,8 @@ class PlaceActivity : AppCompatActivity() {
                     popupWindow.elevation = 10.0F
                 }
 
-
                 // If API level 23 or higher then execute the code
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     // Create a new slide animation for popup window enter transition
                     val slideIn = Slide()
                     slideIn.slideEdge = Gravity.TOP
@@ -222,30 +210,36 @@ class PlaceActivity : AppCompatActivity() {
                 val nomer = view.findViewById<TextView>(R.id.numValue)
 
                 // Set click listener for popup window's text view
-                nomer.setOnClickListener{
+                nomer.setOnClickListener {
                     // Change the text color of popup window's text view
                     //tv.setTextColor(Color.RED)
                     it.startAnimation(animAlpha)
 
-
-
                     // Here, thisActivity is the current activity
-                    if (ContextCompat.checkSelfPermission(this@PlaceActivity,
-                            Manifest.permission.READ_CONTACTS)
-                        != PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(
+                            this@PlaceActivity,
+                            Manifest.permission.READ_CONTACTS
+                        )
+                        != PackageManager.PERMISSION_GRANTED
+                    ) {
 
                         // Permission is not granted
                         // Should we show an explanation?
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(this@PlaceActivity,
-                                Manifest.permission.READ_CONTACTS)) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                                this@PlaceActivity,
+                                Manifest.permission.READ_CONTACTS
+                            )
+                        ) {
                             // Show an explanation to the user *asynchronously* -- don't block
                             // this thread waiting for the user's response! After the user
                             // sees the explanation, try again to request the permission.
                         } else {
                             // No explanation needed, we can request the permission.
-                            ActivityCompat.requestPermissions(this@PlaceActivity,
+                            ActivityCompat.requestPermissions(
+                                this@PlaceActivity,
                                 arrayOf(Manifest.permission.CALL_PHONE),
-                                MY_PERMISSIONS_REQUEST_READ_CONTACTS)
+                                MY_PERMISSIONS_REQUEST_READ_CONTACTS
+                            )
 
                             // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                             // app-defined int constant. The callback method gets the
@@ -254,12 +248,11 @@ class PlaceActivity : AppCompatActivity() {
                     } else {
 
                     }
-
                 }
 
                 btn_popUp.isEnabled = false
                 // Set a click listener for popup's button widget
-                buttonPopup.setOnClickListener{
+                buttonPopup.setOnClickListener {
                     // Dismiss the popup window
                     btn_popUp.isEnabled = true
                     popupWindow.dismiss()
@@ -267,9 +260,8 @@ class PlaceActivity : AppCompatActivity() {
 
                 // Set a dismiss listener for popup window
                 popupWindow.setOnDismissListener {
-                   // Toast.makeText(applicationContext,"Popup closed",Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(applicationContext,"Popup closed",Toast.LENGTH_SHORT).show()
                 }
-
 
                 // Finally, show the popup window on app
                 TransitionManager.beginDelayedTransition(place_layout)
@@ -280,15 +272,14 @@ class PlaceActivity : AppCompatActivity() {
                     0 // Y offset
                 )
 
-
-               val ref = database.getReference("Заведения").child(intent.getStringExtra("place_name"))
+                val ref = database.getReference("Заведения").child(intent.getStringExtra("place_name"))
                     .child("Столы").child("Номер стола")
                     .child(id_stola.toString()).child("Бронь").child("Дата")
-                   .child(date).addListenerForSingleValueEvent(object : ValueEventListener {
+                    .child(date).addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            nomer.text =dataSnapshot.child("Номер клиента").value.toString()
-                            numberforCall= nomer.text.toString()
-                            imya.text=dataSnapshot.child("Имя клиента").value.toString()
+                            nomer.text = dataSnapshot.child("Номер клиента").value.toString()
+                            numberforCall = nomer.text.toString()
+                            imya.text = dataSnapshot.child("Имя клиента").value.toString()
 
                             ref.removeEventListener(this)
                         }
@@ -298,21 +289,16 @@ class PlaceActivity : AppCompatActivity() {
                             ref.removeEventListener(this)
                         }
                     })
-
-
-
             }
         })
 
         admin_exit_btn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 v.startAnimation(animAlpha)
-
                 // build alert dialog
                 val dialogBuilder = AlertDialog.Builder(this@PlaceActivity)
-
-                    // set message of alert dialog
-                      dialogBuilder.setMessage("Вы больше не сможете войти под учетной записью администратора заведения")
+                // set message of alert dialog
+                dialogBuilder.setMessage("Вы больше не сможете войти под учетной записью администратора заведения")
                     // if the dialog is cancelable
                     .setCancelable(false)
                     // positive button text and action
@@ -323,7 +309,6 @@ class PlaceActivity : AppCompatActivity() {
                     .setNegativeButton("Отменить", DialogInterface.OnClickListener { dialog, id ->
                         dialog.cancel()
                     })
-
                 // create dialog box
                 val alert = dialogBuilder.create()
                 // set title for alert dialog box
@@ -332,7 +317,7 @@ class PlaceActivity : AppCompatActivity() {
                 alert.show()
             }
         })
-     //   val adapterHis = HistoryPlacesAdapter(HistoryPlaces())
+        //   val adapterHis = HistoryPlacesAdapter(HistoryPlaces())
         btn_confirm.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 if (mapListener!!.bitmapChoosed != null) {
@@ -352,11 +337,9 @@ class PlaceActivity : AppCompatActivity() {
                         })
 
                     if (reserve != "true") {
-
                         ref.child("Заведения").child(intent.getStringExtra("place_name"))
                             .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
                             .child("Бронь").child("Дата").child(date).child("Забронирован").setValue("true")
-
 
                         ref.child("Заведения").child(intent.getStringExtra("place_name"))
                             .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
@@ -367,13 +350,9 @@ class PlaceActivity : AppCompatActivity() {
                             .child("Столы").child("Номер стола").child(mapListener!!.choosedTableNumber.toString())
                             .child("Бронь").child("Дата").child(date)
                             .child("Номер клиента").setValue(user!!.phoneNumber!!)
-
 //                        ref.child("Пользователи").child(user.phoneNumber!!).child("Активные брони")
 //                            .child(intent.getStringExtra("place_name")).child("Дата")
 //                            .child(date).setValue(date)
-
-
-
 
                         ref.child("Пользователи").child(user.phoneNumber!!).child("ИмяПользователя")
                             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -383,7 +362,6 @@ class PlaceActivity : AppCompatActivity() {
                                         .child(mapListener!!.choosedTableNumber.toString())
                                         .child("Бронь").child("Дата").child(date)
                                         .child("Имя клиента").setValue(dataSnapshot.getValue())
-
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
@@ -407,10 +385,12 @@ class PlaceActivity : AppCompatActivity() {
                                             Toast.LENGTH_SHORT
                                         ).show()
 
-                                        if ( intent.getStringExtra("place_status")=="1") {
+                                        if (intent.getStringExtra("place_status") == "1") {
 
-                                            var r =  ref.child("Пользователи").child(user.phoneNumber!!).child("Активные брони")
-                                                .child(intent.getStringExtra("place_name")).child(intent.getStringExtra("place_address")).child(date)
+                                            var r = ref.child("Пользователи").child(user.phoneNumber!!)
+                                                .child("Активные брони")
+                                                .child(intent.getStringExtra("place_name"))
+                                                .child(intent.getStringExtra("place_address")).child(date)
                                             r.child("НомерСтола").setValue(id_stola.toString())
                                             r.child("Время").setValue(time)
 
@@ -421,14 +401,12 @@ class PlaceActivity : AppCompatActivity() {
                                                     , time, R.drawable.background_history,
                                                     id_stola.toString()
                                                 )
-
                                             )
-                                           // adapterHis.refreshHistoryPlaces(PlacesData.getHistoryPlaces())
+                                            // adapterHis.refreshHistoryPlaces(PlacesData.getHistoryPlaces())
                                             val goHis = Intent(this@PlaceActivity, HistoryPlaces::class.java)
                                             startActivity(goHis)
                                             finish()
                                         }
-
 
                                     } else {
                                         mapView!!.refresh()
@@ -454,8 +432,10 @@ class PlaceActivity : AppCompatActivity() {
         updatePageUI(true)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_READ_CONTACTS -> {
                 // If request is cancelled, the result arrays are empty.
@@ -477,6 +457,7 @@ class PlaceActivity : AppCompatActivity() {
             }
         }
     }
+
     // установка обработчика выбора времени
     var t: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
@@ -484,7 +465,7 @@ class PlaceActivity : AppCompatActivity() {
         time = "$hourOfDay:$minute"
         updateTime()
         intent.putExtra(SELECTED_TAG, UNSELECTED)
-        sit_count.text=""
+        sit_count.text = ""
         updateButton(intent.getIntExtra(PAGE_TAG, INFO_PAGE))
 //        posBut = -1
 //        intent.putExtra(SELECTED_TAG, UNSELECTED)
@@ -504,13 +485,13 @@ class PlaceActivity : AppCompatActivity() {
 //            intent.putExtra(SELECTED_TAG, UNSELECTED)
         }
 
-    fun DelEteDataVisitio (numberVisitor: String) {
+    fun DelEteDataVisitio(numberVisitor: String) {
 
-        val myr= database.getReference("Пользователи").child(numberVisitor).child("Активные брони")
+        val myr = database.getReference("Пользователи").child(numberVisitor).child("Активные брони")
             .child(intent.getStringExtra("place_name")).child(intent.getStringExtra("place_address"))
             .child(date)
         myr.removeValue()
-        val myr1 =database.getReference("Заведения").child(intent.getStringExtra("place_name"))
+        val myr1 = database.getReference("Заведения").child(intent.getStringExtra("place_name"))
             .child("Столы").child("Номер стола")
             .child(id_stola.toString()).child("Бронь").child("Дата").child(date)
         myr1.removeValue()
@@ -520,6 +501,7 @@ class PlaceActivity : AppCompatActivity() {
             Snackbar.LENGTH_SHORT
         ).show()
     }
+
     private fun updateDate() {
         sit_count.text = ""
         date_text!!.text =
@@ -528,10 +510,11 @@ class PlaceActivity : AppCompatActivity() {
                 calendar.timeInMillis,
                 DateUtils.FORMAT_NUMERIC_DATE or DateUtils.FORMAT_SHOW_YEAR
             ))
-        if(mapListener != null) {
+        if (mapListener != null) {
             mapListener!!.updateTables()
         }
     }
+
     private var changeNameListener: ValueEventListener? = null
 
     private fun signOut() {
@@ -562,7 +545,7 @@ class PlaceActivity : AppCompatActivity() {
                 calendar.timeInMillis,
                 DateUtils.FORMAT_SHOW_TIME
             ))
-        if(mapListener != null) {
+        if (mapListener != null) {
             mapListener!!.updateTables()
         }
     }
@@ -641,7 +624,10 @@ class PlaceActivity : AppCompatActivity() {
                                         Snackbar.LENGTH_SHORT
                                     ).show()
                                     adapterFav.refreshFavoritePlaces(PlacesData.getFavoritePlaces())
-                                    btnForFavorite.getBackground().setColorFilter(getResources().getColor(R.color.favoriteStar_color), PorterDuff.Mode.SRC_ATOP)
+                                    btnForFavorite.getBackground().setColorFilter(
+                                        getResources().getColor(R.color.favoriteStar_color),
+                                        PorterDuff.Mode.SRC_ATOP
+                                    )
                                 } else {
                                     myRef.removeValue()
                                     favoritePlacesList.remove(
@@ -658,7 +644,10 @@ class PlaceActivity : AppCompatActivity() {
                                         "Удалено из избранных",
                                         Snackbar.LENGTH_SHORT
                                     ).show()
-                                    btnForFavorite.getBackground().setColorFilter(getResources().getColor(R.color.favoriteStar_color_afterClick), PorterDuff.Mode.SRC_ATOP)
+                                    btnForFavorite.getBackground().setColorFilter(
+                                        getResources().getColor(R.color.favoriteStar_color_afterClick),
+                                        PorterDuff.Mode.SRC_ATOP
+                                    )
                                 }
                             }
 
@@ -692,7 +681,7 @@ class PlaceActivity : AppCompatActivity() {
                     "Карл у Клары" -> {
                         loadMap("test_map_2.png")
                     }
-                    else ->{
+                    else -> {
                         loadMap("r00.png")
                     }
                 }
@@ -709,7 +698,7 @@ class PlaceActivity : AppCompatActivity() {
                     "Карл у Клары" -> {
                         loadMap("test_map_2.png")
                     }
-                    else ->{
+                    else -> {
                         loadMap("r00.png")
                     }
                 }
@@ -717,28 +706,29 @@ class PlaceActivity : AppCompatActivity() {
         }
     }
 
-    fun getImages():ArrayList<Int>{
-        var arr : ArrayList<Int>
+    fun getImages(): ArrayList<Int> {
+        var arr: ArrayList<Int>
         when (intent.getStringExtra("place_name")) {
             "Йохан Пивохан" -> {
                 arr = arrayListOf(R.drawable.yohan1, R.drawable.yohan2, R.drawable.yohan3)
 
             }
             "Карл у Клары" -> {
-                arr= arrayListOf(R.drawable.karl1, R.drawable.karl2)
+                arr = arrayListOf(R.drawable.karl1, R.drawable.karl2)
             }
             else -> {
-                arr =  arrayListOf(R.drawable.r0)
+                arr = arrayListOf(R.drawable.r0)
             }
         }
         return arr
     }
+
     fun updatePageUI(reparse: Boolean) {
-        var flag : Int
-        if (intent.getStringExtra("place_status")=="2") {
+        var flag: Int
+        if (intent.getStringExtra("place_status") == "2") {
             flag = intent.getIntExtra(PAGE_TAG, CHOOSE_PAGE_ADMIN)
 
-        } else  {
+        } else {
             flag = intent.getIntExtra(PAGE_TAG, INFO_PAGE)
         }
 
@@ -777,8 +767,8 @@ class PlaceActivity : AppCompatActivity() {
         if (page == INFO_PAGE) {
             flag = UNSELECTED
         }
-        if (page== REMOVE) {
-        flag= REMOVE
+        if (page == REMOVE) {
+            flag = REMOVE
         }
         when (flag) {
             UNSELECTED -> {

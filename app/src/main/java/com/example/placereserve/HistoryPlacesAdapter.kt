@@ -31,14 +31,12 @@ class HistoryPlacesAdapter(private var historyPlacess: HistoryPlaces) : Recycler
         )
     }
 
-
     fun filter() {
         historyPlaces.clear()
         historyPlaces.addAll(SourceListHistory)
 
         notifyDataSetChanged()
     }
-
 
     //связывает views с содержимым
     override fun onBindViewHolder(viewHolder: PlacesHolder, position: Int) {
@@ -49,7 +47,6 @@ class HistoryPlacesAdapter(private var historyPlacess: HistoryPlaces) : Recycler
         viewHolder.itemView.button_remove_item_history.setOnClickListener {
             val animAlpha: Animation = AnimationUtils.loadAnimation(viewHolder.itemView.context, R.anim.alpha)
             it.startAnimation(animAlpha)
-
 
             // build alert dialog
             val dialogBuilder = AlertDialog.Builder(viewHolder.itemView.context)
@@ -91,7 +88,6 @@ class HistoryPlacesAdapter(private var historyPlacess: HistoryPlaces) : Recycler
             // show alert dialog
             alert.show()
 
-
 //               val myr= database.getReference("Пользователи").child(user?.phoneNumber!!).child("Активные брони")
 //                    .child(historyPlaces[position].nameH).child(historyPlaces[position].addressH).child(historyPlaces[position].dateH)
 //            myr.removeValue()
@@ -107,7 +103,6 @@ class HistoryPlacesAdapter(private var historyPlacess: HistoryPlaces) : Recycler
 //            historyPlacesList.remove(PlacesHistory( historyPlaces[position].nameH,historyPlaces[position].addressH,historyPlaces[position].dateH
 //                ,historyPlaces[position].timeH,R.drawable.background_history,historyPlaces[position].table))
 //            refreshHistoryPlaces(PlacesData.getHistoryPlaces())
-
         }
     }
 
@@ -126,7 +121,6 @@ class HistoryPlacesAdapter(private var historyPlacess: HistoryPlaces) : Recycler
 
     //внутренний класс ViewHolder описывает элементы представления списка и привязку их к RecyclerView
     class PlacesHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         fun bind(historyPlaces: PlacesHistory) = with(itemView) {
             placesNameH.text = historyPlaces.nameH
             placesAddressH.text = historyPlaces.addressH

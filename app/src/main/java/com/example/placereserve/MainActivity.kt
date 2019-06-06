@@ -148,12 +148,16 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
-
         //слушаетль на изменение поля ввода серчвью
         SearchId.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 //    Toast.makeText(this@MainActivity, "слушаетль работает", Toast.LENGTH_SHORT).show()
                 adapter.filter(newText)
+                if (adapter.places.size == 0) {
+                    inform_msg.visibility = View.VISIBLE
+                } else {
+                    inform_msg.visibility = View.INVISIBLE
+                }
                 return false
             }
 
@@ -191,6 +195,7 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
+
         // Check if user is signed in (non-null) and update UI accordingly.
         updateInterface()
     }

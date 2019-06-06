@@ -10,13 +10,14 @@ import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.places_item.view.*
 import android.widget.RelativeLayout
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_favoriteplaces.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 
 class PlacesAdapter : RecyclerView.Adapter<PlacesAdapter.PlacesHolder>() {
     //создает ViewHolder и инициализирует views для списка
 
-    private var places: MutableList<Places> = mutableListOf()
-    private var SourceList: MutableList<Places> = mutableListOf()
+    val places: MutableList<Places> = mutableListOf()
+    val SourceList: MutableList<Places> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesHolder {
         return PlacesHolder(

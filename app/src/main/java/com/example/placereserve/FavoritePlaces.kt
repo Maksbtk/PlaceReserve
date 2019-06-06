@@ -46,17 +46,16 @@ class FavoritePlaces : AppCompatActivity() {
         val userViewModel by lazy { ViewModelProviders.of(this).get(PlacesViewModel::class.java) }
         val adapter = FavoritePlacesAdapter()
 
-        if (PlacesData.favoritePlacesList.size==0){
+        favorite_places_list.layoutManager = LinearLayoutManager(this)
+        favorite_places_list.adapter = adapter
+
+        if (PlacesData.favoritePlacesList.size == 0) {
             informm.visibility = View.VISIBLE
             favorite_places_list.visibility = View.INVISIBLE
-        }
-        else{
+        } else {
             informm.visibility = View.INVISIBLE
             favorite_places_list.visibility = View.VISIBLE
         }
-
-        favorite_places_list.layoutManager = LinearLayoutManager(this)
-        favorite_places_list.adapter = adapter
 
         userViewModel.getListFavoritePlaces().observe(this, Observer {
             it?.let {

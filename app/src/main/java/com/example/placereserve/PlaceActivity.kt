@@ -208,7 +208,6 @@ class PlaceActivity : AppCompatActivity() {
                 val imya = view.findViewById<TextView>(R.id.nameeeValue)
                 val buttonPopup = view.findViewById<ImageButton>(R.id.button_exit_popUp)
                 val nomer = view.findViewById<TextView>(R.id.numValue)
-
                 // Set click listener for popup window's text view
                 nomer.setOnClickListener {
                     // Change the text color of popup window's text view

@@ -18,6 +18,7 @@ import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
@@ -30,15 +31,17 @@ import android.transition.TransitionManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.placereserve.PlacesData.favoritePlacesList
+import com.example.placereserve.TableIconsCache.Companion.busyIconBmp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.activity_place.*
 import kotlinx.android.synthetic.main.activity_place_info.*
-import com.squareup.picasso.MemoryPolicy
-import java.lang.Exception
+import kotlinx.android.synthetic.main.map_view.*
 import kotlin.collections.ArrayList
 
 class PlaceActivity : AppCompatActivity() {
@@ -48,22 +51,34 @@ class PlaceActivity : AppCompatActivity() {
     var numberforCall: String = ""
     var calendar = Calendar.getInstance()
     val database = FirebaseDatabase.getInstance()
-    lateinit var checkTableData: ValueEventListener
+    var checkTableData: ValueEventListener? = object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
+            if (mapListener != null) {
+                mapListener!!.updateTables()
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+        }
+    }
+
     private var mapListener: CustomMapViewListener? = null
 
     // MAP
     private var mapView: MapView? = null
     private val ref = FirebaseDatabase.getInstance().reference
     private lateinit var myRef: DatabaseReference
-    private lateinit var database2: DatabaseReference
     var date = "" + calendar.get(Calendar.DAY_OF_MONTH) + " " + (calendar.get(Calendar.MONTH) + 1) + " " + calendar.get(
         Calendar.YEAR
     )
     var time = "" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE)
 
     override fun onDestroy() {
-        mapTarget = null
-        //  checkTableData.removeEventListener(this)
+        database.getReference("Заведения").child(intent.getStringExtra("place_name"))
+            .child("Столы").child("Номер стола")
+            .removeEventListener(checkTableData!!)
+        checkTableData = null
+
         mapView = null
         mapListener = null
         intent.removeExtra(PAGE_TAG)
@@ -88,19 +103,9 @@ class PlaceActivity : AppCompatActivity() {
             return
         }
 
-        checkTableData = database.getReference("Заведения").child(intent.getStringExtra("place_name"))
+        database.getReference("Заведения").child(intent.getStringExtra("place_name"))
             .child("Столы").child("Номер стола")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (mapListener != null) {
-                        mapListener!!.updateTables()
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Failed to read value
-                }
-            })
+            .addValueEventListener(checkTableData!!)
 
         select_table.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
@@ -375,7 +380,7 @@ class PlaceActivity : AppCompatActivity() {
                             .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                                     if (dataSnapshot.getValue().toString() == user!!.phoneNumber.toString()) {
-                                        mapListener!!.bitmapChoosed!!.bitmap = TableIconsCache.busyIconBmp
+                                        mapListener!!.bitmapChoosed!!.bitmap = busyIconBmp
                                         mapView!!.refresh()
 
                                         Toast.makeText(
@@ -664,7 +669,8 @@ class PlaceActivity : AppCompatActivity() {
                 for (i in 0..(photos - 1)) {
                     val iv = ImageView(this)
                     iv.setBackgroundColor(resources.getColor(R.color.image_background_color))
-                    Picasso.get().load(images[i]).memoryPolicy(MemoryPolicy.NO_CACHE).resize(width.toInt(), 0).into(iv)
+                    Glide.with(this).load(images[i]).skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).override(width.toInt(), width.toInt()).into(iv)
                     linear_images.addView(iv)
                 }
             }
@@ -789,42 +795,39 @@ class PlaceActivity : AppCompatActivity() {
         }
     }
 
-    // подгрузка карты с помощью Picasso
-    private var mapTarget: Target? = object : com.squareup.picasso.Target {
-        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-            if (bitmap == null) {
-                Log.e(TAG, "Image is null!")
-            } else {
-                // загружаем в view
-                mapListener = CustomMapViewListener(this@PlaceActivity, mapView!!)
-                if (mapListener != null) {
-                    mapView!!.setMapViewListener(mapListener)
-                    mapView!!.loadMap(bitmap)
-                }
-            }
-
-        }
-
-        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-            Log.e(TAG, "Ah shit, here we go again")
-        }
-
-        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-        }
-    }
-
     fun loadMap(mapName: String) {
         if (mapView != null) return
 
         // Поиск mapview
         mapView = findViewById(R.id.mapview)
-        TableIconsCache.prepareIcons()
+        TableIconsCache.prepareIcons(this)
 
         // TODO: change to firebase images database
         val url = "file:///android_asset/$mapName"
-        Picasso.get().load(url).into(mapTarget!!)
+        Glide.with(this).asBitmap().load(url).dontAnimate().skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE).into(object : CustomTarget<Bitmap>(){
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    // загружаем в view
+                    mapListener = CustomMapViewListener(this@PlaceActivity, mapView!!)
+                    if (mapListener != null) {
+                        mapView!!.setMapViewListener(mapListener)
+                        mapView!!.loadMap(resource)
+                        mapView!!.isScaleAndRotateTogether = true
+                    }
+                }
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+            })
     }
 
+    class doAsync(val handler: () -> Unit) : AsyncTask<Void, Void, Void>() {
+        override fun doInBackground(vararg params: Void?): Void? {
+            handler()
+            return null
+        }
+        //doAsync{
+        //}.execute()
+    }
 
     companion object {
         // Pages

@@ -2,6 +2,7 @@ package com.example.placereserve
 
 import android.graphics.PointF
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.Toast
 import com.example.placereserve.TableIconsCache.Companion.busyIconBmp
 import com.example.placereserve.TableIconsCache.Companion.choosedIconBmp
@@ -27,11 +28,15 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
 //    val user = firebaseAuth.currentUser
     val user = placeActivity.firebaseAuth.currentUser
     var tableList = hashMapOf<Int, BitmapLayer>() // id table, bitmap layer
+    var centerPoint: PointF? = null
 
     private var TAG: String = "CustomMapViewListener"
 
     override fun onMapLoadSuccess() {
         isLoader = true
+
+        val points = currentMap!!.convertMapXYToScreenXY((currentMap!!.width / 2).toFloat(), (currentMap!!.height / 2).toFloat())
+        centerPoint = PointF(points[0], points[1])
 
         val myRef = database.getReference("Заведения").child(placeActivity.intent.getStringExtra("place_name")).child("Столы")
         createTables(myRef)
@@ -39,6 +44,33 @@ class CustomMapViewListener(private var placeActivity: PlaceActivity, private va
 
     override fun onMapLoadFail() {
         Log.e(TAG, "Ah shit, here we go again")
+    }
+
+    override fun onMapTouch(event: MotionEvent?) {
+        when(event!!.action and MotionEvent.ACTION_MASK) {
+            MotionEvent.ACTION_UP -> {
+                val points = currentMap!!.convertMapXYToScreenXY((currentMap.width / 2).toFloat(), (currentMap.height / 2).toFloat())
+
+                val mapX = points[0] // ширина
+                val mapY = points[1] // высота
+
+                val fullSizeX = centerPoint!!.x * 2
+                val fullSizeY = centerPoint!!.y * 2
+
+                val v = 1.0
+
+                val leftBorder = -(v * fullSizeX * 1.5) // -
+                val rightBorder = v * (fullSizeX * 2.5)// +
+
+                val topBorder = v * (fullSizeY * 2.5)// +
+                val downBorder = -(v * fullSizeY * 1.5) // -
+
+                if ((mapX < leftBorder || mapX > rightBorder) || (mapY < downBorder || mapY > topBorder)) {
+                    currentMap!!.mapCenterWithPoint(centerPoint!!.x, centerPoint!!.y)
+                    currentMap!!.refresh()
+                }
+            }
+        }
     }
 
     fun checkDateReservationUser (){

@@ -39,6 +39,7 @@ import com.example.placereserve.PlacesData.favoritePlacesList
 import com.example.placereserve.TableIconsCache.Companion.busyIconBmp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.android.synthetic.main.activity_place.*
 import kotlinx.android.synthetic.main.activity_place_info.*
 import kotlinx.android.synthetic.main.map_view.*
@@ -575,6 +576,39 @@ class PlaceActivity : AppCompatActivity() {
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE), true
         ).show()
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        val btnForFavorite = findViewById<ImageView>(R.id.btn_for_favorite)
+        val user = firebaseAuth.currentUser
+        database.getReference("Пользователи").child(user?.phoneNumber!!).child("ИзбранныеЗаведения")
+            .child(intent.getStringExtra("place_name")).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val a = dataSnapshot.getValue()
+                if (a == null) {
+
+                    btnForFavorite.getBackground().setColorFilter(
+                        getResources().getColor(R.color.favoriteStar_color_afterClick),
+                        PorterDuff.Mode.SRC_ATOP
+                    )
+
+
+                } else {
+
+                    btnForFavorite.getBackground().setColorFilter(
+                        getResources().getColor(R.color.favoriteStar_color),
+                        PorterDuff.Mode.SRC_ATOP
+                    )
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+
+
+
     }
 
     private fun parsingFromDatabase(page: Int) {

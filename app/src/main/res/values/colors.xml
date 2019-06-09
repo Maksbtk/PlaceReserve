@@ -7,5 +7,5 @@
     <color name="TextColorInPLaces">#1F2041</color>
     <color name="image_background_color">#c1c1c1</color>
     <color name="favoriteStar_color">#6642B4</color>
-    <color name="favoriteStar_color_afterClick">#575757</color>
+    <color name="favoriteStar_color_afterClick">#C6C6C6</color>
 </resources>

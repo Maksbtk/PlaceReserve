@@ -103,6 +103,15 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        val goToActivePlaces = findViewById<View>(R.id.ActiveButton) as ImageButton
+        goToActivePlaces.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View) {
+                v.startAnimation(animAlpha)
+                val activeIntent = Intent(this@MainActivity, ActivePlaces::class.java)
+                startActivity(activeIntent)
+            }
+        })
+
         val goToHistoryPlaces = findViewById<View>(R.id.HistoryButton) as ImageButton
         goToHistoryPlaces.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {

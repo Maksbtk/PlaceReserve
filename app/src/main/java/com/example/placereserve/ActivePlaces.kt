@@ -12,15 +12,15 @@ import com.example.placereserve.PlacesData.historyPlacesList
 import kotlinx.android.synthetic.main.activity_changedata.back_in_useer
 import kotlinx.android.synthetic.main.activity_history_places.*
 
-class HistoryPlaces : AppCompatActivity() {
+class ActivePlaces : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history_places)
+        setContentView(R.layout.activity_active_places)
 
         val userViewModel by lazy { ViewModelProviders.of(this).get(PlacesViewModel::class.java) }
-        val adapter = HistoryPlacesAdapter(this)
+        val adapter = ActivePlacesAdapter(this)
         val animAlpha: Animation = AnimationUtils.loadAnimation(this, R.anim.alpha)
 
         history_places_list.layoutManager = LinearLayoutManager(this)
@@ -43,16 +43,6 @@ class HistoryPlaces : AppCompatActivity() {
     }
 
 
-//    override fun onWindowAttributesChanged(params: WindowManager.LayoutParams?) {
-//        super.onWindowAttributesChanged(params)
-//        when (params) {
-//            ALPHA_CHANGED -> {
-//                CheckListOnZeroCount()
-//            }
-//        }
-//    }
-
-
 
     fun CheckListOnZeroCount (){
         if (historyPlacesList.size==0){
@@ -68,7 +58,7 @@ class HistoryPlaces : AppCompatActivity() {
         super.onStart()
 
         val userViewModel by lazy { ViewModelProviders.of(this).get(PlacesViewModel::class.java) }
-        val adapter = HistoryPlacesAdapter(this)
+        val adapter = ActivePlacesAdapter(this)
 
         history_places_list.layoutManager = LinearLayoutManager(this)
         history_places_list.adapter = adapter

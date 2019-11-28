@@ -80,18 +80,29 @@
                     android:id="@+id/layout_user_scroll"
                     android:background="@color/colorPrimary"
             >
+
                 <ImageButton
                         android:scaleType="fitXY"
+                        android:id="@+id/ActiveButton"
                         android:layout_width="320dp"
                         android:layout_height="84dp"
                         android:layout_gravity="top|center"
                         android:layout_marginTop="234dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
-                        app:srcCompat="@drawable/history_btn_ico_for_user"
-                        android:background="@color/colorPrimary"
+                        app:srcCompat="@drawable/history_btn_ico_for_user" />
+
+                <ImageButton
                         android:id="@+id/HistoryButton"
-                />
+                        android:layout_width="320dp"
+                        android:layout_height="84dp"
+                        android:layout_gravity="top|center"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="329dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@color/colorPrimary"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/history" />
                 <ImageButton
                         android:scaleType="fitXY"
                         android:layout_width="320dp"
@@ -118,7 +129,7 @@
                         android:layout_height="54dp"
                         android:id="@+id/btn_sign_out"
                         android:background="@color/colorPrimary"
-                        android:layout_marginTop="373dp"
+                        android:layout_marginTop="424dp"
                         android:layout_marginBottom="10dp"
                         android:layout_gravity="top|center"
                         android:scaleType="fitXY"

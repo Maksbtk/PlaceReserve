@@ -60,6 +60,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1014005822352-6akavtus750ot9j9omn9d9prdmvf6tsp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.placereserve",
+            "certificate_hash": "6d8c13e8d65db3aed0a976424895e14633df7edd"
+          }
+        },
+        {
           "client_id": "1014005822352-p39hd9s24l4b97ch95prvvdgbqn5r8e6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

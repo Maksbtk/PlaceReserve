@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class HistoryPlacesAdapter(private var historyPlacess: HistoryPlaces) : RecyclerView.Adapter<HistoryPlacesAdapter.PlacesHolder>() {
+class ActivePlacesAdapter(private var historyPlacess: ActivePlaces) : RecyclerView.Adapter<ActivePlacesAdapter.PlacesHolder>() {
     //создает ViewHolder и инициализирует views для списка
 
     var historyPlaces: MutableList<PlacesHistory> = mutableListOf()
@@ -48,7 +48,7 @@ class HistoryPlacesAdapter(private var historyPlacess: HistoryPlaces) : Recycler
             val dateHConv = sdf.parse(it.dateH)
             calendar.time = dateHConv
 
-            if (dateHConv.before(nowDateConv)) {
+            if (dateHConv.after(nowDateConv) || (dateHConv == nowDateConv)) {
                 historyPlaces.add(it)
             }
 
@@ -106,22 +106,6 @@ class HistoryPlacesAdapter(private var historyPlacess: HistoryPlaces) : Recycler
             alert.setTitle("Вы уверены что хотие отменить бронь?")
             // show alert dialog
             alert.show()
-
-//               val myr= database.getReference("Пользователи").child(user?.phoneNumber!!).child("Активные брони")
-//                    .child(historyPlaces[position].nameH).child(historyPlaces[position].addressH).child(historyPlaces[position].dateH)
-//            myr.removeValue()
-//                val myr1 =database.getReference("Заведения").child(historyPlaces[position].nameH)
-//                    .child("Столы").child("Номер стола")
-//                    .child(historyPlaces[position].table).child("Бронь").child("Дата").child(historyPlaces[position].dateH)
-//                   myr1.removeValue()
-//            Snackbar.make(
-//               it,
-//                "Удалено",
-//                Snackbar.LENGTH_SHORT
-//            ).show()
-//            historyPlacesList.remove(PlacesHistory( historyPlaces[position].nameH,historyPlaces[position].addressH,historyPlaces[position].dateH
-//                ,historyPlaces[position].timeH,R.drawable.background_history,historyPlaces[position].table))
-//            refreshHistoryPlaces(PlacesData.getHistoryPlaces())
         }
     }
 

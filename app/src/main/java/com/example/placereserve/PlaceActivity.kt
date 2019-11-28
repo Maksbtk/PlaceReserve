@@ -408,8 +408,8 @@ class PlaceActivity : AppCompatActivity() {
                                                 )
                                             )
                                             // adapterHis.refreshHistoryPlaces(PlacesData.getHistoryPlaces())
-                                            val goHis = Intent(this@PlaceActivity, HistoryPlaces::class.java)
-                                            startActivity(goHis)
+                                            val goAct = Intent(this@PlaceActivity, ActivePlaces::class.java)
+                                            startActivity(goAct)
                                             finish()
                                         }
 
@@ -467,7 +467,13 @@ class PlaceActivity : AppCompatActivity() {
     var t: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
-        time = "$hourOfDay:$minute"
+        var hh_precede = ""
+        var mm_precede = ""
+        if (minute < 10)
+            mm_precede = "0"
+        if (hourOfDay < 10)
+            hh_precede = "0"
+        time = "$hh_precede$hourOfDay:$mm_precede$minute"
         updateTime()
         intent.putExtra(SELECTED_TAG, UNSELECTED)
         sit_count.text = ""
